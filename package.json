@@ -1,0 +1,18 @@
+{
+  "name": "umbriel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev:server": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.11.0",
+    "ts-node-dev": "^1.0.0",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.11.0",
+    "express": "^4.17.1"
+  }
+}
