@@ -7,7 +7,7 @@ import { RegisterUser } from './RegisterUser'
 let usersRepository: IUsersRepository
 let registerUser: RegisterUser
 
-describe('Register user use case', () => {
+describe('Register User', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     registerUser = new RegisterUser(usersRepository)
@@ -41,7 +41,7 @@ describe('Register user use case', () => {
       password: '123456',
     })
 
-    usersRepository.save(user.value as User)
+    usersRepository.create(user.value as User)
 
     const response = await registerUser.execute({
       name: 'John Doe',

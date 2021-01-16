@@ -1,3 +1,4 @@
+import { Body } from './body'
 import { Message } from './message'
 
 describe('Message model', () => {
@@ -35,9 +36,11 @@ describe('Message model', () => {
     })
 
     const message = messageOrError.value as Message
+    const body = Body.create('New message body long enough').value as Body
 
-    message.deliver()
+    message.deliver(body)
 
     expect(message.sentAt).toBeTruthy()
+    expect(message.body.value).toBe('New message body long enough')
   })
 })

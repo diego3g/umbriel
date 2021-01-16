@@ -34,7 +34,7 @@ export class RegisterUser {
       return left(new AccountAlreadyExistsError(user.email.value))
     }
 
-    await this.usersRepository.save(user)
+    await this.usersRepository.create(user)
 
     return right(user)
   }

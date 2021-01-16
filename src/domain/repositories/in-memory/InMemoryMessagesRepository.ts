@@ -9,14 +9,14 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
   }
 
   async save(message: Message): Promise<void> {
-    if (message.id) {
-      const messageIndex = this.items.findIndex(
-        findMessage => findMessage.id === message.id
-      )
+    const messageIndex = this.items.findIndex(
+      findMessage => findMessage.id === message.id
+    )
 
-      this.items[messageIndex] = message
-    } else {
-      this.items.push(message)
-    }
+    this.items[messageIndex] = message
+  }
+
+  async create(message: Message): Promise<void> {
+    this.items.push(message)
   }
 }

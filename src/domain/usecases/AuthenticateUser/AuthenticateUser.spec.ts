@@ -1,13 +1,12 @@
 import { User } from '../../models/user/user'
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
-import { InvalidEmailOrPasswordError } from './errors/InvalidEmailOrPasswordError'
 import { AuthenticateUser } from './AuthenticateUser'
 
 let usersRepository: IUsersRepository
 let authenticateUser: AuthenticateUser
 
-describe('Register user use case', () => {
+describe('Authenticate User', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     authenticateUser = new AuthenticateUser(usersRepository)
@@ -20,7 +19,7 @@ describe('Register user use case', () => {
       password: '123456',
     })
 
-    usersRepository.save(user.value as User)
+    usersRepository.create(user.value as User)
 
     const response = await authenticateUser.execute({
       email: 'john@doe.com',

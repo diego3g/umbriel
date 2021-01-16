@@ -38,7 +38,7 @@ export class CreateMessage {
 
     const message = messageOrError.value
 
-    await this.messagesRepository.save(message)
+    await this.messagesRepository.create(message)
 
     return right(message)
   }

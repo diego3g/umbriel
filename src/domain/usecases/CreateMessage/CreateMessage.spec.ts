@@ -9,7 +9,7 @@ let templatesRepository: ITemplatesRepository
 let messagesRepository: IMessagesRepository
 let createMessage: CreateMessage
 
-describe('Register user use case', () => {
+describe('Create Message', () => {
   beforeEach(() => {
     messagesRepository = new InMemoryMessagesRepository()
     templatesRepository = new InMemoryTemplatesRepository()
@@ -37,7 +37,7 @@ describe('Register user use case', () => {
 
     const template = templateOrError.value as Template
 
-    templatesRepository.save(template)
+    templatesRepository.create(template)
 
     const response = await createMessage.execute({
       subject: 'My new message',

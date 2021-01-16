@@ -9,6 +9,14 @@ export class InMemoryTemplatesRepository implements ITemplatesRepository {
   }
 
   async save(template: Template): Promise<void> {
+    const templateIndex = this.items.findIndex(
+      findTemplate => findTemplate.id === template.id
+    )
+
+    this.items[templateIndex] = template
+  }
+
+  async create(template: Template): Promise<void> {
     this.items.push(template)
   }
 }
