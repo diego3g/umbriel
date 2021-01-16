@@ -19,6 +19,7 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-useless-constructor": "off"
   }
 }

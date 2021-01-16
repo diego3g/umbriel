@@ -15,11 +15,7 @@ type RegisterUserResponse = Either<
 >
 
 export class RegisterUser {
-  private usersRepository: IUsersRepository
-
-  constructor(usersRepository: IUsersRepository) {
-    this.usersRepository = usersRepository
-  }
+  constructor(private usersRepository: IUsersRepository) {}
 
   async execute(userData: IUserCreateData): Promise<RegisterUserResponse> {
     const userOrError = User.create(userData)

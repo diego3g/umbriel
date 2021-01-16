@@ -41,11 +41,7 @@ describe('Register user use case', () => {
       password: '123456',
     })
 
-    if (user.isLeft()) {
-      throw new Error()
-    }
-
-    usersRepository.save(user.value)
+    usersRepository.save(user.value as User)
 
     const response = await registerUser.execute({
       name: 'John Doe',

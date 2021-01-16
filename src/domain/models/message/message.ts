@@ -22,7 +22,7 @@ export interface IMessageCreateData {
 export class Message {
   public readonly id: string
   public readonly subject: Subject
-  public readonly body: Body
+  public body: Body
   public readonly templateId?: string
 
   public sentAt: Date
@@ -39,8 +39,9 @@ export class Message {
     this.id = id ?? uuid()
   }
 
-  public deliver() {
+  public deliver(messageBody: Body) {
     this.sentAt = new Date()
+    this.body = messageBody
   }
 
   static create(
