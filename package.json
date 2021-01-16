@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev:server": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts",
+    "lint": "eslint src --ext ts,tsx",
     "test": "jest"
   },
   "devDependencies": {
