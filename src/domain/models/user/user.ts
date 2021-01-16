@@ -1,55 +1,71 @@
-import { Name } from './name';
-import { Email } from './email';
-import { Password } from './password';
-import { InvalidNameError } from './errors/InvalidNameError';
-import { InvalidEmailError } from './errors/InvalidEmailError';
-import { InvalidPasswordError } from './errors/InvalidPasswordError';
-import { Either, left, right } from '../../../core/logic/Either';
+import { v4 as uuid } from 'uuid'
 
-export interface IUserData {
-  name: string;
-  email: string;
-  password: string;
+import { Name } from '../shared/name'
+import { Email } from '../shared/email'
+import { Password } from './password'
+import { InvalidNameError } from '../shared/errors/InvalidNameError'
+import { InvalidEmailError } from '../shared/errors/InvalidEmailError'
+import { InvalidPasswordLengthError } from './errors/InvalidPasswordLengthError'
+import { Either, left, right } from '../../../core/logic/Either'
+
+interface IUserData {
+  name: Name
+  email: Email
+  password: Password
+}
+
+export interface IUserCreateData {
+  name: string
+  email: string
+  password: string
 }
 
 export class User {
-  public readonly name: Name;
-  public readonly email: Email;
-  public readonly password: Password;
+  public readonly id: string
+  public readonly name: Name
+  public readonly email: Email
+  public readonly password: Password
 
-  private constructor(name: Name, email: Email, password: Password) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
+  private constructor({ name, email, password }: IUserData, id?: string) {
+    this.name = name
+    this.email = email
+    this.password = password
 
-    Object.freeze(this);
+    this.id = id ?? uuid()
   }
 
   static create(
-    userData: IUserData
-  ): Either<InvalidNameError | InvalidEmailError | InvalidPasswordError, User> {
-    const nameOrError = Name.create(userData.name);
-    const emailOrError = Email.create(userData.email);
-    const passwordOrError = Password.create(userData.password);
+    userData: IUserCreateData,
+    id?: string
+  ): Either<
+    InvalidNameError | InvalidEmailError | InvalidPasswordLengthError,
+    User
+  > {
+    const nameOrError = Name.create(userData.name)
+    const emailOrError = Email.create(userData.email)
+    const passwordOrError = Password.create(userData.password)
 
     if (nameOrError.isLeft()) {
-      return left(nameOrError.value);
+      return left(nameOrError.value)
     }
 
     if (emailOrError.isLeft()) {
-      return left(emailOrError.value);
+      return left(emailOrError.value)
     }
 
     if (passwordOrError.isLeft()) {
-      return left(passwordOrError.value);
+      return left(passwordOrError.value)
     }
 
     const user = new User(
-      nameOrError.value,
-      emailOrError.value,
-      passwordOrError.value
-    );
+      {
+        name: nameOrError.value,
+        email: emailOrError.value,
+        password: passwordOrError.value,
+      },
+      id
+    )
 
-    return right(user);
+    return right(user)
   }
 }

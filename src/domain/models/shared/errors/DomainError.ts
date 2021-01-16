@@ -1,3 +1,3 @@
 export interface DomainError {
-  message: string;
+  message: string
 }
