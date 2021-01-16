@@ -1,5 +1,4 @@
 import { Message } from './message'
-import { Recipient } from './recipient'
 
 describe('Message model', () => {
   it('should be able to create new message', () => {
