@@ -20,10 +20,13 @@ export class Contact {
   public readonly id: string
   public readonly name: Name
   public readonly email: Email
+  public readonly createdAt: Date
 
   private constructor({ name, email }: IContactData, id?: string) {
     this.name = name
     this.email = email
+
+    this.createdAt = new Date()
 
     this.id = id ?? uuid()
   }

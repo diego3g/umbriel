@@ -1,10 +1,10 @@
 import { v4 as uuid } from 'uuid'
 
-import { Either, left, right } from '../../../core/logic/Either'
+import { Title } from '../shared/title'
 import { Content } from './content'
-import { Title } from './title'
-import { InvalidTitleLengthError } from './errors/InvalidTitleLengthError'
 import { InvalidContentError } from './errors/InvalidContentError'
+import { InvalidTitleLengthError } from '../shared/errors/InvalidTitleLengthError'
+import { Either, left, right } from '../../../core/logic/Either'
 
 interface ITemplateData {
   title: Title
