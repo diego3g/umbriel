@@ -6,17 +6,20 @@ import { InvalidSubjectLengthError } from './errors/InvalidSubjectLengthError'
 import { InvalidBodyLengthError } from './errors/InvalidBodyLengthError'
 import { Either, left, right } from '../../../core/logic/Either'
 import { Recipient } from './recipient'
+import { Tag } from '../tag/tag'
 
 interface IMessageData {
   subject: Subject
   body: Body
   templateId?: string
+  tags: Tag[]
 }
 
 export interface IMessageCreateData {
   subject: string
   body: string
   templateId?: string
+  tags: Tag[]
 }
 
 export class Message {
@@ -24,23 +27,26 @@ export class Message {
   public readonly subject: Subject
   public body: Body
   public readonly templateId?: string
+  public readonly tags: Tag[]
 
   public sentAt: Date
   public recipients: Recipient[]
 
   private constructor(
-    { subject, body, templateId }: IMessageData,
+    { subject, body, templateId, tags }: IMessageData,
     id?: string
   ) {
     this.subject = subject
     this.body = body
     this.templateId = templateId
+    this.tags = tags
 
     this.id = id ?? uuid()
   }
 
-  public deliver(messageBody: Body) {
+  public deliver(recipients: Recipient[], messageBody: Body) {
     this.sentAt = new Date()
+    this.recipients = recipients
     this.body = messageBody
   }
 
@@ -64,6 +70,7 @@ export class Message {
         subject: subjectOrError.value,
         body: bodyOrError.value,
         templateId: messageData.templateId,
+        tags: messageData.tags,
       },
       id
     )

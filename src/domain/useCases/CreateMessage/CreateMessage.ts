@@ -21,6 +21,7 @@ export class CreateMessage {
     body,
     subject,
     templateId,
+    tags,
   }: IMessageCreateData): Promise<CreateMessageResponse> {
     if (templateId) {
       const templateExists = await this.templatesRepository.findById(templateId)
@@ -30,7 +31,7 @@ export class CreateMessage {
       }
     }
 
-    const messageOrError = Message.create({ body, subject, templateId })
+    const messageOrError = Message.create({ body, subject, templateId, tags })
 
     if (messageOrError.isLeft()) {
       return left(messageOrError.value)

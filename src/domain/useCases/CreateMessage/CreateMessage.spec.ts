@@ -20,6 +20,7 @@ describe('Create Message', () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'A message body with valid length',
+      tags: [],
     })
 
     expect(response.isRight()).toBeTruthy()
@@ -43,6 +44,7 @@ describe('Create Message', () => {
       subject: 'My new message',
       body: 'A message body with valid length',
       templateId: template.id,
+      tags: [],
     })
 
     expect(response.isRight()).toBeTruthy()
@@ -58,6 +60,7 @@ describe('Create Message', () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'invalid',
+      tags: [],
     })
 
     expect(response.isLeft()).toBeTruthy()
@@ -68,6 +71,7 @@ describe('Create Message', () => {
       subject: 'My new message',
       body: 'A message body with valid length',
       templateId: 'invalid-template',
+      tags: [],
     })
 
     expect(response.isLeft()).toBeTruthy()

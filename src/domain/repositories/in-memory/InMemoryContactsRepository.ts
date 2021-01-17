@@ -1,7 +1,7 @@
 import { Contact } from '../../models/contact/contact'
 import { IContactsRepository } from '../IContactsRepository'
 
-export class InMemoryContactRepository implements IContactsRepository {
+export class InMemoryContactsRepository implements IContactsRepository {
   constructor(public items: Contact[] = []) {}
 
   async exists(email: string): Promise<boolean> {
@@ -14,6 +14,12 @@ export class InMemoryContactRepository implements IContactsRepository {
 
   async findByEmail(email: string): Promise<Contact> {
     return this.items.find(contact => contact.email.value === email)
+  }
+
+  async findByTagsIds(tagIds: string[]): Promise<Contact[]> {
+    return this.items.filter(contact =>
+      contact.tags.some(contactTag => tagIds.includes(contactTag.id))
+    )
   }
 
   async save(contact: Contact): Promise<void> {

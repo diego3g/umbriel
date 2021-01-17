@@ -1,7 +1,10 @@
 import { Either, left, right } from '../../../core/logic/Either'
 import { Body } from '../../models/message/body'
 import { Message } from '../../models/message/message'
+import { Recipient } from '../../models/message/recipient'
+import { IContactsRepository } from '../../repositories/IContactsRepository'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
+import { IRecipientsRepository } from '../../repositories/IRecipientsRepository'
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { InvalidMessageError } from './errors/InvalidMessageError'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
@@ -15,7 +18,9 @@ type SendMessageResponse = Either<
 export class SendMessage {
   constructor(
     private messagesRepository: IMessagesRepository,
-    private templatesRepository: ITemplatesRepository
+    private templatesRepository: ITemplatesRepository,
+    private contactsRepository: IContactsRepository,
+    private recipientsRepository: IRecipientsRepository
   ) {}
 
   async execute(messageId: string): Promise<SendMessageResponse> {
@@ -48,7 +53,21 @@ export class SendMessage {
       messageBody = Body.create(messageBodyContent).value as Body
     }
 
-    message.deliver(messageBody)
+    const tagsIds = message.tags.map(tag => tag.id)
+    const contacts = await this.contactsRepository.findByTagsIds(tagsIds)
+
+    const recipients = contacts.map(contact => {
+      const recipient = Recipient.create({
+        contactId: contact.id,
+        messageId: message.id,
+      })
+
+      return recipient
+    })
+
+    await this.recipientsRepository.createMany(recipients)
+
+    message.deliver(recipients, messageBody)
 
     await this.messagesRepository.save(message)
 

@@ -6,6 +6,7 @@ describe('Message model', () => {
     const messageOrError = Message.create({
       subject: 'A new message',
       body: 'The long enough message body',
+      tags: [],
     })
 
     expect(messageOrError.isRight()).toBeTruthy()
@@ -15,6 +16,7 @@ describe('Message model', () => {
     const messageOrError = Message.create({
       subject: 'a',
       body: 'The long enough message body',
+      tags: [],
     })
 
     expect(messageOrError.isLeft()).toBeTruthy()
@@ -24,6 +26,7 @@ describe('Message model', () => {
     const messageOrError = Message.create({
       subject: 'A new message',
       body: 'Too short',
+      tags: [],
     })
 
     expect(messageOrError.isLeft()).toBeTruthy()
@@ -33,12 +36,13 @@ describe('Message model', () => {
     const messageOrError = Message.create({
       subject: 'A new message',
       body: 'The long enough message body',
+      tags: [],
     })
 
     const message = messageOrError.value as Message
     const body = Body.create('New message body long enough').value as Body
 
-    message.deliver(body)
+    message.deliver([], body)
 
     expect(message.sentAt).toBeTruthy()
     expect(message.body.value).toBe('New message body long enough')

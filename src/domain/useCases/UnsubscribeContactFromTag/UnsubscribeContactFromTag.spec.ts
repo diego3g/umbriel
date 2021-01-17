@@ -1,7 +1,7 @@
 import { Contact } from '../../models/contact/contact'
 import { Tag } from '../../models/tag/tag'
 import { IContactsRepository } from '../../repositories/IContactsRepository'
-import { InMemoryContactRepository } from '../../repositories/in-memory/InMemoryContactsRepository'
+import { InMemoryContactsRepository } from '../../repositories/in-memory/InMemoryContactsRepository'
 import { InMemoryTagsRepository } from '../../repositories/in-memory/InMemoryTagsRepository'
 import { ITagsRepository } from '../../repositories/ITagsRepository'
 import { InvalidContactError } from './errors/InvalidContactError'
@@ -14,7 +14,7 @@ let unsubscribeContactFromTag: UnsubscribeContactFromTag
 
 describe('Send Message', () => {
   beforeEach(() => {
-    contactsRepository = new InMemoryContactRepository()
+    contactsRepository = new InMemoryContactsRepository()
     tagsRepository = new InMemoryTagsRepository()
     unsubscribeContactFromTag = new UnsubscribeContactFromTag(
       contactsRepository,
