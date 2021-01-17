@@ -6,6 +6,7 @@ import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemo
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { InvalidMessageError } from './errors/InvalidMessageError'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
+import { MessageAlreadySentError } from './errors/MessageAlreadySentError'
 import { SendMessage } from './SendMessage'
 
 let templatesRepository: ITemplatesRepository
@@ -86,5 +87,24 @@ describe('Send Message', () => {
 
     expect(response.isLeft()).toBeTruthy()
     expect(response.value).toEqual(new InvalidTemplateError())
+  })
+
+  it('should not be able to send message that has already been sent', async () => {
+    const messageOrError = Message.create({
+      subject: 'My new message',
+      body: 'A message body with valid length',
+      templateId: 'invalid-template-id',
+    })
+
+    const message = messageOrError.value as Message
+
+    message.deliver(message.body)
+
+    await messagesRepository.create(message)
+
+    const response = await sendMessage.execute(message.id)
+
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new MessageAlreadySentError())
   })
 })

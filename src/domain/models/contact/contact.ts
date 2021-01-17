@@ -5,6 +5,7 @@ import { Email } from '../shared/email'
 import { InvalidNameError } from '../shared/errors/InvalidNameError'
 import { InvalidEmailError } from '../shared/errors/InvalidEmailError'
 import { Either, left, right } from '../../../core/logic/Either'
+import { Tag } from '../tag/tag'
 
 interface IContactData {
   name: Name
@@ -22,13 +23,20 @@ export class Contact {
   public readonly email: Email
   public readonly createdAt: Date
 
+  public tags: Tag[]
+
   private constructor({ name, email }: IContactData, id?: string) {
     this.name = name
     this.email = email
 
     this.createdAt = new Date()
+    this.tags = []
 
     this.id = id ?? uuid()
+  }
+
+  public subscribeToTag(tag: Tag) {
+    this.tags.push(tag)
   }
 
   static create(

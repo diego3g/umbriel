@@ -1,4 +1,4 @@
-import { UseCaseError } from '../../errors/UseCaseError'
+import { UseCaseError } from '../../../../core/errors/UseCaseError'
 
 export class InvalidEmailOrPasswordError extends Error implements UseCaseError {
   constructor() {
