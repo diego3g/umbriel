@@ -6,23 +6,23 @@ import { InMemoryTagsRepository } from '../../repositories/in-memory/InMemoryTag
 import { ITagsRepository } from '../../repositories/ITagsRepository'
 import { InvalidContactError } from './errors/InvalidContactError'
 import { InvalidTagError } from './errors/InvalidTagError'
-import { SubscribeContactToTag } from './SubscribeContactToTag'
+import { UnsubscribeContactFromTag } from './UnsubscribeContactFromTag'
 
 let contactsRepository: IContactsRepository
 let tagsRepository: ITagsRepository
-let subscribeContactToTag: SubscribeContactToTag
+let unsubscribeContactFromTag: UnsubscribeContactFromTag
 
 describe('Send Message', () => {
   beforeEach(() => {
     contactsRepository = new InMemoryContactRepository()
     tagsRepository = new InMemoryTagsRepository()
-    subscribeContactToTag = new SubscribeContactToTag(
+    unsubscribeContactFromTag = new UnsubscribeContactFromTag(
       contactsRepository,
       tagsRepository
     )
   })
 
-  it('should be able to subscribe contact to tag', async () => {
+  it('should be able to unsubscribe contact from tag', async () => {
     const contactOrError = Contact.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -39,7 +39,11 @@ describe('Send Message', () => {
 
     await tagsRepository.create(tag)
 
-    const response = await subscribeContactToTag.execute({
+    contact.subscribeToTag(tag)
+
+    await contactsRepository.save(contact)
+
+    const response = await unsubscribeContactFromTag.execute({
       contactId: contact.id,
       tagId: tag.id,
     })
@@ -47,17 +51,11 @@ describe('Send Message', () => {
     const updatedContact = await contactsRepository.findById(contact.id)
 
     expect(response.isRight()).toBeTruthy()
-    expect(updatedContact.tags).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: tag.id,
-        }),
-      ])
-    )
+    expect(updatedContact.tags).toEqual([])
   })
 
   it('should not be able to subscribe contact that does not exists to tag', async () => {
-    const response = await subscribeContactToTag.execute({
+    const response = await unsubscribeContactFromTag.execute({
       contactId: 'invalid-contact-id',
       tagId: 'invalid-tag-id',
     })
@@ -75,7 +73,7 @@ describe('Send Message', () => {
 
     await contactsRepository.create(contact)
 
-    const response = await subscribeContactToTag.execute({
+    const response = await unsubscribeContactFromTag.execute({
       contactId: contact.id,
       tagId: 'invalid-tag-id',
     })

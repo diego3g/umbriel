@@ -39,6 +39,10 @@ export class Contact {
     this.tags.push(tag)
   }
 
+  public unsubscribeFromTag(tag: Tag) {
+    this.tags = this.tags.filter(findTag => findTag.id !== tag.id)
+  }
+
   static create(
     recipientData: IContactCreateData,
     id?: string
