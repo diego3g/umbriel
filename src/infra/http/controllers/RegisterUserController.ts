@@ -1,7 +1,7 @@
 import { BaseController } from '../../../core/infra/BaseController'
 import { IUserCreateData } from '../../../domain/models/user/user'
-import { AccountAlreadyExistsError } from '../../../domain/usecases/RegisterUser/errors/AccountAlreadyExistsError'
-import { RegisterUser } from '../../../domain/usecases/RegisterUser/RegisterUser'
+import { AccountAlreadyExistsError } from '../../../domain/useCases/RegisterUser/errors/AccountAlreadyExistsError'
+import { RegisterUser } from '../../../domain/useCases/RegisterUser/RegisterUser'
 
 export class RegisterUserController extends BaseController {
   private readonly registerUser: RegisterUser

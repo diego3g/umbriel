@@ -3,5 +3,5 @@
   "semanticCommits": true,
   "stabilityDays": 3,
   "prCreation": "not-pending",
-  "labels": ["Type: Chore"]
+  "labels": ["dependencies"]
 }
