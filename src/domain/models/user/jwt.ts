@@ -9,8 +9,8 @@ interface JWTData {
   token: string
 }
 
-interface JWTTokenPayload {
-  exp: string
+export interface JWTTokenPayload {
+  exp: number
   sub: string
 }
 
@@ -23,17 +23,17 @@ export class JWT {
     this.token = token
   }
 
-  public getUserId(): Either<InvalidJWTTokenError, string> {
-    const jwtPayloadOrError = JWT.decodeToken(this.token)
+  // public getUserId(): Either<InvalidJWTTokenError, string> {
+  //   const jwtPayloadOrError = JWT.decodeToken(this.token)
 
-    if (jwtPayloadOrError.isLeft()) {
-      return left(jwtPayloadOrError.value)
-    }
+  //   if (jwtPayloadOrError.isLeft()) {
+  //     return left(jwtPayloadOrError.value)
+  //   }
 
-    const userId = jwtPayloadOrError.value.sub
+  //   const userId = jwtPayloadOrError.value.sub
 
-    return right(userId)
-  }
+  //   return right(userId)
+  // }
 
   static decodeToken(
     token: string

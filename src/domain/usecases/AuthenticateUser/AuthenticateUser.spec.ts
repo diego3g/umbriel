@@ -2,6 +2,7 @@ import { User } from '../../models/user/user'
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
 import { AuthenticateUser } from './AuthenticateUser'
+import { InvalidEmailOrPasswordError } from './errors/InvalidEmailOrPasswordError'
 
 let usersRepository: IUsersRepository
 let authenticateUser: AuthenticateUser
@@ -39,6 +40,7 @@ describe('Authenticate User', () => {
     })
 
     expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new InvalidEmailOrPasswordError())
   })
 
   it('should not be able to authenticate with invalid password', async () => {
@@ -48,7 +50,7 @@ describe('Authenticate User', () => {
       password: '123456',
     })
 
-    usersRepository.save(user.value as User)
+    usersRepository.create(user.value as User)
 
     const response = await authenticateUser.execute({
       email: 'john@doe.com',
@@ -56,5 +58,6 @@ describe('Authenticate User', () => {
     })
 
     expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new InvalidEmailOrPasswordError())
   })
 })

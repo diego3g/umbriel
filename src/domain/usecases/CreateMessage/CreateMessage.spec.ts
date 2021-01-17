@@ -54,6 +54,15 @@ describe('Create Message', () => {
     )
   })
 
+  it('should not be able to create message with invalid data', async () => {
+    const response = await createMessage.execute({
+      subject: 'My new message',
+      body: 'invalid',
+    })
+
+    expect(response.isLeft()).toBeTruthy()
+  })
+
   it('should not be able to create message with invalid template', async () => {
     const response = await createMessage.execute({
       subject: 'My new message',

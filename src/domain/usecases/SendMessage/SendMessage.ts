@@ -1,5 +1,6 @@
-import { Either, left } from '../../../core/logic/Either'
+import { Either, left, right } from '../../../core/logic/Either'
 import { Body } from '../../models/message/body'
+import { Message } from '../../models/message/message'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { InvalidMessageError } from './errors/InvalidMessageError'
@@ -7,7 +8,7 @@ import { InvalidTemplateError } from './errors/InvalidTemplateError'
 
 type SendMessageResponse = Either<
   InvalidMessageError | InvalidTemplateError,
-  void
+  Message
 >
 
 export class SendMessage {
@@ -45,5 +46,7 @@ export class SendMessage {
     message.deliver(messageBody)
 
     await this.messagesRepository.save(message)
+
+    return right(message)
   }
 }
