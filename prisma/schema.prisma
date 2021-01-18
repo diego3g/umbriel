@@ -8,8 +8,91 @@ generator client {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String  @id
   name     String?
   email    String  @unique
   password String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("users")
+}
+
+model Template {
+  id       String    @id
+  title    String    @unique
+  content  String
+  messages Message[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("templates")
+}
+
+model Tag {
+  id       String    @id
+  title    String    @unique
+  messages Message[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("tags")
+}
+
+model Contact {
+  id         String      @id
+  name       String?
+  email      String      @unique
+  recipients Recipient[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("contacts")
+}
+
+model Message {
+  id          String      @id
+  subject     String
+  body        String
+  template    Template    @relation(fields: [template_id], references: [id])
+  template_id String
+  tags        Tag[]
+  recipients  Recipient[]
+
+  sent_at    DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("messages")
+}
+
+model Event {
+  id           String    @id
+  type         String
+  meta         Json?
+  recipient    Recipient @relation(fields: [recipient_id], references: [id])
+  recipient_id String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("events")
+}
+
+model Recipient {
+  id         String  @id
+  message    Message @relation(fields: [message_id], references: [id])
+  contact    Contact @relation(fields: [contact_id], references: [id])
+  message_id String
+  contact_id String
+  events     Event[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("recipients")
 }
