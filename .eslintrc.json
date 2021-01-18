@@ -20,6 +20,7 @@
   ],
   "rules": {
     "prettier/prettier": "error",
-    "no-useless-constructor": "off"
+    "no-useless-constructor": "off",
+    "no-new": "off"
   }
 }

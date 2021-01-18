@@ -1,13 +1,15 @@
-interface Message {
-  from: {
-    name: string
-    email: string
-  }
-  to: string
+export interface MailAddress {
+  name: string
+  email: string
+}
+
+export interface MailMessage {
+  from: MailAddress
+  to: MailAddress
   subject: string
   body: string
 }
 
-export default interface IMailService {
-  sendEmail(message: Message): Promise<void>
+export interface IMailService {
+  sendEmail(message: MailMessage): Promise<void>
 }
