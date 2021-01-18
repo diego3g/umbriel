@@ -1,6 +1,6 @@
 import express from 'express'
-import { InMemoryUsersRepository } from '../../../domain/repositories/in-memory/InMemoryUsersRepository'
-import { RegisterUser } from '../../../domain/useCases/RegisterUser/RegisterUser'
+import { InMemoryUsersRepository } from '../../../modules/accounts/repositories/in-memory/InMemoryUsersRepository'
+import { RegisterUser } from '../../../modules/accounts/useCases/RegisterUser/RegisterUser'
 import { RegisterUserController } from '../controllers/RegisterUserController'
 
 const userRouter = express.Router()
