@@ -7,9 +7,6 @@ let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
 let createMessage: CreateMessage
 
-// const subject = Subject.create('A new message').value as Subject
-// const body = Body.create('The long enough message body').value as Body
-
 describe('Create Message', () => {
   beforeEach(() => {
     messagesRepository = new InMemoryMessagesRepository()

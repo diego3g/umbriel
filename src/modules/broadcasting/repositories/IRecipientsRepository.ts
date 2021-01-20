@@ -1,4 +1,4 @@
-import { Recipient } from '../domain/message/recipient'
+import { Recipient } from '../domain/recipient/recipient'
 
 export interface IRecipientsRepository {
   createMany(recipients: Recipient[]): Promise<void>

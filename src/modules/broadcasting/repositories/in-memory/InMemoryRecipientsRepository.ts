@@ -1,4 +1,4 @@
-import { Recipient } from '../../domain/message/recipient'
+import { Recipient } from '../../domain/recipient/recipient'
 import { IRecipientsRepository } from '../IRecipientsRepository'
 
 export class InMemoryRecipientsRepository implements IRecipientsRepository {

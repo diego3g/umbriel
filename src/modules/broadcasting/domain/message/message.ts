@@ -3,7 +3,7 @@ import { Body } from './body'
 import { InvalidSubjectLengthError } from './errors/InvalidSubjectLengthError'
 import { InvalidBodyLengthError } from './errors/InvalidBodyLengthError'
 import { Either, right } from '../../../../core/logic/Either'
-import { Recipient } from './recipient'
+import { Recipient } from '../recipient/recipient'
 import { Tag } from '../../../subscriptions/domain/tag/tag'
 import { Entity } from '../../../../core/domain/Entity'
 

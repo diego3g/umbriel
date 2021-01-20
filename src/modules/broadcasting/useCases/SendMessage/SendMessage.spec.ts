@@ -9,7 +9,7 @@ import { InvalidTemplateError } from './errors/InvalidTemplateError'
 import { MessageAlreadySentError } from './errors/MessageAlreadySentError'
 import { SendMessage } from './SendMessage'
 import { Tag } from '../../../subscriptions/domain/tag/tag'
-import { Recipient } from '../../domain/message/recipient'
+import { Recipient } from '../../domain/recipient/recipient'
 import { Subject } from '../../domain/message/subject'
 import { Body } from '../../domain/message/body'
 
