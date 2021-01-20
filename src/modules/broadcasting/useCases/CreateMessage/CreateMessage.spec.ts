@@ -1,4 +1,6 @@
+import { Content } from '../../domain/template/content'
 import { Template } from '../../domain/template/template'
+import { Title } from '../../domain/template/title'
 import { InMemoryMessagesRepository } from '../../repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemoryTemplatesRepository'
 import { CreateMessage } from './CreateMessage'
@@ -28,10 +30,15 @@ describe('Create Message', () => {
   })
 
   it('should be able to create new message with valid template', async () => {
+    const title = Title.create('My new template').value as Title
+
+    const content = Content.create(
+      'Custom template with {{ message_content }} variable.'
+    ).value as Content
+
     const templateOrError = Template.create({
-      title: 'My custom template',
-      content:
-        'The message content with {{ message_content }} template variable.',
+      title,
+      content,
     })
 
     const template = templateOrError.value as Template

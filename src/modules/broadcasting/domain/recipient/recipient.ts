@@ -4,6 +4,7 @@ import { Event } from '../event/event'
 interface IRecipientProps {
   messageId: string
   contactId: string
+  events?: Event[]
 }
 
 export class Recipient extends Entity<IRecipientProps> {
@@ -15,18 +16,26 @@ export class Recipient extends Entity<IRecipientProps> {
     return this.props.contactId
   }
 
-  public events: Event[]
+  get events() {
+    return this.props.events
+  }
 
   private constructor(props: IRecipientProps, id?: string) {
     super(props, id)
   }
 
   public addEvent(event: Event) {
-    this.events.push(event)
+    this.props.events.push(event)
   }
 
   static create(props: IRecipientProps, id?: string): Recipient {
-    const recipient = new Recipient(props, id)
+    const recipient = new Recipient(
+      {
+        ...props,
+        events: props.events ?? [],
+      },
+      id
+    )
 
     return recipient
   }

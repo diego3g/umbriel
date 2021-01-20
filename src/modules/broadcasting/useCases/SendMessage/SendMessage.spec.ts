@@ -12,6 +12,8 @@ import { Tag } from '../../../subscriptions/domain/tag/tag'
 import { Recipient } from '../../domain/recipient/recipient'
 import { Subject } from '../../domain/message/subject'
 import { Body } from '../../domain/message/body'
+import { Title } from '../../domain/template/title'
+import { Content } from '../../domain/template/content'
 
 let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
@@ -61,9 +63,15 @@ describe('Send Message', () => {
   })
 
   it('should be able to send a message with template', async () => {
+    const title = Title.create('My new template').value as Title
+
+    const content = Content.create(
+      'Custom template with {{ message_content }} variable.'
+    ).value as Content
+
     const templateOrError = Template.create({
-      title: 'My new template',
-      content: 'Custom template with {{ message_content }} variable.',
+      title,
+      content,
     })
 
     const template = templateOrError.value as Template
@@ -92,7 +100,7 @@ describe('Send Message', () => {
     expect(response.isRight()).toBeTruthy()
     expect(messagesRepository.items[0].sentAt).toEqual(expect.any(Date))
     expect(messagesRepository.items[0].body.value).toEqual(
-      'Custom template with A message body with valid length variable.'
+      'Custom template with The long enough message body variable.'
     )
   })
 
