@@ -1,51 +1,32 @@
-import { v4 as uuid } from 'uuid'
+import { Entity } from '../../../../core/domain/Entity'
 
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, right } from '../../../../core/logic/Either'
 import { InvalidTypeError } from './errors/InvalidTypeError'
-import { Type, ValidEventTypes } from './type'
+import { Type } from './type'
 
-interface IEventData {
+interface IEventProps {
   type: Type
   meta?: string
 }
 
-export interface IEventCreateData {
-  type: ValidEventTypes
-  meta?: string
-}
+export class Event extends Entity<IEventProps> {
+  get type() {
+    return this.props.type
+  }
 
-export class Event {
-  public readonly id: string
-  public readonly type: Type
-  public readonly meta?: string
-  public readonly createdAt: Date
+  get meta() {
+    return this.props.meta
+  }
 
-  private constructor({ type, meta }: IEventData, id?: string) {
-    this.type = type
-    this.meta = meta
-
-    this.createdAt = new Date()
-
-    this.id = id ?? uuid()
+  private constructor(props: IEventProps, id?: string) {
+    super(props, id)
   }
 
   static create(
-    eventData: IEventCreateData,
+    props: IEventProps,
     id?: string
   ): Either<InvalidTypeError, Event> {
-    const typeOrError = Type.create(eventData.type)
-
-    if (typeOrError.isLeft()) {
-      return left(typeOrError.value)
-    }
-
-    const event = new Event(
-      {
-        type: typeOrError.value,
-        meta: eventData.meta,
-      },
-      id
-    )
+    const event = new Event(props, id)
 
     return right(event)
   }

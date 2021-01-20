@@ -1,20 +1,14 @@
 import { Event } from './event'
+import { Type } from './type'
 
 describe('Event model', () => {
   it('should be able to create new event', () => {
+    const type = Type.create('deliver').value as Type
+
     const eventOrError = Event.create({
-      type: 'deliver',
+      type,
     })
 
     expect(eventOrError.isRight()).toBeTruthy()
-  })
-
-  it('should not be able to create new event with invalid type', () => {
-    const eventOrError = Event.create({
-      // @ts-expect-error
-      type: 'invalid-type',
-    })
-
-    expect(eventOrError.isLeft()).toBeTruthy()
   })
 })

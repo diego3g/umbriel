@@ -1,4 +1,5 @@
 import { Event } from '../event/event'
+import { Type } from '../event/type'
 import { Recipient } from './recipient'
 
 describe('Recipient model', () => {
@@ -17,7 +18,9 @@ describe('Recipient model', () => {
       contactId: 'fake-contact-id',
     })
 
-    const eventOrError = Event.create({ type: 'deliver' })
+    const type = Type.create('deliver').value as Type
+
+    const eventOrError = Event.create({ type })
     const event = eventOrError.value as Event
 
     recipient.addEvent(event)
