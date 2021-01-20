@@ -1,10 +1,20 @@
 import { Either, left, right } from '../../../../core/logic/Either'
+import { Tag } from '../../../subscriptions/domain/tag/tag'
+import { Body } from '../../domain/message/body'
 import { InvalidBodyLengthError } from '../../domain/message/errors/InvalidBodyLengthError'
 import { InvalidSubjectLengthError } from '../../domain/message/errors/InvalidSubjectLengthError'
-import { IMessageCreateData, Message } from '../../domain/message/message'
+import { Message } from '../../domain/message/message'
+import { Subject } from '../../domain/message/subject'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
+
+type CreateMessageRequest = {
+  subject: string
+  body: string
+  templateId?: string
+  tags: Tag[]
+}
 
 type CreateMessageResponse = Either<
   InvalidSubjectLengthError | InvalidBodyLengthError | InvalidTemplateError,
@@ -22,7 +32,18 @@ export class CreateMessage {
     subject,
     templateId,
     tags,
-  }: IMessageCreateData): Promise<CreateMessageResponse> {
+  }: CreateMessageRequest): Promise<CreateMessageResponse> {
+    const subjectOrError = Subject.create(subject)
+    const bodyOrError = Body.create(body)
+
+    if (subjectOrError.isLeft()) {
+      return left(subjectOrError.value)
+    }
+
+    if (bodyOrError.isLeft()) {
+      return left(bodyOrError.value)
+    }
+
     if (templateId) {
       const templateExists = await this.templatesRepository.findById(templateId)
 
@@ -31,7 +52,12 @@ export class CreateMessage {
       }
     }
 
-    const messageOrError = Message.create({ body, subject, templateId, tags })
+    const messageOrError = Message.create({
+      subject: subjectOrError.value,
+      body: bodyOrError.value,
+      templateId,
+      tags,
+    })
 
     if (messageOrError.isLeft()) {
       return left(messageOrError.value)

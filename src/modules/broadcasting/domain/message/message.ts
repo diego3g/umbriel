@@ -1,79 +1,80 @@
-import { v4 as uuid } from 'uuid'
-
 import { Subject } from './subject'
 import { Body } from './body'
 import { InvalidSubjectLengthError } from './errors/InvalidSubjectLengthError'
 import { InvalidBodyLengthError } from './errors/InvalidBodyLengthError'
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, right } from '../../../../core/logic/Either'
 import { Recipient } from './recipient'
 import { Tag } from '../../../subscriptions/domain/tag/tag'
+import { Entity } from '../../../../core/domain/Entity'
 
-interface IMessageData {
+interface IMessageProps {
   subject: Subject
   body: Body
   templateId?: string
-  tags: Tag[]
+  tags?: Tag[]
+  sentAt?: Date
+  recipients?: Recipient[]
 }
 
-export interface IMessageCreateData {
-  subject: string
-  body: string
-  templateId?: string
-  tags: Tag[]
-}
+export class Message extends Entity<IMessageProps> {
+  // public subject: Subject
+  // public body: Body
+  // public templateId?: string
+  // public tags: Tag[]
 
-export class Message {
-  public readonly id: string
-  public readonly subject: Subject
-  public body: Body
-  public readonly templateId?: string
-  public readonly tags: Tag[]
+  // public sentAt: Date
+  // public recipients: Recipient[]
 
-  public sentAt: Date
-  public recipients: Recipient[]
+  get subject() {
+    return this.props.subject
+  }
 
-  private constructor(
-    { subject, body, templateId, tags }: IMessageData,
-    id?: string
-  ) {
-    this.subject = subject
-    this.body = body
-    this.templateId = templateId
-    this.tags = tags
+  get body() {
+    return this.props.body
+  }
 
-    this.id = id ?? uuid()
+  get templateId() {
+    return this.props.templateId
+  }
+
+  get tags() {
+    return this.props.tags
+  }
+
+  get sentAt() {
+    return this.props.sentAt
+  }
+
+  get recipients() {
+    return this.props.recipients
+  }
+
+  private constructor(props: IMessageProps, id?: string) {
+    super(props, id)
   }
 
   public deliver(recipients: Recipient[], messageBody: Body) {
-    this.sentAt = new Date()
-    this.recipients = recipients
-    this.body = messageBody
+    this.props.sentAt = new Date()
+    this.props.recipients = recipients
+    this.props.body = messageBody
   }
 
   static create(
-    messageData: IMessageCreateData,
+    props: IMessageProps,
     id?: string
   ): Either<InvalidSubjectLengthError | InvalidBodyLengthError, Message> {
-    const subjectOrError = Subject.create(messageData.subject)
-    const bodyOrError = Body.create(messageData.body)
+    // const subjectOrError = Subject.create(messageData.subject)
+    // const bodyOrError = Body.create(messageData.body)
 
-    if (subjectOrError.isLeft()) {
-      return left(subjectOrError.value)
-    }
+    // if (subjectOrError.isLeft()) {
+    //   return left(subjectOrError.value)
+    // }
 
-    if (bodyOrError.isLeft()) {
-      return left(bodyOrError.value)
-    }
+    // if (bodyOrError.isLeft()) {
+    //   return left(bodyOrError.value)
+    // }
 
-    const message = new Message(
-      {
-        subject: subjectOrError.value,
-        body: bodyOrError.value,
-        templateId: messageData.templateId,
-        tags: messageData.tags,
-      },
-      id
-    )
+    const message = new Message(props, id)
 
     return right(message)
   }

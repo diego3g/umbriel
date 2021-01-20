@@ -1,13 +1,14 @@
 import { Template } from '../../domain/template/template'
-import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 import { InMemoryMessagesRepository } from '../../repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemoryTemplatesRepository'
-import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { CreateMessage } from './CreateMessage'
 
-let templatesRepository: ITemplatesRepository
-let messagesRepository: IMessagesRepository
+let templatesRepository: InMemoryTemplatesRepository
+let messagesRepository: InMemoryMessagesRepository
 let createMessage: CreateMessage
+
+// const subject = Subject.create('A new message').value as Subject
+// const body = Body.create('The long enough message body').value as Body
 
 describe('Create Message', () => {
   beforeEach(() => {

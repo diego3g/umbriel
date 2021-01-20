@@ -1,25 +1,26 @@
 import { Message } from '../../domain/message/message'
 import { Template } from '../../domain/template/template'
-import { IContactsRepository } from '../../../subscriptions/repositories/IContactsRepository'
-import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 import { InMemoryMessagesRepository } from '../../repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemoryTemplatesRepository'
 import { InMemoryContactsRepository } from '../../../subscriptions/repositories/in-memory/InMemoryContactsRepository'
 import { InMemoryRecipientsRepository } from '../../repositories/in-memory/InMemoryRecipientsRepository'
-import { IRecipientsRepository } from '../../repositories/IRecipientsRepository'
-import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { InvalidMessageError } from './errors/InvalidMessageError'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
 import { MessageAlreadySentError } from './errors/MessageAlreadySentError'
 import { SendMessage } from './SendMessage'
 import { Tag } from '../../../subscriptions/domain/tag/tag'
 import { Recipient } from '../../domain/message/recipient'
+import { Subject } from '../../domain/message/subject'
+import { Body } from '../../domain/message/body'
 
-let templatesRepository: ITemplatesRepository
-let messagesRepository: IMessagesRepository
-let contactsRepository: IContactsRepository
-let recipientsRepository: IRecipientsRepository
+let templatesRepository: InMemoryTemplatesRepository
+let messagesRepository: InMemoryMessagesRepository
+let contactsRepository: InMemoryContactsRepository
+let recipientsRepository: InMemoryRecipientsRepository
 let sendMessage: SendMessage
+
+const subject = Subject.create('A new message').value as Subject
+const body = Body.create('The long enough message body').value as Body
 
 describe('Send Message', () => {
   beforeEach(() => {
@@ -44,8 +45,8 @@ describe('Send Message', () => {
     const tag = tagOrError.value as Tag
 
     const messageOrError = Message.create({
-      subject: 'My new message',
-      body: 'A message body with valid length',
+      subject,
+      body,
       tags: [tag],
     })
 
@@ -76,8 +77,8 @@ describe('Send Message', () => {
     const tag = tagOrError.value as Tag
 
     const messageOrError = Message.create({
-      subject: 'My new message',
-      body: 'A message body with valid length',
+      subject,
+      body,
       templateId: template.id,
       tags: [tag],
     })
@@ -110,8 +111,8 @@ describe('Send Message', () => {
     const tag = tagOrError.value as Tag
 
     const messageOrError = Message.create({
-      subject: 'My new message',
-      body: 'A message body with valid length',
+      subject,
+      body,
       templateId: 'invalid-template-id',
       tags: [tag],
     })
@@ -134,8 +135,8 @@ describe('Send Message', () => {
     const tag = tagOrError.value as Tag
 
     const messageOrError = Message.create({
-      subject: 'My new message',
-      body: 'A message body with valid length',
+      subject,
+      body,
       templateId: 'invalid-template-id',
       tags: [tag],
     })

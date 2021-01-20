@@ -58,8 +58,8 @@ model Message {
   id          String      @id
   subject     String
   body        String
-  template    Template    @relation(fields: [template_id], references: [id])
-  template_id String
+  template    Template?   @relation(fields: [template_id], references: [id])
+  template_id String?
   tags        Tag[]
   recipients  Recipient[]
 
