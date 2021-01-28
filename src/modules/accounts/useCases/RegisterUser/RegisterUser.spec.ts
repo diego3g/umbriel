@@ -1,3 +1,6 @@
+import { Email } from '../../domain/user/email'
+import { Name } from '../../domain/user/name'
+import { Password } from '../../domain/user/password'
 import { User } from '../../domain/user/user'
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
@@ -35,10 +38,14 @@ describe('Register User', () => {
   })
 
   it('should not be able to register new user with existing email', async () => {
+    const name = Name.create('John Doe').value as Name
+    const email = Email.create('john@doe.com').value as Email
+    const password = Password.create('123456').value as Password
+
     const user = User.create({
-      name: 'John Doe',
-      email: 'john@doe.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     usersRepository.create(user.value as User)

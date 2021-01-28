@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidTypeError } from './errors/InvalidTypeError'
 
 export type ValidEventTypes =

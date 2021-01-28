@@ -1,9 +1,10 @@
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
+
 import { Content } from './content'
 import { InvalidContentError } from './errors/InvalidContentError'
-import { Either, right } from '../../../../core/logic/Either'
-import { Title } from './title'
 import { InvalidTitleLengthError } from './errors/InvalidTitleLengthError'
-import { Entity } from '../../../../core/domain/Entity'
+import { Title } from './title'
 
 interface ITemplateProps {
   title: Title

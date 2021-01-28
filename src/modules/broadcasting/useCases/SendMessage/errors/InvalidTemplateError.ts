@@ -1,4 +1,4 @@
-import { UseCaseError } from '../../../../../core/domain/errors/UseCaseError'
+import { UseCaseError } from '@core/domain/errors/UseCaseError'
 
 export class InvalidTemplateError extends Error implements UseCaseError {
   constructor() {

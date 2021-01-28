@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidContentError } from './errors/InvalidContentError'
 
 export class Content {

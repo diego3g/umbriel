@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { Tag } from '../../../subscriptions/domain/tag/tag'
 import { Body } from '../../domain/message/body'
 import { InvalidBodyLengthError } from '../../domain/message/errors/InvalidBodyLengthError'

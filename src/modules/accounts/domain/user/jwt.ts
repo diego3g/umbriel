@@ -1,6 +1,8 @@
 import { sign, verify } from 'jsonwebtoken'
-import { auth } from '../../../../config/auth'
-import { Either, left, right } from '../../../../core/logic/Either'
+
+import { auth } from '@config/auth'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidJWTTokenError } from './errors/InvalidJWTTokenError'
 import { User } from './user'
 

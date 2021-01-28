@@ -16,11 +16,25 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "prettier"
+    "prettier",
+    "import-helpers"
   ],
   "rules": {
     "prettier/prettier": "error",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["module", "absolute"],
+          "/^@/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
+      }
+    ],
     "no-useless-constructor": "off",
-    "no-new": "off"
+    "no-new": "off",
+    "camelcase": "off"
   }
 }

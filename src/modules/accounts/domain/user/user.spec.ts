@@ -1,43 +1,20 @@
+import { Email } from './email'
+import { Name } from './name'
+import { Password } from './password'
 import { User } from './user'
+
+const name = Name.create('John Doe').value as Name
+const email = Email.create('johndoe@example.com').value as Email
+const password = Password.create('123456').value as Password
 
 describe('User model', () => {
   it('should be able to create new user', () => {
     const userOrError = User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     expect(userOrError.isRight()).toBeTruthy()
-  })
-
-  it('should not be able to create new user with invalid name', () => {
-    const userOrError = User.create({
-      name: 'J',
-      email: 'johndoe@example.com',
-      password: '123456',
-    })
-
-    expect(userOrError.isLeft()).toBeTruthy()
-  })
-
-  it('should not be able to create new user with invalid email', () => {
-    const userOrError = User.create({
-      name: 'John Doe',
-      email: 'johndoe.com',
-      password: '123456',
-    })
-
-    expect(userOrError.isLeft()).toBeTruthy()
-  })
-
-  it('should not be able to create new user with invalid password', () => {
-    const userOrError = User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123',
-    })
-
-    expect(userOrError.isLeft()).toBeTruthy()
   })
 })

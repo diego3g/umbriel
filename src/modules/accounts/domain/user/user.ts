@@ -1,70 +1,44 @@
-import { v4 as uuid } from 'uuid'
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
 
-import { Password } from './password'
-import { InvalidPasswordLengthError } from './errors/InvalidPasswordLengthError'
-import { Either, left, right } from '../../../../core/logic/Either'
-import { Name } from './name'
 import { Email } from './email'
-import { InvalidNameError } from './errors/InvalidNameError'
 import { InvalidEmailError } from './errors/InvalidEmailError'
+import { InvalidNameError } from './errors/InvalidNameError'
+import { InvalidPasswordLengthError } from './errors/InvalidPasswordLengthError'
+import { Name } from './name'
+import { Password } from './password'
 
-interface IUserData {
+interface IUserProps {
   name: Name
   email: Email
   password: Password
 }
 
-export interface IUserCreateData {
-  name: string
-  email: string
-  password: string
-}
+export class User extends Entity<IUserProps> {
+  get name() {
+    return this.props.name
+  }
 
-export class User {
-  public readonly id: string
-  public readonly name: Name
-  public readonly email: Email
-  public readonly password: Password
+  get email() {
+    return this.props.email
+  }
 
-  private constructor({ name, email, password }: IUserData, id?: string) {
-    this.name = name
-    this.email = email
-    this.password = password
+  get password() {
+    return this.props.password
+  }
 
-    this.id = id ?? uuid()
+  private constructor(props: IUserProps, id?: string) {
+    super(props, id)
   }
 
   static create(
-    userData: IUserCreateData,
+    props: IUserProps,
     id?: string
   ): Either<
     InvalidNameError | InvalidEmailError | InvalidPasswordLengthError,
     User
   > {
-    const nameOrError = Name.create(userData.name)
-    const emailOrError = Email.create(userData.email)
-    const passwordOrError = Password.create(userData.password)
-
-    if (nameOrError.isLeft()) {
-      return left(nameOrError.value)
-    }
-
-    if (emailOrError.isLeft()) {
-      return left(emailOrError.value)
-    }
-
-    if (passwordOrError.isLeft()) {
-      return left(passwordOrError.value)
-    }
-
-    const user = new User(
-      {
-        name: nameOrError.value,
-        email: emailOrError.value,
-        password: passwordOrError.value,
-      },
-      id
-    )
+    const user = new User(props, id)
 
     return right(user)
   }

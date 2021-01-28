@@ -6,7 +6,15 @@
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@infra/*": ["infra/*"],
+      "@core/*": ["core/*"],
+      "@config/*": ["config/*"]
+    }
   },
   "include": ["src"]
 }

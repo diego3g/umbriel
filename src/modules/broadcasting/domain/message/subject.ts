@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidSubjectLengthError } from './errors/InvalidSubjectLengthError'
 
 export class Subject {

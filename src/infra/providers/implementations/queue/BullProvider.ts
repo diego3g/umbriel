@@ -1,5 +1,6 @@
 import { Queue, Worker, Processor, QueueScheduler } from 'bullmq'
 import Redis, { Redis as RedisConnection } from 'ioredis'
+
 import { IQueueProvider } from '../../models/IQueueProvider'
 
 export class BullProvider implements IQueueProvider {

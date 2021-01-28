@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs'
-import { Either, left, right } from '../../../../core/logic/Either'
+
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidPasswordLengthError } from './errors/InvalidPasswordLengthError'
 
 export class Password {

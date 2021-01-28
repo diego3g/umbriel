@@ -1,4 +1,4 @@
-import { DomainError } from '../../../../../core/domain/errors/DomainError'
+import { DomainError } from '@core/domain/errors/DomainError'
 
 export class InvalidTitleLengthError extends Error implements DomainError {
   constructor() {

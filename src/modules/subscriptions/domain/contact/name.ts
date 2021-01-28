@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidNameError } from './errors/InvalidNameError'
 
 export class Name {

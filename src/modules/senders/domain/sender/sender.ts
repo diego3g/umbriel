@@ -1,10 +1,11 @@
 import { v4 as uuid } from 'uuid'
 
-import { Name } from './name'
+import { Either, left, right } from '@core/logic/Either'
+
 import { Email } from './email'
 import { InvalidEmailError } from './errors/InvalidEmailError'
 import { InvalidNameError } from './errors/InvalidNameError'
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Name } from './name'
 
 interface ISenderData {
   name: Name

@@ -1,6 +1,6 @@
-import { Entity } from '../../../../core/domain/Entity'
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
 
-import { Either, right } from '../../../../core/logic/Either'
 import { InvalidTypeError } from './errors/InvalidTypeError'
 import { Type } from './type'
 

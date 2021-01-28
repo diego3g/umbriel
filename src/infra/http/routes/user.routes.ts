@@ -1,14 +1,10 @@
 import express from 'express'
-import { InMemoryUsersRepository } from '../../../modules/accounts/repositories/in-memory/InMemoryUsersRepository'
-import { RegisterUser } from '../../../modules/accounts/useCases/RegisterUser/RegisterUser'
-import { RegisterUserController } from '../controllers/RegisterUserController'
+
+import { adaptRoute } from '../adapters/ExpressRouteAdapter'
+import { makeRegisterUserController } from '../factories/RegisterUserControllerFactory'
 
 const userRouter = express.Router()
 
-const inMemoryUsersRepository = new InMemoryUsersRepository()
-const registerUser = new RegisterUser(inMemoryUsersRepository)
-const registerUserController = new RegisterUserController(registerUser)
+userRouter.post('/', adaptRoute(makeRegisterUserController()))
 
-userRouter.post('/', registerUserController.execute)
-
-export default userRouter
+export { userRouter }

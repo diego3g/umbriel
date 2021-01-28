@@ -1,8 +1,9 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
+import { IContactsRepository } from '../../../subscriptions/repositories/IContactsRepository'
 import { Body } from '../../domain/message/body'
 import { Message } from '../../domain/message/message'
 import { Recipient } from '../../domain/recipient/recipient'
-import { IContactsRepository } from '../../../subscriptions/repositories/IContactsRepository'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 import { IRecipientsRepository } from '../../repositories/IRecipientsRepository'
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'

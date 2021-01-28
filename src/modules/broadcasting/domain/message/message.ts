@@ -1,11 +1,12 @@
-import { Subject } from './subject'
-import { Body } from './body'
-import { InvalidSubjectLengthError } from './errors/InvalidSubjectLengthError'
-import { InvalidBodyLengthError } from './errors/InvalidBodyLengthError'
-import { Either, right } from '../../../../core/logic/Either'
-import { Recipient } from '../recipient/recipient'
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
+
 import { Tag } from '../../../subscriptions/domain/tag/tag'
-import { Entity } from '../../../../core/domain/Entity'
+import { Recipient } from '../recipient/recipient'
+import { Body } from './body'
+import { InvalidBodyLengthError } from './errors/InvalidBodyLengthError'
+import { InvalidSubjectLengthError } from './errors/InvalidSubjectLengthError'
+import { Subject } from './subject'
 
 interface IMessageProps {
   subject: Subject
@@ -17,14 +18,6 @@ interface IMessageProps {
 }
 
 export class Message extends Entity<IMessageProps> {
-  // public subject: Subject
-  // public body: Body
-  // public templateId?: string
-  // public tags: Tag[]
-
-  // public sentAt: Date
-  // public recipients: Recipient[]
-
   get subject() {
     return this.props.subject
   }
@@ -63,17 +56,6 @@ export class Message extends Entity<IMessageProps> {
     props: IMessageProps,
     id?: string
   ): Either<InvalidSubjectLengthError | InvalidBodyLengthError, Message> {
-    // const subjectOrError = Subject.create(messageData.subject)
-    // const bodyOrError = Body.create(messageData.body)
-
-    // if (subjectOrError.isLeft()) {
-    //   return left(subjectOrError.value)
-    // }
-
-    // if (bodyOrError.isLeft()) {
-    //   return left(bodyOrError.value)
-    // }
-
     const message = new Message(props, id)
 
     return right(message)

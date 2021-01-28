@@ -1,13 +1,20 @@
+import { Email } from './email'
 import { InvalidJWTTokenError } from './errors/InvalidJWTTokenError'
 import { JWT, JWTTokenPayload } from './jwt'
+import { Name } from './name'
+import { Password } from './password'
 import { User } from './user'
+
+const name = Name.create('John Doe').value as Name
+const email = Email.create('johndoe@example.com').value as Email
+const password = Password.create('123456').value as Password
 
 describe('JWT model', () => {
   it('should be able to create new user', () => {
     const userOrError = User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     const user = userOrError.value as User
@@ -19,9 +26,9 @@ describe('JWT model', () => {
 
   it('should be able to initialize JWT from created token', () => {
     const userOrError = User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     const user = userOrError.value as User
@@ -44,9 +51,9 @@ describe('JWT model', () => {
 
   it('should be able to decode JWT token', () => {
     const userOrError = User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     const user = userOrError.value as User

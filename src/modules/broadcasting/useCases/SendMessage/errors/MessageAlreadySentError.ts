@@ -1,4 +1,4 @@
-import { UseCaseError } from '../../../../../core/domain/errors/UseCaseError'
+import { UseCaseError } from '@core/domain/errors/UseCaseError'
 
 export class MessageAlreadySentError extends Error implements UseCaseError {
   constructor() {

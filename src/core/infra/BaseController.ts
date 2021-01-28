@@ -1,92 +1,82 @@
-import express from 'express'
+import { HttpResponse } from './HttpResponse'
 
 export abstract class BaseController {
-  protected request: express.Request
-
-  protected response: express.Response
-
-  protected abstract executeImpl(): Promise<void | any>
-
-  public execute(request: express.Request, response: express.Response): void {
-    this.request = request
-    this.response = response
-
-    this.executeImpl()
-  }
-
-  public static jsonResponse(
-    response: express.Response,
-    code: number,
-    message: string
-  ): express.Response {
-    return response.status(code).json({ message })
-  }
-
-  public ok<T>(dto?: T): express.Response {
-    if (dto) {
-      return this.response.status(200).json(dto)
+  public ok<T>(dto?: T): HttpResponse {
+    return {
+      statusCode: 200,
+      body: dto,
     }
-
-    return this.response.sendStatus(200)
   }
 
-  public created(): express.Response {
-    return this.response.sendStatus(201)
+  public created(): HttpResponse {
+    return {
+      statusCode: 201,
+      body: null,
+    }
   }
 
-  public clientError(message?: string): express.Response {
-    return BaseController.jsonResponse(
-      this.response,
-      400,
-      message || 'Unauthorized'
-    )
+  public clientError(message = 'Unauthorized'): HttpResponse {
+    return {
+      statusCode: 400,
+      body: {
+        message,
+      },
+    }
   }
 
-  public unauthorized(message?: string): express.Response {
-    return BaseController.jsonResponse(
-      this.response,
-      401,
-      message || 'Unauthorized'
-    )
+  public unauthorized(message = 'Unauthorized'): HttpResponse {
+    return {
+      statusCode: 401,
+      body: {
+        message,
+      },
+    }
   }
 
-  public forbidden(message?: string): express.Response {
-    return BaseController.jsonResponse(
-      this.response,
-      403,
-      message || 'Forbidden'
-    )
+  public forbidden(message = 'Forbidden'): HttpResponse {
+    return {
+      statusCode: 403,
+      body: {
+        message,
+      },
+    }
   }
 
-  public notFound(message?: string): express.Response {
-    return BaseController.jsonResponse(
-      this.response,
-      404,
-      message || 'Not found'
-    )
+  public notFound(message = 'Not found'): HttpResponse {
+    return {
+      statusCode: 404,
+      body: {
+        message,
+      },
+    }
   }
 
-  public conflict(message?: string): express.Response {
-    return BaseController.jsonResponse(
-      this.response,
-      409,
-      message || 'Conflict'
-    )
+  public conflict(message = 'Conflict'): HttpResponse {
+    return {
+      statusCode: 409,
+      body: {
+        message,
+      },
+    }
   }
 
-  public tooMany(message?: string): express.Response {
-    return BaseController.jsonResponse(
-      this.response,
-      429,
-      message || 'Too many requests'
-    )
+  public tooMany(message = 'Too many requests'): HttpResponse {
+    return {
+      statusCode: 429,
+      body: {
+        message,
+      },
+    }
   }
 
-  public fail(error: Error | string): express.Response {
+  public fail(error: Error | string): HttpResponse {
     console.log(error)
 
-    return this.response.status(500).json({
-      message: error.toString(),
-    })
+    return {
+      statusCode: 500,
+      body: {
+        message: error.toString(),
+      },
+    }
   }
 }

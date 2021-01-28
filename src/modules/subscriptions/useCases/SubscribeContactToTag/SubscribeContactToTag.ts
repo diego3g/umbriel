@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { Contact } from '../../domain/contact/contact'
 import { IContactsRepository } from '../../repositories/IContactsRepository'
 import { ITagsRepository } from '../../repositories/ITagsRepository'

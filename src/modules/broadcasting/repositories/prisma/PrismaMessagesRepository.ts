@@ -1,4 +1,5 @@
-import { prisma } from '../../../../infra/prisma/client'
+import { prisma } from '@infra/prisma/client'
+
 import { Message } from '../../domain/message/message'
 import { MessageMapper } from '../../mappers/MessageMapper'
 import { IMessagesRepository } from '../IMessagesRepository'

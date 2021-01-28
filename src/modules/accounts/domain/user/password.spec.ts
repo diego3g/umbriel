@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+
 import { Password } from './password'
 
 describe('User password value object', () => {

@@ -1,5 +1,6 @@
 import SES from 'aws-sdk/clients/ses'
 import { htmlToText } from 'html-to-text'
+
 import { IMailProvider, MailMessage } from '../../models/IMailProvider'
 
 export class SESProvider implements IMailProvider {

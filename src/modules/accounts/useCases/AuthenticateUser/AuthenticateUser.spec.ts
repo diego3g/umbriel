@@ -1,3 +1,6 @@
+import { Email } from '../../domain/user/email'
+import { Name } from '../../domain/user/name'
+import { Password } from '../../domain/user/password'
 import { User } from '../../domain/user/user'
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
@@ -7,6 +10,9 @@ import { InvalidEmailOrPasswordError } from './errors/InvalidEmailOrPasswordErro
 let usersRepository: IUsersRepository
 let authenticateUser: AuthenticateUser
 
+const name = Name.create('John Doe').value as Name
+const email = Email.create('john@doe.com').value as Email
+const password = Password.create('123456').value as Password
 describe('Authenticate User', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
@@ -15,9 +21,9 @@ describe('Authenticate User', () => {
 
   it('should be able to authenticate', async () => {
     const user = User.create({
-      name: 'John Doe',
-      email: 'john@doe.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     usersRepository.create(user.value as User)
@@ -45,9 +51,9 @@ describe('Authenticate User', () => {
 
   it('should not be able to authenticate with invalid password', async () => {
     const user = User.create({
-      name: 'John Doe',
-      email: 'john@doe.com',
-      password: '123456',
+      name,
+      email,
+      password,
     })
 
     usersRepository.create(user.value as User)

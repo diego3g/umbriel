@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid'
 
-import { Title } from './title'
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidTitleLengthError } from './errors/InvalidTitleLengthError'
+import { Title } from './title'
 
 interface ITagData {
   title: Title

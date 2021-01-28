@@ -1,8 +1,8 @@
 import { Message as PersistenceMessage } from '@prisma/client'
 
+import { Body } from '../domain/message/body'
 import { Message } from '../domain/message/message'
 import { Subject } from '../domain/message/subject'
-import { Body } from '../domain/message/body'
 
 export class MessageMapper {
   static toDomain(raw: PersistenceMessage): Message {

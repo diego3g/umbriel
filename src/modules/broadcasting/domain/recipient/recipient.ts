@@ -1,4 +1,5 @@
-import { Entity } from '../../../../core/domain/Entity'
+import { Entity } from '@core/domain/Entity'
+
 import { Event } from '../event/event'
 
 interface IRecipientProps {

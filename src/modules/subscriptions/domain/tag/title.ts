@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidTitleLengthError } from './errors/InvalidTitleLengthError'
 
 export class Title {

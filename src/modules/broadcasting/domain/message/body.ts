@@ -1,4 +1,5 @@
-import { Either, left, right } from '../../../../core/logic/Either'
+import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidBodyLengthError } from './errors/InvalidBodyLengthError'
 
 export class Body {
