@@ -8,6 +8,10 @@ export class PrismaMessagesRepository implements IMessagesRepository {
   async findById(id: string): Promise<Message> {
     const message = await prisma.message.findUnique({ where: { id } })
 
+    if (!message) {
+      return null
+    }
+
     return MessageMapper.toDomain(message)
   }
 

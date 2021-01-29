@@ -1,6 +1,11 @@
-import { BaseController } from '@core/infra/BaseController'
 import { Controller } from '@core/infra/Controller'
-import { HttpResponse } from '@core/infra/HttpResponse'
+import {
+  HttpResponse,
+  clientError,
+  conflict,
+  created,
+  fail,
+} from '@core/infra/HttpResponse'
 
 import { AccountAlreadyExistsError } from './errors/AccountAlreadyExistsError'
 import { RegisterUser } from './RegisterUser'
@@ -12,12 +17,8 @@ type RegisterUserControllerRequest = {
   password_confirmation: string
 }
 
-export class RegisterUserController
-  extends BaseController
-  implements Controller {
-  constructor(private registerUser: RegisterUser) {
-    super()
-  }
+export class RegisterUserController implements Controller {
+  constructor(private registerUser: RegisterUser) {}
 
   async handle({
     name,
@@ -39,15 +40,15 @@ export class RegisterUserController
 
         switch (error.constructor) {
           case AccountAlreadyExistsError:
-            return this.conflict(error.message)
+            return conflict(error)
           default:
-            return this.fail(error.message)
+            return clientError(error)
         }
       } else {
-        return this.created()
+        return created()
       }
     } catch (err) {
-      return this.fail(err)
+      return fail(err)
     }
   }
 }

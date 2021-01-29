@@ -1,6 +1,5 @@
-import { BaseController } from '@core/infra/BaseController'
 import { Controller } from '@core/infra/Controller'
-import { HttpResponse } from '@core/infra/HttpResponse'
+import { HttpResponse, ok, fail, clientError } from '@core/infra/HttpResponse'
 
 import { AuthenticateUser } from './AuthenticateUser'
 
@@ -9,12 +8,8 @@ type AuthenticateUserControllerRequest = {
   password: string
 }
 
-export class AuthenticateUserController
-  extends BaseController
-  implements Controller {
-  constructor(private authenticateUser: AuthenticateUser) {
-    super()
-  }
+export class AuthenticateUserController implements Controller {
+  constructor(private authenticateUser: AuthenticateUser) {}
 
   async handle({
     email,
@@ -31,14 +26,14 @@ export class AuthenticateUserController
       if (result.isLeft()) {
         const error = result.value
 
-        return this.fail(error.message)
+        return clientError(error)
       } else {
         const { token } = result.value
 
-        return this.ok({ token })
+        return ok({ token })
       }
     } catch (err) {
-      return this.fail(err)
+      return fail(err)
     }
   }
 }
