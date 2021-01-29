@@ -9,7 +9,7 @@ export class UserMapper {
   static toDomain(raw: PersistenceUser): User {
     const nameOrError = Name.create(raw.name)
     const emailOrError = Email.create(raw.email)
-    const passwordOrError = Password.create(raw.password)
+    const passwordOrError = Password.create(raw.password, true)
 
     if (nameOrError.isLeft()) {
       throw new Error('Name value is invalid.')

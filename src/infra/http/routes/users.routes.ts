@@ -3,8 +3,8 @@ import express from 'express'
 import { adaptRoute } from '../adapters/ExpressRouteAdapter'
 import { makeRegisterUserController } from '../factories/RegisterUserControllerFactory'
 
-const userRouter = express.Router()
+const usersRouter = express.Router()
 
-userRouter.post('/', adaptRoute(makeRegisterUserController()))
+usersRouter.post('/', adaptRoute(makeRegisterUserController()))
 
-export { userRouter }
+export { usersRouter }

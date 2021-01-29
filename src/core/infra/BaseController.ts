@@ -15,56 +15,56 @@ export abstract class BaseController {
     }
   }
 
-  public clientError(message = 'Unauthorized'): HttpResponse {
+  public clientError(error = 'Unauthorized'): HttpResponse {
     return {
       statusCode: 400,
       body: {
-        message,
+        error,
       },
     }
   }
 
-  public unauthorized(message = 'Unauthorized'): HttpResponse {
+  public unauthorized(error = 'Unauthorized'): HttpResponse {
     return {
       statusCode: 401,
       body: {
-        message,
+        error,
       },
     }
   }
 
-  public forbidden(message = 'Forbidden'): HttpResponse {
+  public forbidden(error = 'Forbidden'): HttpResponse {
     return {
       statusCode: 403,
       body: {
-        message,
+        error,
       },
     }
   }
 
-  public notFound(message = 'Not found'): HttpResponse {
+  public notFound(error = 'Not found'): HttpResponse {
     return {
       statusCode: 404,
       body: {
-        message,
+        error,
       },
     }
   }
 
-  public conflict(message = 'Conflict'): HttpResponse {
+  public conflict(error = 'Conflict'): HttpResponse {
     return {
       statusCode: 409,
       body: {
-        message,
+        error,
       },
     }
   }
 
-  public tooMany(message = 'Too many requests'): HttpResponse {
+  public tooMany(error = 'Too many requests'): HttpResponse {
     return {
       statusCode: 429,
       body: {
-        message,
+        error,
       },
     }
   }
@@ -75,7 +75,7 @@ export abstract class BaseController {
     return {
       statusCode: 500,
       body: {
-        message: error.toString(),
+        error: error.toString(),
       },
     }
   }
