@@ -6,6 +6,18 @@ jobs:
   code:
     name: Test code
     runs-on: ubuntu-latest
+    container: node:lts
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: docker
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repository
@@ -13,13 +25,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 12
-
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 
       - name: Run Jest
-        run: yarn test --coverage
+        run: yarn test
