@@ -28,6 +28,8 @@ export class BullProvider implements IQueueProvider {
     })
 
     await this.queue.addBulk(parsedJobs)
+
+    console.log(`Added ${jobs.length} jobs to queue.`)
   }
 
   async addJob(job: object): Promise<void> {

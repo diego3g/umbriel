@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev:server": "tsnd --inspect --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/http/server.ts",
+    "dev:server": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/http/server.ts",
+    "dev:worker": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/queue/worker.ts",
     "lint": "eslint src --ext ts,tsx",
     "test": "jest"
   },

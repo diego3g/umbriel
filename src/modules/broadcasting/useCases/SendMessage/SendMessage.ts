@@ -1,4 +1,5 @@
 import { Either, left, right } from '@core/logic/Either'
+import { IQueueProvider } from '@infra/providers/models/IQueueProvider'
 import { IMessageTagsRepository } from '@modules/broadcasting/repositories/IMessageTagsRepository'
 
 import { IContactsRepository } from '../../../subscriptions/repositories/IContactsRepository'
@@ -23,7 +24,7 @@ export class SendMessage {
     private messageTagsRepository: IMessageTagsRepository,
     private templatesRepository: ITemplatesRepository,
     private contactsRepository: IContactsRepository,
-    private recipientsRepository: IRecipientsRepository
+    private queueProvider: IQueueProvider
   ) {}
 
   async execute(messageId: string): Promise<SendMessageResponse> {
@@ -63,18 +64,18 @@ export class SendMessage {
     const tagsIds = messageTags.map(messageTag => messageTag.tagId)
     const contacts = await this.contactsRepository.findByTagsIds(tagsIds)
 
-    const recipients = contacts.map(contact => {
-      const recipient = Recipient.create({
+    const queueJobs = contacts.map(contact => {
+      return {
         contactId: contact.id,
         messageId: message.id,
-      })
-
-      return recipient
+      }
     })
 
-    await this.recipientsRepository.createMany(recipients)
+    await this.queueProvider.addManyJobs(queueJobs)
 
-    message.deliver(recipients, messageBody)
+    // await this.recipientsRepository.createMany(recipients)
+
+    message.deliver([], messageBody)
 
     await this.messagesRepository.save(message)
 
