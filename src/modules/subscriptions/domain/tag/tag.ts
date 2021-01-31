@@ -1,44 +1,27 @@
-import { v4 as uuid } from 'uuid'
-
-import { Either, left, right } from '@core/logic/Either'
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
 
 import { InvalidTitleLengthError } from './errors/InvalidTitleLengthError'
 import { Title } from './title'
 
-interface ITagData {
+interface ITagProps {
   title: Title
 }
 
-export interface ITagCreateData {
-  title: string
-}
+export class Tag extends Entity<ITagProps> {
+  get title() {
+    return this.props.title
+  }
 
-export class Tag {
-  public readonly id: string
-  public readonly title: Title
-
-  private constructor({ title }: ITagData, id?: string) {
-    this.title = title
-
-    this.id = id ?? uuid()
+  private constructor(props: ITagProps, id?: string) {
+    super(props, id)
   }
 
   static create(
-    tagData: ITagCreateData,
+    props: ITagProps,
     id?: string
   ): Either<InvalidTitleLengthError, Tag> {
-    const titleOrError = Title.create(tagData.title)
-
-    if (titleOrError.isLeft()) {
-      return left(titleOrError.value)
-    }
-
-    const tag = new Tag(
-      {
-        title: titleOrError.value,
-      },
-      id
-    )
+    const tag = new Tag(props, id)
 
     return right(tag)
   }

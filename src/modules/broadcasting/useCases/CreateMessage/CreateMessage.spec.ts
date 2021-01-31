@@ -1,3 +1,9 @@
+import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { Tag } from '@modules/subscriptions/domain/tag/tag'
+import { Title as TagTitle } from '@modules/subscriptions/domain/tag/title'
+import { InMemoryTagsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryTagsRepository'
+import { ITagsRepository } from '@modules/subscriptions/repositories/ITagsRepository'
+
 import { Content } from '../../domain/template/content'
 import { Template } from '../../domain/template/template'
 import { Title } from '../../domain/template/title'
@@ -5,22 +11,35 @@ import { InMemoryMessagesRepository } from '../../repositories/in-memory/InMemor
 import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemoryTemplatesRepository'
 import { CreateMessage } from './CreateMessage'
 
+let messageTagsRepository: InMemoryMessageTagsRepository
 let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
+let tagsRepository: ITagsRepository
 let createMessage: CreateMessage
 
+const tagTitle = TagTitle.create('Tag 01').value as TagTitle
+const tag = Tag.create({ title: tagTitle }).value as Tag
+
 describe('Create Message', () => {
-  beforeEach(() => {
-    messagesRepository = new InMemoryMessagesRepository()
+  beforeEach(async () => {
+    messageTagsRepository = new InMemoryMessageTagsRepository()
+    messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
     templatesRepository = new InMemoryTemplatesRepository()
-    createMessage = new CreateMessage(messagesRepository, templatesRepository)
+    tagsRepository = new InMemoryTagsRepository()
+    createMessage = new CreateMessage(
+      messagesRepository,
+      templatesRepository,
+      tagsRepository
+    )
+
+    await tagsRepository.create(tag)
   })
 
   it('should be able to create new message without template', async () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'A message body with valid length',
-      tags: [],
+      tags: [tag.id],
     })
 
     expect(response.isRight()).toBeTruthy()
@@ -49,7 +68,7 @@ describe('Create Message', () => {
       subject: 'My new message',
       body: 'A message body with valid length',
       templateId: template.id,
-      tags: [],
+      tags: [tag.id],
     })
 
     expect(response.isRight()).toBeTruthy()
@@ -65,7 +84,7 @@ describe('Create Message', () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'invalid',
-      tags: [],
+      tags: [tag.id],
     })
 
     expect(response.isLeft()).toBeTruthy()
@@ -76,6 +95,17 @@ describe('Create Message', () => {
       subject: 'My new message',
       body: 'A message body with valid length',
       templateId: 'invalid-template',
+      tags: [tag.id],
+    })
+
+    expect(response.isLeft()).toBeTruthy()
+    expect(messagesRepository.items.length).toBe(0)
+  })
+
+  it('should not be able to create message without tags', async () => {
+    const response = await createMessage.execute({
+      subject: 'My new message',
+      body: 'A message body with valid length',
       tags: [],
     })
 

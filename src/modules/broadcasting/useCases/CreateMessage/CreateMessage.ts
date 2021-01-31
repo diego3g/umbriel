@@ -1,6 +1,7 @@
 import { Either, left, right } from '@core/logic/Either'
+import { MessageTag } from '@modules/broadcasting/domain/message/messageTag'
+import { ITagsRepository } from '@modules/subscriptions/repositories/ITagsRepository'
 
-import { Tag } from '../../../subscriptions/domain/tag/tag'
 import { Body } from '../../domain/message/body'
 import { InvalidBodyLengthError } from '../../domain/message/errors/InvalidBodyLengthError'
 import { InvalidSubjectLengthError } from '../../domain/message/errors/InvalidSubjectLengthError'
@@ -8,13 +9,14 @@ import { Message } from '../../domain/message/message'
 import { Subject } from '../../domain/message/subject'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
+import { EmptyTagsError } from './errors/EmptyTagsError'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
 
 type CreateMessageRequest = {
   subject: string
   body: string
   templateId?: string
-  tags: Tag[]
+  tags: string[]
 }
 
 type CreateMessageResponse = Either<
@@ -25,7 +27,8 @@ type CreateMessageResponse = Either<
 export class CreateMessage {
   constructor(
     private messagesRepository: IMessagesRepository,
-    private templatesRepository: ITemplatesRepository
+    private templatesRepository: ITemplatesRepository,
+    private tagsRepository: ITagsRepository
   ) {}
 
   async execute({
@@ -45,6 +48,10 @@ export class CreateMessage {
       return left(bodyOrError.value)
     }
 
+    if (tags.length === 0) {
+      return left(new EmptyTagsError())
+    }
+
     if (templateId) {
       const templateExists = await this.templatesRepository.findById(templateId)
 
@@ -57,7 +64,6 @@ export class CreateMessage {
       subject: subjectOrError.value,
       body: bodyOrError.value,
       templateId,
-      tags,
     })
 
     if (messageOrError.isLeft()) {
@@ -65,6 +71,15 @@ export class CreateMessage {
     }
 
     const message = messageOrError.value
+
+    const messageTags = tags.map(tagId => {
+      return MessageTag.create({
+        tagId,
+        messageId: message.id,
+      })
+    })
+
+    message.setTags(messageTags)
 
     await this.messagesRepository.create(message)
 

@@ -1,5 +1,9 @@
-import { Tag } from '../../../subscriptions/domain/tag/tag'
-import { InMemoryContactsRepository } from '../../../subscriptions/repositories/in-memory/InMemoryContactsRepository'
+import { MessageTag } from '@modules/broadcasting/domain/message/messageTag'
+import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { Tag } from '@modules/subscriptions/domain/tag/tag'
+import { Title as TagTitle } from '@modules/subscriptions/domain/tag/title'
+import { InMemoryContactsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryContactsRepository'
+
 import { Body } from '../../domain/message/body'
 import { Message } from '../../domain/message/message'
 import { Subject } from '../../domain/message/subject'
@@ -15,6 +19,7 @@ import { InvalidTemplateError } from './errors/InvalidTemplateError'
 import { MessageAlreadySentError } from './errors/MessageAlreadySentError'
 import { SendMessage } from './SendMessage'
 
+let messageTagsRepository: InMemoryMessageTagsRepository
 let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
 let contactsRepository: InMemoryContactsRepository
@@ -24,15 +29,20 @@ let sendMessage: SendMessage
 const subject = Subject.create('A new message').value as Subject
 const body = Body.create('The long enough message body').value as Body
 
+const tagTitle = TagTitle.create('Tag 01').value as TagTitle
+const tag = Tag.create({ title: tagTitle }).value as Tag
+
 describe('Send Message', () => {
   beforeEach(() => {
-    messagesRepository = new InMemoryMessagesRepository()
+    messageTagsRepository = new InMemoryMessageTagsRepository()
+    messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
     templatesRepository = new InMemoryTemplatesRepository()
     contactsRepository = new InMemoryContactsRepository()
     recipientsRepository = new InMemoryRecipientsRepository()
 
     sendMessage = new SendMessage(
       messagesRepository,
+      messageTagsRepository,
       templatesRepository,
       contactsRepository,
       recipientsRepository
@@ -40,19 +50,19 @@ describe('Send Message', () => {
   })
 
   it('should be able to send a message without template', async () => {
-    const tagOrError = Tag.create({
-      title: 'Students',
-    })
-
-    const tag = tagOrError.value as Tag
-
     const messageOrError = Message.create({
       subject,
       body,
-      tags: [tag],
     })
 
     const message = messageOrError.value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
 
     await messagesRepository.create(message)
 
@@ -78,20 +88,20 @@ describe('Send Message', () => {
 
     await templatesRepository.create(template)
 
-    const tagOrError = Tag.create({
-      title: 'Students',
-    })
-
-    const tag = tagOrError.value as Tag
-
     const messageOrError = Message.create({
       subject,
       body,
       templateId: template.id,
-      tags: [tag],
     })
 
     const message = messageOrError.value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
 
     await messagesRepository.create(message)
 
@@ -112,20 +122,20 @@ describe('Send Message', () => {
   })
 
   it('should not be able to send message with template that does not exists', async () => {
-    const tagOrError = Tag.create({
-      title: 'Students',
-    })
-
-    const tag = tagOrError.value as Tag
-
     const messageOrError = Message.create({
       subject,
       body,
       templateId: 'invalid-template-id',
-      tags: [tag],
     })
 
     const message = messageOrError.value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
 
     await messagesRepository.create(message)
 
@@ -136,20 +146,20 @@ describe('Send Message', () => {
   })
 
   it('should not be able to send message that has already been sent', async () => {
-    const tagOrError = Tag.create({
-      title: 'Students',
-    })
-
-    const tag = tagOrError.value as Tag
-
     const messageOrError = Message.create({
       subject,
       body,
       templateId: 'invalid-template-id',
-      tags: [tag],
     })
 
     const message = messageOrError.value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
 
     const recipient = Recipient.create({
       messageId: message.id,

@@ -1,8 +1,11 @@
 import { Message } from '../../domain/message/message'
 import { IMessagesRepository } from '../IMessagesRepository'
+import { IMessageTagsRepository } from '../IMessageTagsRepository'
 
 export class InMemoryMessagesRepository implements IMessagesRepository {
-  constructor(public items: Message[] = []) {}
+  public items: Message[] = []
+
+  constructor(private messageTagsRepository: IMessageTagsRepository) {}
 
   async findById(id: string): Promise<Message> {
     return this.items.find(message => message.id === id)
@@ -18,5 +21,6 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
 
   async create(message: Message): Promise<void> {
     this.items.push(message)
+    this.messageTagsRepository.create(message.tags)
   }
 }

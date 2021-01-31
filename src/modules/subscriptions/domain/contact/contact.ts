@@ -1,6 +1,5 @@
-import { v4 as uuid } from 'uuid'
-
-import { Either, left, right } from '@core/logic/Either'
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
 
 import { Tag } from '../tag/tag'
 import { Email } from './email'
@@ -8,32 +7,27 @@ import { InvalidEmailError } from './errors/InvalidEmailError'
 import { InvalidNameError } from './errors/InvalidNameError'
 import { Name } from './name'
 
-interface IContactData {
+interface IContactProps {
   name: Name
   email: Email
+  tags?: Tag[]
 }
 
-export interface IContactCreateData {
-  name: string
-  email: string
-}
+export class Contact extends Entity<IContactProps> {
+  get name() {
+    return this.props.name
+  }
 
-export class Contact {
-  public readonly id: string
-  public readonly name: Name
-  public readonly email: Email
-  public readonly createdAt: Date
+  get email() {
+    return this.props.email
+  }
 
-  public tags: Tag[]
+  get tags() {
+    return this.props.tags
+  }
 
-  private constructor({ name, email }: IContactData, id?: string) {
-    this.name = name
-    this.email = email
-
-    this.createdAt = new Date()
-    this.tags = []
-
-    this.id = id ?? uuid()
+  private constructor(props: IContactProps, id?: string) {
+    super(props, id)
   }
 
   public subscribeToTag(tag: Tag) {
@@ -41,28 +35,19 @@ export class Contact {
   }
 
   public unsubscribeFromTag(tag: Tag) {
-    this.tags = this.tags.filter(findTag => findTag.id !== tag.id)
+    const tagIndex = this.tags.findIndex(findTag => findTag.id !== tag.id)
+
+    this.tags.splice(tagIndex, 1)
   }
 
   static create(
-    recipientData: IContactCreateData,
+    props: IContactProps,
     id?: string
   ): Either<InvalidNameError | InvalidEmailError, Contact> {
-    const nameOrError = Name.create(recipientData.name)
-    const emailOrError = Email.create(recipientData.email)
-
-    if (nameOrError.isLeft()) {
-      return left(nameOrError.value)
-    }
-
-    if (emailOrError.isLeft()) {
-      return left(emailOrError.value)
-    }
-
     const contact = new Contact(
       {
-        name: nameOrError.value,
-        email: emailOrError.value,
+        ...props,
+        tags: props.tags ?? [],
       },
       id
     )

@@ -1,4 +1,5 @@
 import { Either, left, right } from '@core/logic/Either'
+import { IMessageTagsRepository } from '@modules/broadcasting/repositories/IMessageTagsRepository'
 
 import { IContactsRepository } from '../../../subscriptions/repositories/IContactsRepository'
 import { Body } from '../../domain/message/body'
@@ -19,6 +20,7 @@ type SendMessageResponse = Either<
 export class SendMessage {
   constructor(
     private messagesRepository: IMessagesRepository,
+    private messageTagsRepository: IMessageTagsRepository,
     private templatesRepository: ITemplatesRepository,
     private contactsRepository: IContactsRepository,
     private recipientsRepository: IRecipientsRepository
@@ -54,7 +56,11 @@ export class SendMessage {
       messageBody = Body.create(messageBodyContent).value as Body
     }
 
-    const tagsIds = message.tags.map(tag => tag.id)
+    const messageTags = await this.messageTagsRepository.findManyByMessageId(
+      message.id
+    )
+
+    const tagsIds = messageTags.map(messageTag => messageTag.tagId)
     const contacts = await this.contactsRepository.findByTagsIds(tagsIds)
 
     const recipients = contacts.map(contact => {

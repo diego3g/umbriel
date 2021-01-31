@@ -32,9 +32,10 @@ model Template {
 }
 
 model Tag {
-  id       String    @id
-  title    String    @unique
-  messages Message[]
+  id       String       @id
+  title    String       @unique
+  contacts Contact[]
+  messages MessageTag[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -47,6 +48,7 @@ model Contact {
   name       String?
   email      String      @unique
   recipients Recipient[]
+  tags       Tag[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -55,17 +57,17 @@ model Contact {
 }
 
 model Message {
-  id          String      @id
+  id          String       @id
   subject     String
   body        String
-  template    Template?   @relation(fields: [template_id], references: [id])
+  template    Template?    @relation(fields: [template_id], references: [id])
   template_id String?
-  tags        Tag[]
   recipients  Recipient[]
+  tags        MessageTag[]
 
-  sent_at    DateTime
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  sent_at    DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
 
   @@map("messages")
 }
@@ -95,4 +97,14 @@ model Recipient {
   updated_at DateTime @default(now()) @updatedAt
 
   @@map("recipients")
+}
+
+model MessageTag {
+  id         String  @id
+  message    Message @relation(fields: [message_id], references: [id])
+  tag        Tag     @relation(fields: [tag_id], references: [id])
+  message_id String
+  tag_id     String
+
+  @@map("message_tags")
 }

@@ -1,30 +1,17 @@
 import { Contact } from './contact'
+import { Email } from './email'
+import { Name } from './name'
 
 describe('Contact model', () => {
   it('should be able to create new contact', () => {
+    const name = Name.create('John Doe').value as Name
+    const email = Email.create('johndoe@example').value as Email
+
     const contactOrError = Contact.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
+      name,
+      email,
     })
 
     expect(contactOrError.isRight()).toBeTruthy()
-  })
-
-  it('should not be able to create new contact with invalid name', () => {
-    const contactOrError = Contact.create({
-      name: 'J',
-      email: 'johndoe@example.com',
-    })
-
-    expect(contactOrError.isLeft()).toBeTruthy()
-  })
-
-  it('should not be able to create new contact with invalid email', () => {
-    const contactOrError = Contact.create({
-      name: 'John Doe',
-      email: 'johndoe.com',
-    })
-
-    expect(contactOrError.isLeft()).toBeTruthy()
   })
 })

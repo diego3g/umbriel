@@ -13,7 +13,7 @@ export function ok<T>(dto?: T): HttpResponse {
 export function created(): HttpResponse {
   return {
     statusCode: 201,
-    body: null,
+    body: undefined,
   }
 }
 
