@@ -10,9 +10,13 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        image: postgres:13
+        ports:
+          - "5432:5432"
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: docker
+          POSTGRES_DB: umbriel-dev
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
