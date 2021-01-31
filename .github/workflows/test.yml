@@ -12,11 +12,11 @@ jobs:
       postgres:
         image: postgres:13
         ports:
-          - "5432:5432"
+          - 5432:5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: docker
-          POSTGRES_DB: umbriel-dev
+          POSTGRES_DB: umbriel
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -34,3 +34,9 @@ jobs:
 
       - name: Run Jest
         run: yarn test
+        env:
+          DB_NAME: umbriel
+          DB_USER: postgres
+          DB_PASS: docker
+          DB_PORT: ${{ job.services.postgres.ports[5432] }}
+          DB_HOST: postgres

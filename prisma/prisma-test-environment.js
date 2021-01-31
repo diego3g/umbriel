@@ -12,8 +12,14 @@ class PrismaTestEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config)
 
+    const dbUser = process.env.DB_USER ?? 'postgres'
+    const dbPass = process.env.DB_PASS ?? 'docker'
+    const dbHost = process.env.DB_HOST ?? 'localhost'
+    const dbPort = process.env.DB_PORT ?? 5432
+    const dbName = process.env.DB_NAME ?? 'umbriel-dev'
+
     this.schema = `test_${uuid()}`
-    this.connectionString = `postgresql://postgres:docker@localhost:5432/umbriel-dev?schema=${this.schema}`
+    this.connectionString = `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?schema=${this.schema}`
   }
 
   async setup() {
