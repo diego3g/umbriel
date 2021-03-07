@@ -42,7 +42,7 @@
     "@prisma/client": "2.15.0",
     "aws-sdk": "2.834.0",
     "bcryptjs": "2.4.3",
-    "bullmq": "1.14.0",
+    "bullmq": "1.14.8",
     "dotenv": "^8.2.0",
     "express": "4.17.1",
     "html-to-text": "6.0.0",
