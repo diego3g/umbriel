@@ -16,7 +16,7 @@
     "@types/html-to-text": "6.0.0",
     "@types/jest": "26.0.20",
     "@types/jsonwebtoken": "8.5.0",
-    "@types/nodemailer": "6.4.0",
+    "@types/nodemailer": "6.4.1",
     "@types/supertest": "2.0.10",
     "@types/uuid": "8.3.0",
     "@typescript-eslint/eslint-plugin": "4.14.1",
@@ -48,7 +48,7 @@
     "html-to-text": "6.0.0",
     "ioredis": "4.19.4",
     "jsonwebtoken": "8.5.1",
-    "nodemailer": "6.4.17",
+    "nodemailer": "6.5.0",
     "uuid": "8.3.2"
   }
 }
