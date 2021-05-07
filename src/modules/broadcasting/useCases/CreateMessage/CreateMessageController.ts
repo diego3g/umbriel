@@ -11,7 +11,8 @@ import { CreateMessage } from './CreateMessage'
 type CreateMessageControllerRequest = {
   subject: string
   body: string
-  templateId: string
+  templateId?: string
+  senderId: string
   tags: string[]
 }
 
@@ -22,6 +23,7 @@ export class CreateMessageController implements Controller {
     subject,
     body,
     templateId,
+    senderId,
     tags,
   }: CreateMessageControllerRequest): Promise<HttpResponse> {
     try {
@@ -32,6 +34,7 @@ export class CreateMessageController implements Controller {
         body,
         tags,
         templateId,
+        senderId,
       })
 
       if (result.isLeft()) {

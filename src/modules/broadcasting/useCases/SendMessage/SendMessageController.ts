@@ -1,10 +1,5 @@
 import { Controller } from '@core/infra/Controller'
-import {
-  HttpResponse,
-  clientError,
-  created,
-  fail,
-} from '@core/infra/HttpResponse'
+import { HttpResponse, clientError, fail, ok } from '@core/infra/HttpResponse'
 
 import { SendMessage } from './SendMessage'
 
@@ -26,7 +21,7 @@ export class SendMessageController implements Controller {
 
         return clientError(error)
       } else {
-        return created()
+        return ok()
       }
     } catch (err) {
       return fail(err)

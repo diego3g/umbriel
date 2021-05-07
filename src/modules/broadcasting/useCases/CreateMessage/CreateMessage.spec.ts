@@ -26,11 +26,7 @@ describe('Create Message', () => {
     messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
     templatesRepository = new InMemoryTemplatesRepository()
     tagsRepository = new InMemoryTagsRepository()
-    createMessage = new CreateMessage(
-      messagesRepository,
-      templatesRepository,
-      tagsRepository
-    )
+    createMessage = new CreateMessage(messagesRepository, templatesRepository)
 
     await tagsRepository.create(tag)
   })

@@ -4,7 +4,6 @@ import { PrismaMessageTagsRepository } from '@modules/broadcasting/repositories/
 import { PrismaTemplatesRepository } from '@modules/broadcasting/repositories/prisma/PrismaTemplatesRepository'
 import { CreateMessage } from '@modules/broadcasting/useCases/CreateMessage/CreateMessage'
 import { CreateMessageController } from '@modules/broadcasting/useCases/CreateMessage/CreateMessageController'
-import { PrismaTagsRepository } from '@modules/subscriptions/repositories/prisma/PrismaTagsRepository'
 
 export function makeCreateMessageController(): Controller {
   const messageTagsRepository = new PrismaMessageTagsRepository()
@@ -12,12 +11,10 @@ export function makeCreateMessageController(): Controller {
     messageTagsRepository
   )
   const prismaTemplatesRepository = new PrismaTemplatesRepository()
-  const prismaTagsRepository = new PrismaTagsRepository()
 
   const createMessage = new CreateMessage(
     prismaMessagesRepository,
-    prismaTemplatesRepository,
-    prismaTagsRepository
+    prismaTemplatesRepository
   )
   const createMessageController = new CreateMessageController(createMessage)
 

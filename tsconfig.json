@@ -13,7 +13,8 @@
       "@modules/*": ["modules/*"],
       "@infra/*": ["infra/*"],
       "@core/*": ["core/*"],
-      "@config/*": ["config/*"]
+      "@config/*": ["config/*"],
+      "@test/*": ["test/*"]
     }
   },
   "include": ["src"]

@@ -3,20 +3,20 @@ import { Request, Response, NextFunction } from 'express'
 import { Middleware } from '@core/infra/Middleware'
 
 export const adaptMiddleware = (middleware: Middleware) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const request = {
-      accessToken: req.headers?.['x-access-token'],
-      ...(req.headers || {}),
+  return async (request: Request, response: Response, next: NextFunction) => {
+    const requestData = {
+      accessToken: request.headers?.['x-access-token'],
+      ...(request.headers || {}),
     }
 
-    const httpResponse = await middleware.handle(request)
+    const httpResponse = await middleware.handle(requestData)
 
     if (httpResponse.statusCode === 200) {
-      Object.assign(req, httpResponse.body)
+      Object.assign(request, httpResponse.body)
 
       return next()
     } else {
-      return res.status(httpResponse.statusCode).json({
+      return response.status(httpResponse.statusCode).json({
         error: httpResponse.body.error,
       })
     }

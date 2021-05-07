@@ -5,6 +5,7 @@ import { PrismaMessageTagsRepository } from '@modules/broadcasting/repositories/
 import { PrismaTemplatesRepository } from '@modules/broadcasting/repositories/prisma/PrismaTemplatesRepository'
 import { SendMessage } from '@modules/broadcasting/useCases/SendMessage/SendMessage'
 import { SendMessageController } from '@modules/broadcasting/useCases/SendMessage/SendMessageController'
+import { PrismaSendersRepository } from '@modules/senders/repositories/prisma/PrismaSendersRepository'
 import { PrismaContactsRepository } from '@modules/subscriptions/repositories/prisma/PrismaContactsRepository'
 
 export function makeSendMessageController(): Controller {
@@ -12,15 +13,18 @@ export function makeSendMessageController(): Controller {
   const messagesRepository = new PrismaMessagesRepository(messageTagsRepository)
   const templatesRepository = new PrismaTemplatesRepository()
   const contactsRepository = new PrismaContactsRepository()
-  const queueProvider = new BullProvider()
+  const sendersRepository = new PrismaSendersRepository()
+  const mailQueueProvider = new BullProvider()
 
   const sendMessage = new SendMessage(
     messagesRepository,
     messageTagsRepository,
     templatesRepository,
     contactsRepository,
-    queueProvider
+    sendersRepository,
+    mailQueueProvider
   )
+
   const sendMessageController = new SendMessageController(sendMessage)
 
   return sendMessageController

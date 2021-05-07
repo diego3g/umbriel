@@ -1,56 +1,34 @@
-import { v4 as uuid } from 'uuid'
-
-import { Either, left, right } from '@core/logic/Either'
+import { Entity } from '@core/domain/Entity'
+import { Either, right } from '@core/logic/Either'
 
 import { Email } from './email'
 import { InvalidEmailError } from './errors/InvalidEmailError'
 import { InvalidNameError } from './errors/InvalidNameError'
 import { Name } from './name'
 
-interface ISenderData {
+interface ISenderProps {
   name: Name
   email: Email
 }
 
-export interface ISenderCreateData {
-  name: string
-  email: string
-}
+export class Sender extends Entity<ISenderProps> {
+  get name() {
+    return this.props.name
+  }
 
-export class Sender {
-  public readonly id: string
-  public readonly name: Name
-  public readonly email: Email
+  get email() {
+    return this.props.email
+  }
 
-  private constructor({ name, email }: ISenderData, id?: string) {
-    this.name = name
-    this.email = email
-
-    this.id = id ?? uuid()
+  private constructor(props: ISenderProps, id?: string) {
+    super(props, id)
   }
 
   static create(
-    senderData: ISenderCreateData,
+    props: ISenderProps,
     id?: string
   ): Either<InvalidNameError | InvalidEmailError, Sender> {
-    const nameOrError = Name.create(senderData.name)
-    const emailOrError = Email.create(senderData.email)
-
-    if (nameOrError.isLeft()) {
-      return left(nameOrError.value)
-    }
-
-    if (emailOrError.isLeft()) {
-      return left(emailOrError.value)
-    }
-
-    const sender = new Sender(
-      {
-        name: nameOrError.value,
-        email: emailOrError.value,
-      },
-      id
-    )
+    const sender = new Sender(props, id)
 
     return right(sender)
   }

@@ -13,6 +13,7 @@ interface IMessageProps {
   subject: Subject
   body: Body
   templateId?: string
+  senderId: string
   tags?: MessageTags
   sentAt?: Date
   recipients?: Recipient[]
@@ -29,6 +30,10 @@ export class Message extends Entity<IMessageProps> {
 
   get templateId() {
     return this.props.templateId
+  }
+
+  get senderId() {
+    return this.props.senderId
   }
 
   get tags() {

@@ -2,7 +2,13 @@ const { exec } = require('child_process')
 const NodeEnvironment = require('jest-environment-node')
 const { Client } = require('pg')
 const util = require('util')
+const path = require('path')
 const { v4: uuid } = require('uuid')
+
+require('dotenv').config({
+  path: path.resolve(__dirname, '..', '.env.test')
+})
+
 
 const execSync = util.promisify(exec)
 
@@ -12,11 +18,11 @@ class PrismaTestEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config)
 
-    const dbUser = process.env.DB_USER ?? 'postgres'
-    const dbPass = process.env.DB_PASS ?? 'docker'
-    const dbHost = process.env.DB_HOST ?? 'localhost'
-    const dbPort = process.env.DB_PORT ?? 5432
-    const dbName = process.env.DB_NAME ?? 'umbriel-dev'
+    const dbUser = process.env.DATABASE_USER
+    const dbPass = process.env.DATABASE_PASS
+    const dbHost = process.env.DATABASE_HOST
+    const dbPort = process.env.DATABASE_PORT
+    const dbName = process.env.DATABASE_NAME
 
     this.schema = `test_${uuid()}`
     this.connectionString = `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?schema=${this.schema}`

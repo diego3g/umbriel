@@ -1,5 +1,12 @@
+import { SyncQueueProvider } from '@infra/providers/implementations/queue/SyncQueueProvider'
+import { IMailQueueProvider } from '@infra/providers/models/IMailQueueProvider'
 import { MessageTag } from '@modules/broadcasting/domain/message/messageTag'
 import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { Email } from '@modules/senders/domain/sender/email'
+import { Name } from '@modules/senders/domain/sender/name'
+import { Sender } from '@modules/senders/domain/sender/sender'
+import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
+import { ISendersRepository } from '@modules/senders/repositories/ISendersRepository'
 import { Tag } from '@modules/subscriptions/domain/tag/tag'
 import { Title as TagTitle } from '@modules/subscriptions/domain/tag/title'
 import { InMemoryContactsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryContactsRepository'
@@ -12,7 +19,6 @@ import { Content } from '../../domain/template/content'
 import { Template } from '../../domain/template/template'
 import { Title } from '../../domain/template/title'
 import { InMemoryMessagesRepository } from '../../repositories/in-memory/InMemoryMessagesRepository'
-import { InMemoryRecipientsRepository } from '../../repositories/in-memory/InMemoryRecipientsRepository'
 import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemoryTemplatesRepository'
 import { InvalidMessageError } from './errors/InvalidMessageError'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
@@ -23,7 +29,8 @@ let messageTagsRepository: InMemoryMessageTagsRepository
 let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
 let contactsRepository: InMemoryContactsRepository
-let recipientsRepository: InMemoryRecipientsRepository
+let sendersRepository: ISendersRepository
+let mailQueueProvider: IMailQueueProvider
 let sendMessage: SendMessage
 
 const subject = Subject.create('A new message').value as Subject
@@ -38,21 +45,30 @@ describe('Send Message', () => {
     messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
     templatesRepository = new InMemoryTemplatesRepository()
     contactsRepository = new InMemoryContactsRepository()
-    recipientsRepository = new InMemoryRecipientsRepository()
+    sendersRepository = new InMemorySendersRepository()
+    mailQueueProvider = new SyncQueueProvider()
 
     sendMessage = new SendMessage(
       messagesRepository,
       messageTagsRepository,
       templatesRepository,
       contactsRepository,
-      recipientsRepository
+      sendersRepository,
+      mailQueueProvider
     )
   })
-
   it('should be able to send a message without template', async () => {
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
     const messageOrError = Message.create({
       subject,
       body,
+      senderId: sender.id,
     })
 
     const message = messageOrError.value as Message
@@ -88,10 +104,18 @@ describe('Send Message', () => {
 
     await templatesRepository.create(template)
 
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
     const messageOrError = Message.create({
       subject,
       body,
       templateId: template.id,
+      senderId: sender.id,
     })
 
     const message = messageOrError.value as Message
@@ -122,10 +146,18 @@ describe('Send Message', () => {
   })
 
   it('should not be able to send message with template that does not exists', async () => {
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
     const messageOrError = Message.create({
       subject,
       body,
       templateId: 'invalid-template-id',
+      senderId: sender.id,
     })
 
     const message = messageOrError.value as Message
@@ -146,10 +178,18 @@ describe('Send Message', () => {
   })
 
   it('should not be able to send message that has already been sent', async () => {
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
     const messageOrError = Message.create({
       subject,
       body,
       templateId: 'invalid-template-id',
+      senderId: sender.id,
     })
 
     const message = messageOrError.value as Message

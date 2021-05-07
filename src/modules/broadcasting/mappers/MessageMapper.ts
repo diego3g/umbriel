@@ -22,6 +22,7 @@ export class MessageMapper {
         subject: subjectOrError.value,
         body: bodyOrError.value,
         templateId: raw.template_id,
+        senderId: raw.sender_id,
         sentAt: raw.sent_at,
       },
       raw.id
@@ -40,6 +41,7 @@ export class MessageMapper {
       subject: message.subject.value,
       body: message.body.value,
       template_id: message.templateId,
+      sender_id: message.senderId,
       sent_at: message.sentAt,
     }
   }

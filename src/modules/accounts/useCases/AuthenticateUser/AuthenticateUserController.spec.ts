@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid'
 
 import { app } from '@infra/http/app'
 import { prisma } from '@infra/prisma/client'
+import { redisConnection } from '@infra/redis/connection'
 
 describe('Authenticate User (e2e)', () => {
   beforeAll(async () => {
@@ -22,6 +23,7 @@ describe('Authenticate User (e2e)', () => {
   })
 
   afterAll(async () => {
+    redisConnection.disconnect()
     await prisma.$disconnect()
   })
 

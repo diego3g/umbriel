@@ -1,16 +1,16 @@
-import { Queue, Worker, Processor, QueueScheduler } from 'bullmq'
-import Redis, { Redis as RedisConnection } from 'ioredis'
+import { Queue, Worker, Processor, QueueScheduler, Job } from 'bullmq'
 
-import { IQueueProvider } from '../../models/IQueueProvider'
+import { redisConnection } from '@infra/redis/connection'
+import { IDeliverMessageJob } from '@modules/broadcasting/jobs/IDeliverMessageJob'
 
-export class BullProvider implements IQueueProvider {
-  private redisConnection: RedisConnection
+import { IMailQueueProvider } from '../../models/IMailQueueProvider'
+
+export class BullProvider implements IMailQueueProvider {
   private queue: Queue
 
   constructor() {
-    this.redisConnection = new Redis()
     this.queue = new Queue('mail-queue', {
-      connection: this.redisConnection,
+      connection: redisConnection,
       defaultJobOptions: {
         removeOnComplete: true,
         attempts: 5,
@@ -22,23 +22,21 @@ export class BullProvider implements IQueueProvider {
     })
   }
 
-  async addManyJobs(jobs: object[]): Promise<void> {
+  async addManyJobs(jobs: IDeliverMessageJob[]): Promise<void> {
     const parsedJobs = jobs.map(jobData => {
       return { name: 'message', data: jobData }
     })
 
     await this.queue.addBulk(parsedJobs)
-
-    console.log(`Added ${jobs.length} jobs to queue.`)
   }
 
-  async addJob(job: object): Promise<void> {
+  async addJob(job: IDeliverMessageJob): Promise<void> {
     await this.queue.add('message', job)
   }
 
-  process(processFunction: Processor<object>): void {
+  process(processFunction: Processor<IDeliverMessageJob>): void {
     new Worker('mail-queue', processFunction, {
-      connection: this.redisConnection,
+      connection: redisConnection,
       concurrency: 150,
       limiter: {
         max: 150,
@@ -47,7 +45,7 @@ export class BullProvider implements IQueueProvider {
     })
 
     new QueueScheduler('mail-queue', {
-      connection: this.redisConnection,
+      connection: redisConnection,
     })
   }
 }

@@ -1,13 +1,12 @@
 import { Either, left, right } from '@core/logic/Either'
-import { IQueueProvider } from '@infra/providers/models/IQueueProvider'
+import { IMailQueueProvider } from '@infra/providers/models/IMailQueueProvider'
 import { IMessageTagsRepository } from '@modules/broadcasting/repositories/IMessageTagsRepository'
+import { ISendersRepository } from '@modules/senders/repositories/ISendersRepository'
 
 import { IContactsRepository } from '../../../subscriptions/repositories/IContactsRepository'
 import { Body } from '../../domain/message/body'
 import { Message } from '../../domain/message/message'
-import { Recipient } from '../../domain/recipient/recipient'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
-import { IRecipientsRepository } from '../../repositories/IRecipientsRepository'
 import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
 import { InvalidMessageError } from './errors/InvalidMessageError'
 import { InvalidTemplateError } from './errors/InvalidTemplateError'
@@ -24,7 +23,8 @@ export class SendMessage {
     private messageTagsRepository: IMessageTagsRepository,
     private templatesRepository: ITemplatesRepository,
     private contactsRepository: IContactsRepository,
-    private queueProvider: IQueueProvider
+    private sendersRepository: ISendersRepository,
+    private mailQueueProvider: IMailQueueProvider
   ) {}
 
   async execute(messageId: string): Promise<SendMessageResponse> {
@@ -64,16 +64,26 @@ export class SendMessage {
     const tagsIds = messageTags.map(messageTag => messageTag.tagId)
     const contacts = await this.contactsRepository.findByTagsIds(tagsIds)
 
+    const sender = await this.sendersRepository.findById(message.senderId)
+
     const queueJobs = contacts.map(contact => {
       return {
-        contactId: contact.id,
-        messageId: message.id,
+        sender: {
+          name: sender.name.value,
+          email: sender.email.value,
+        },
+        recipient: {
+          name: contact.name.value,
+          email: contact.email.value,
+        },
+        message: {
+          subject: message.subject.value,
+          body: message.body.value,
+        },
       }
     })
 
-    await this.queueProvider.addManyJobs(queueJobs)
-
-    // await this.recipientsRepository.createMany(recipients)
+    await this.mailQueueProvider.addManyJobs(queueJobs)
 
     message.deliver([], messageBody)
 

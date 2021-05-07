@@ -6,10 +6,6 @@ import { MessageTagMapper } from '@modules/broadcasting/mappers/MessageTagMapper
 import { IMessageTagsRepository } from '../IMessageTagsRepository'
 
 export class PrismaMessageTagsRepository implements IMessageTagsRepository {
-  public items: MessageTag[] = []
-
-  constructor() {}
-
   async findManyByMessageId(messageId: string): Promise<MessageTag[]> {
     const messageTags = await prisma.messageTag.findMany({
       where: { message_id: messageId },

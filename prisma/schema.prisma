@@ -64,6 +64,8 @@ model Message {
   template_id String?
   recipients  Recipient[]
   tags        MessageTag[]
+  sender      Sender       @relation(fields: [sender_id], references: [id])
+  sender_id   String
 
   sent_at    DateTime?
   created_at DateTime  @default(now())
@@ -97,6 +99,18 @@ model Recipient {
   updated_at DateTime @default(now()) @updatedAt
 
   @@map("recipients")
+}
+
+model Sender {
+  id       String    @id
+  name     String
+  email    String    @unique
+  messages Message[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("senders")
 }
 
 model MessageTag {

@@ -5,8 +5,6 @@ import { Template } from '../../domain/template/template'
 import { ITemplatesRepository } from '../ITemplatesRepository'
 
 export class PrismaTemplatesRepository implements ITemplatesRepository {
-  constructor(public items: Template[] = []) {}
-
   async findById(id: string): Promise<Template> {
     const template = await prisma.template.findUnique({ where: { id } })
 

@@ -1,6 +1,5 @@
 import { Either, left, right } from '@core/logic/Either'
 import { MessageTag } from '@modules/broadcasting/domain/message/messageTag'
-import { ITagsRepository } from '@modules/subscriptions/repositories/ITagsRepository'
 
 import { Body } from '../../domain/message/body'
 import { InvalidBodyLengthError } from '../../domain/message/errors/InvalidBodyLengthError'
@@ -16,6 +15,7 @@ type CreateMessageRequest = {
   subject: string
   body: string
   templateId?: string
+  senderId: string
   tags: string[]
 }
 
@@ -27,14 +27,14 @@ type CreateMessageResponse = Either<
 export class CreateMessage {
   constructor(
     private messagesRepository: IMessagesRepository,
-    private templatesRepository: ITemplatesRepository,
-    private tagsRepository: ITagsRepository
+    private templatesRepository: ITemplatesRepository
   ) {}
 
   async execute({
     body,
     subject,
     templateId,
+    senderId,
     tags,
   }: CreateMessageRequest): Promise<CreateMessageResponse> {
     const subjectOrError = Subject.create(subject)
@@ -63,6 +63,7 @@ export class CreateMessage {
     const messageOrError = Message.create({
       subject: subjectOrError.value,
       body: bodyOrError.value,
+      senderId,
       templateId,
     })
 

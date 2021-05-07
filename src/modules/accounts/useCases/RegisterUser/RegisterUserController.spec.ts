@@ -6,9 +6,11 @@ import request from 'supertest'
 
 import { app } from '@infra/http/app'
 import { prisma } from '@infra/prisma/client'
+import { redisConnection } from '@infra/redis/connection'
 
 describe('Register User (e2e)', () => {
   afterAll(async () => {
+    redisConnection.disconnect()
     await prisma.$disconnect()
   })
 
