@@ -2,13 +2,16 @@ import { Either, left, right } from '@core/logic/Either'
 
 import { InvalidTypeError } from './errors/InvalidTypeError'
 
-export type ValidEventTypes =
-  | 'deliver'
-  | 'open'
-  | 'click'
-  | 'bounce'
-  | 'complaint'
-  | 'reject'
+const validEventTypes = [
+  'DELIVER',
+  'OPEN',
+  'CLICK',
+  'BOUNCE',
+  'COMPLAINT',
+  'REJECT',
+] as const
+
+export type ValidEventTypes = typeof validEventTypes[number]
 
 export class Type {
   private readonly type: ValidEventTypes
@@ -22,15 +25,6 @@ export class Type {
   }
 
   static validate(type: ValidEventTypes): boolean {
-    const validEventTypes = [
-      'deliver',
-      'open',
-      'click',
-      'bounce',
-      'complaint',
-      'reject',
-    ]
-
     if (!validEventTypes.includes(type)) {
       return false
     }

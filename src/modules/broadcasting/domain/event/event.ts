@@ -6,12 +6,17 @@ import { Type } from './type'
 
 interface IEventProps {
   type: Type
-  meta?: string
+  recipientId: string
+  meta?: any
 }
 
 export class Event extends Entity<IEventProps> {
   get type() {
     return this.props.type
+  }
+
+  get recipientId() {
+    return this.props.recipientId
   }
 
   get meta() {

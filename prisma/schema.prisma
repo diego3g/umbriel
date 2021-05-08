@@ -74,9 +74,18 @@ model Message {
   @@map("messages")
 }
 
+enum EventType {
+  DELIVER
+  OPEN
+  CLICK
+  BOUNCE
+  COMPLAINT
+  REJECT
+}
+
 model Event {
   id           String    @id
-  type         String
+  type         EventType
   meta         Json?
   recipient    Recipient @relation(fields: [recipient_id], references: [id])
   recipient_id String
@@ -98,6 +107,7 @@ model Recipient {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
+  @@unique([message_id, contact_id])
   @@map("recipients")
 }
 

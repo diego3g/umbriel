@@ -20,13 +20,9 @@ export class PrismaMessageTagsRepository implements IMessageTagsRepository {
         .getNewItems()
         .map(messageTag => MessageTagMapper.toPersistence(messageTag))
 
-      await prisma.$transaction(
-        data.map(item => {
-          return prisma.messageTag.create({
-            data: item,
-          })
-        })
-      )
+      await prisma.messageTag.createMany({
+        data,
+      })
     }
 
     if (messageTags.getRemovedItems().length > 0) {
@@ -49,12 +45,8 @@ export class PrismaMessageTagsRepository implements IMessageTagsRepository {
       .getItems()
       .map(messageTag => MessageTagMapper.toPersistence(messageTag))
 
-    await prisma.$transaction(
-      data.map(item => {
-        return prisma.messageTag.create({
-          data: item,
-        })
-      })
-    )
+    await prisma.messageTag.createMany({
+      data,
+    })
   }
 }

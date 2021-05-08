@@ -1,83 +1,62 @@
 import { Either, left, right } from '@core/logic/Either'
 import { Event } from '@modules/broadcasting/domain/event/event'
-import { MessageTag } from '@modules/broadcasting/domain/message/messageTag'
+import { Type, ValidEventTypes } from '@modules/broadcasting/domain/event/type'
+import { Recipient } from '@modules/broadcasting/domain/recipient/recipient'
+import { IRecipientsRepository } from '@modules/broadcasting/repositories/IRecipientsRepository'
 
-import { Body } from '../../domain/message/body'
-import { Message } from '../../domain/message/message'
-import { Subject } from '../../domain/message/subject'
-import { IMessagesRepository } from '../../repositories/IMessagesRepository'
-import { ITemplatesRepository } from '../../repositories/ITemplatesRepository'
+import { InvalidEventError } from './errors/InvalidEventError'
 
 type RegisterEventRequest = {
-  subject: string
-  body: string
-  templateId?: string
-  senderId: string
-  tags: string[]
+  messageId: string
+  contactId: string
+  event: {
+    type: ValidEventTypes
+    meta?: any
+  }
 }
 
-type RegisterEventResponse = Either<void, Event>
+type RegisterEventResponse = Either<InvalidEventError, Event>
 
-export class CreateMessage {
-  constructor(
-    private messagesRepository: IMessagesRepository,
-    private templatesRepository: ITemplatesRepository
-  ) {}
+export class RegisterEvent {
+  constructor(private recipientsRepository: IRecipientsRepository) {}
 
   async execute({
-    body,
-    subject,
-    templateId,
-    senderId,
-    tags,
+    contactId,
+    messageId,
+    event,
   }: RegisterEventRequest): Promise<RegisterEventResponse> {
-    const subjectOrError = Subject.create(subject)
-    const bodyOrError = Body.create(body)
-
-    if (subjectOrError.isLeft()) {
-      return left(subjectOrError.value)
-    }
-
-    if (bodyOrError.isLeft()) {
-      return left(bodyOrError.value)
-    }
-
-    if (tags.length === 0) {
-      return left(new EmptyTagsError())
-    }
-
-    if (templateId) {
-      const templateExists = await this.templatesRepository.findById(templateId)
-
-      if (!templateExists) {
-        return left(new InvalidTemplateError())
-      }
-    }
-
-    const messageOrError = Message.create({
-      subject: subjectOrError.value,
-      body: bodyOrError.value,
-      senderId,
-      templateId,
+    let recipient = await this.recipientsRepository.findByMessageAndContactId({
+      contactId,
+      messageId,
     })
 
-    if (messageOrError.isLeft()) {
-      return left(messageOrError.value)
-    }
-
-    const message = messageOrError.value
-
-    const messageTags = tags.map(tagId => {
-      return MessageTag.create({
-        tagId,
-        messageId: message.id,
+    if (!recipient) {
+      recipient = Recipient.create({
+        contactId,
+        messageId,
       })
+    }
+
+    const eventTypeOrError = Type.create(event.type)
+
+    if (eventTypeOrError.isLeft()) {
+      return left(new InvalidEventError())
+    }
+
+    const incomingEventOrError = Event.create({
+      recipientId: recipient.id,
+      type: eventTypeOrError.value,
+      meta: event.meta,
     })
 
-    message.setTags(messageTags)
+    if (incomingEventOrError.isLeft()) {
+      return left(new InvalidEventError())
+    }
 
-    await this.messagesRepository.create(message)
+    recipient.addEvent(incomingEventOrError.value)
 
-    return right(message)
+    await this.recipientsRepository.saveWithEvents(recipient)
+
+    return right(incomingEventOrError.value)
   }
 }
