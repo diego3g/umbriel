@@ -1,4 +1,7 @@
 import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { Email } from '@modules/senders/domain/sender/email'
+import { Name } from '@modules/senders/domain/sender/name'
+import { Sender } from '@modules/senders/domain/sender/sender'
 import { Tag } from '@modules/subscriptions/domain/tag/tag'
 import { Title as TagTitle } from '@modules/subscriptions/domain/tag/title'
 import { InMemoryTagsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryTagsRepository'
@@ -20,6 +23,11 @@ let createMessage: CreateMessage
 const tagTitle = TagTitle.create('Tag 01').value as TagTitle
 const tag = Tag.create({ title: tagTitle }).value as Tag
 
+const sender = Sender.create({
+  name: Name.create('John Doe').value as Name,
+  email: Email.create('john.doe@example.com').value as Email,
+}).value as Sender
+
 describe('Create Message', () => {
   beforeEach(async () => {
     messageTagsRepository = new InMemoryMessageTagsRepository()
@@ -35,6 +43,7 @@ describe('Create Message', () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'A message body with valid length',
+      senderId: sender.id,
       tags: [tag.id],
     })
 
@@ -64,6 +73,7 @@ describe('Create Message', () => {
       subject: 'My new message',
       body: 'A message body with valid length',
       templateId: template.id,
+      senderId: sender.id,
       tags: [tag.id],
     })
 
@@ -80,6 +90,7 @@ describe('Create Message', () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'invalid',
+      senderId: sender.id,
       tags: [tag.id],
     })
 
@@ -91,6 +102,7 @@ describe('Create Message', () => {
       subject: 'My new message',
       body: 'A message body with valid length',
       templateId: 'invalid-template',
+      senderId: sender.id,
       tags: [tag.id],
     })
 
@@ -102,6 +114,7 @@ describe('Create Message', () => {
     const response = await createMessage.execute({
       subject: 'My new message',
       body: 'A message body with valid length',
+      senderId: sender.id,
       tags: [],
     })
 

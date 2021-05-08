@@ -10,6 +10,7 @@ describe('Message model', () => {
     const messageOrError = Message.create({
       subject,
       body,
+      senderId: 'sender-id',
     })
 
     expect(messageOrError.isRight()).toBeTruthy()
@@ -19,6 +20,7 @@ describe('Message model', () => {
     const messageOrError = Message.create({
       subject,
       body,
+      senderId: 'sender-id',
     })
 
     const message = messageOrError.value as Message
