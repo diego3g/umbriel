@@ -9,7 +9,14 @@ export const adaptMiddleware = (middleware: Middleware) => {
       ...(request.headers || {}),
     }
 
-    const httpResponse = await middleware.handle(requestData)
+    const httpResponse = await middleware.handle(requestData, request.body)
+
+    /**
+     * Not an error, but stop request process
+     */
+    if (httpResponse === false) {
+      return response.status(200).send()
+    }
 
     if (httpResponse.statusCode === 200) {
       Object.assign(request, httpResponse.body)

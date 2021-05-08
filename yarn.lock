@@ -725,6 +725,11 @@
     "@types/mime" "*"
     "@types/node" "*"
 
+"@types/sns-validator@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@types/sns-validator/-/sns-validator-0.3.0.tgz#0e9e2c1936751d8a2ce65b3e8c92232ec90d4f5b"
+  integrity sha512-vFyj79Ab4Lb/hIkc0UnYhnoTSHK+DxWPvbw/eHla4e1Sx+/2SjM3GNFuIxnsfp2Ir+9fbUsE4cu314++DxdQhA==
+
 "@types/stack-utils@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
@@ -5036,6 +5041,11 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
+
+sns-validator@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/sns-validator/-/sns-validator-0.3.4.tgz#a858be7c0bcdf0d68d6d992a521026e2c9bcf947"
+  integrity sha512-v2pDbfPW4qeUKssV9GbgbDf7XC3b9CG+0JTSATGYWKAo/2F7d0PBQJnSY5fpdryJyoquBkER647+7f/d+HR46A==
 
 source-map-resolve@^0.5.0:
   version "0.5.3"

@@ -1,5 +1,5 @@
 import { HttpResponse } from './HttpResponse'
 
-export interface Middleware<T = any> {
-  handle: (httpRequest: T) => Promise<HttpResponse>
+export interface Middleware<T = any, U = any> {
+  handle: (httpRequest: T, httpBody?: U) => Promise<HttpResponse | false>
 }

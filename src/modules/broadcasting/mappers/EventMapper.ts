@@ -14,7 +14,7 @@ export class EventMapper {
     const eventOrError = Event.create(
       {
         type: typeOrError.value,
-        recipient_id: raw.recipient_id,
+        recipientId: raw.recipient_id,
         meta: raw.meta,
       },
       raw.id

@@ -44,29 +44,10 @@ export class PrismaRecipientsRepository implements IRecipientsRepository {
         id: data.id,
         message_id: data.message_id,
         contact_id: data.contact_id,
-        events: {
-          connectOrCreate: eventsData.map(event => {
-            return {
-              where: {
-                id: event.id,
-              },
-              create: event,
-            }
-          }),
-        },
       },
-      update: {
-        events: {
-          connectOrCreate: eventsData.map(event => {
-            return {
-              where: {
-                id: event.id,
-              },
-              create: event,
-            }
-          }),
-        },
-      },
+      update: {},
     })
+
+    await prisma.event.createMany({ data: eventsData })
   }
 }
