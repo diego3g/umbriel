@@ -1,4 +1,4 @@
-import SES from 'aws-sdk/clients/ses'
+import SES, { SendEmailRequest } from 'aws-sdk/clients/ses'
 import { htmlToText } from 'html-to-text'
 
 import { IMailProvider, MailMessage } from '../../models/IMailProvider'
@@ -12,38 +12,44 @@ export class SESProvider implements IMailProvider {
     })
   }
 
-  async sendEmail(message: MailMessage): Promise<void> {
-    await this.client
-      .sendEmail({
-        Source: `${message.from.name} <${message.from.email}>`,
-        Destination: {
-          ToAddresses: [`${message.to.name} <${message.to.email}>`],
+  async sendEmail(
+    message: MailMessage,
+    meta?: Record<string, string>
+  ): Promise<void> {
+    const sendMailConfig = {
+      Source: `${message.from.name} <${message.from.email}>`,
+      Destination: {
+        ToAddresses: [`${message.to.name} <${message.to.email}>`],
+      },
+      Message: {
+        Subject: {
+          Data: message.subject,
         },
-        Message: {
-          Subject: {
-            Data: message.subject,
+        Body: {
+          Html: {
+            Data: message.body,
           },
-          Body: {
-            Html: {
-              Data: message.body,
-            },
-            Text: {
-              Data: htmlToText(message.body, {
-                ignoreImage: true,
-                preserveNewlines: true,
-                wordwrap: 120,
-              }),
-            },
+          Text: {
+            Data: htmlToText(message.body, {
+              ignoreImage: true,
+              preserveNewlines: true,
+              wordwrap: 120,
+            }),
           },
         },
-        // Tags: [
-        //   {
-        //     Name: 'identificator',
-        //     Value: message.to.replace('@', '').replace(/\./g, ''),
-        //   },
-        // ],
-        ConfigurationSetName: 'Umbriel',
+      },
+      ConfigurationSetName: 'Umbriel',
+    } as SendEmailRequest
+
+    if (meta) {
+      sendMailConfig.Tags = Object.keys(meta).map(key => {
+        return {
+          Name: key,
+          Value: meta[key],
+        }
       })
-      .promise()
+    }
+
+    await this.client.sendEmail(sendMailConfig).promise()
   }
 }

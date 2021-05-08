@@ -11,5 +11,5 @@ export interface MailMessage {
 }
 
 export interface IMailProvider {
-  sendEmail(message: MailMessage): Promise<void>
+  sendEmail(message: MailMessage, meta?: Record<string, unknown>): Promise<void>
 }

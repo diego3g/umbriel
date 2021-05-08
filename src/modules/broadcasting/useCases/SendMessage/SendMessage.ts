@@ -73,10 +73,12 @@ export class SendMessage {
           email: sender.email.value,
         },
         recipient: {
+          id: contact.id,
           name: contact.name.value,
           email: contact.email.value,
         },
         message: {
+          id: message.id,
           subject: message.subject.value,
           body: message.body.value,
         },

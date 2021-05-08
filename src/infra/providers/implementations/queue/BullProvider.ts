@@ -1,4 +1,4 @@
-import { Queue, Worker, Processor, QueueScheduler, Job } from 'bullmq'
+import { Queue, Worker, Processor, QueueScheduler } from 'bullmq'
 
 import { redisConnection } from '@infra/redis/connection'
 import { IDeliverMessageJob } from '@modules/broadcasting/jobs/IDeliverMessageJob'

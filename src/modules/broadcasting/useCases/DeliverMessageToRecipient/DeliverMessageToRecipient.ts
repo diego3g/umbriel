@@ -16,18 +16,24 @@ export class DeliverMessageToRecipient {
     sender,
   }: DeliverMessageToRecipientRequest): Promise<DeliverMessageToRecipientResponse> {
     try {
-      await this.mailProvider.sendEmail({
-        from: {
-          name: sender.name,
-          email: sender.email,
+      await this.mailProvider.sendEmail(
+        {
+          from: {
+            name: sender.name,
+            email: sender.email,
+          },
+          to: {
+            name: recipient.name,
+            email: recipient.email,
+          },
+          subject: message.subject,
+          body: message.body,
         },
-        to: {
-          name: recipient.name,
-          email: recipient.email,
-        },
-        subject: message.subject,
-        body: message.body,
-      })
+        {
+          messageId: message.id,
+          contactId: recipient.id,
+        }
+      )
 
       return right(null)
     } catch (err) {
