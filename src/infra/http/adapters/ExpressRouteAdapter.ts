@@ -7,6 +7,7 @@ export const adaptRoute = (controller: Controller) => {
     const requestData = {
       ...request.body,
       ...request.params,
+      ...request.query,
       userId: request.userId,
     }
 

@@ -44,11 +44,16 @@ describe('Send Message (e2e)', () => {
               create: {
                 id: uuid(),
                 title: 'New tag',
-                contacts: {
+                subscribers: {
                   create: {
                     id: uuid(),
-                    name: 'John doe',
-                    email: 'johndoe@example.com',
+                    contact: {
+                      create: {
+                        id: uuid(),
+                        name: 'John doe',
+                        email: 'johndoe@example.com',
+                      },
+                    },
                   },
                 },
               },

@@ -21,6 +21,7 @@ export class ContactMapper {
       {
         name: nameOrError.value,
         email: emailOrError.value,
+        createdAt: raw.created_at,
       },
       raw.id
     )
@@ -37,6 +38,7 @@ export class ContactMapper {
       id: contact.id,
       name: contact.name.value,
       email: contact.email.value,
+      created_at: contact.createdAt,
     }
   }
 }

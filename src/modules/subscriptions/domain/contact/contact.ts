@@ -11,6 +11,7 @@ interface IContactProps {
   name: Name
   email: Email
   tags?: Tag[]
+  createdAt?: Date
 }
 
 export class Contact extends Entity<IContactProps> {
@@ -24,6 +25,10 @@ export class Contact extends Entity<IContactProps> {
 
   get tags() {
     return this.props.tags
+  }
+
+  get createdAt() {
+    return this.props.createdAt
   }
 
   private constructor(props: IContactProps, id?: string) {
@@ -48,6 +53,7 @@ export class Contact extends Entity<IContactProps> {
       {
         ...props,
         tags: props.tags ?? [],
+        createdAt: props.createdAt ?? new Date(),
       },
       id
     )

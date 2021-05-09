@@ -1,5 +1,8 @@
 import { Contact } from '../../domain/contact/contact'
-import { IContactsRepository } from '../IContactsRepository'
+import {
+  ContactsSearchParams,
+  IContactsRepository,
+} from '../IContactsRepository'
 
 export class InMemoryContactsRepository implements IContactsRepository {
   constructor(public items: Contact[] = []) {}
@@ -20,6 +23,24 @@ export class InMemoryContactsRepository implements IContactsRepository {
     return this.items.filter(contact =>
       contact.tags.some(contactTag => tagIds.includes(contactTag.id))
     )
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: ContactsSearchParams): Promise<Contact[]> {
+    let contactList = this.items
+
+    if (query) {
+      contactList = this.items.filter(
+        contact =>
+          contact.name.value.includes(query) ||
+          contact.email.value.includes(query)
+      )
+    }
+
+    return contactList.slice((page - 1) * perPage, page * perPage)
   }
 
   async save(contact: Contact): Promise<void> {

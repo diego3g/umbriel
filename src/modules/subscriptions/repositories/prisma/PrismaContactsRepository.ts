@@ -2,7 +2,10 @@ import { prisma } from '@infra/prisma/client'
 import { ContactMapper } from '@modules/subscriptions/mappers/ContactMapper'
 
 import { Contact } from '../../domain/contact/contact'
-import { IContactsRepository } from '../IContactsRepository'
+import {
+  ContactsSearchParams,
+  IContactsRepository,
+} from '../IContactsRepository'
 
 export class PrismaContactsRepository implements IContactsRepository {
   async exists(email: string): Promise<boolean> {
@@ -26,15 +29,37 @@ export class PrismaContactsRepository implements IContactsRepository {
   async findByTagsIds(tagIds: string[]): Promise<Contact[]> {
     const contacts = await prisma.contact.findMany({
       where: {
-        tags: {
+        subscriptions: {
           some: {
-            id: {
+            tag_id: {
               in: tagIds,
             },
           },
         },
       },
     })
+
+    return contacts.map(contact => ContactMapper.toDomain(contact))
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: ContactsSearchParams): Promise<Contact[]> {
+    const queryPayload = {
+      take: perPage,
+      skip: (page - 1) * perPage,
+      where: {},
+    }
+
+    if (query) {
+      queryPayload.where = {
+        OR: [{ name: { contains: query } }, { email: { contains: query } }],
+      }
+    }
+
+    const contacts = await prisma.contact.findMany(queryPayload)
 
     return contacts.map(contact => ContactMapper.toDomain(contact))
   }

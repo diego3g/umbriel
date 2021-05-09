@@ -11,7 +11,10 @@ type SubscribeContactToTagRequest = {
   tagId: string
 }
 
-type SubscribeContactToTagResponse = Either<Error, Contact>
+type SubscribeContactToTagResponse = Either<
+  InvalidContactError | InvalidTagError,
+  Contact
+>
 
 export class SubscribeContactToTag {
   constructor(

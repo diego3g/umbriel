@@ -40,11 +40,16 @@ describe('Register Event (e2e)', () => {
               create: {
                 id: uuid(),
                 title: 'New tag',
-                contacts: {
+                subscribers: {
                   create: {
-                    id: contactId,
-                    name: 'John doe',
-                    email: 'johndoe@example.com',
+                    id: uuid(),
+                    contact: {
+                      create: {
+                        id: contactId,
+                        name: 'John doe',
+                        email: 'johndoe@example.com',
+                      },
+                    },
                   },
                 },
               },

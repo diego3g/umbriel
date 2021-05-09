@@ -7,8 +7,7 @@
 # Use Cases
 
 - [x] Authentication
-- [ ] Invite member
-- [ ] List contacts
+- [x] Search contacts
 - [ ] See contact details (History and events)
 - [ ] Create contact
 - [ ] Update contact
@@ -19,16 +18,22 @@
 - [x] Remove contact from tag
 - [ ] Import contact list
 - [ ] Create tag
-- [ ] List tags (how many subscribers)
+- [ ] Search tags (how many subscribers)
+- [ ] Search senders
 - [ ] Create sender (not validated)
+- [ ] Update senders
 - [ ] Remove sender
 - [x] Create message
 - [x] Send message
 - [x] Deliver message to recipient
 - [x] Register recipient event
-- [ ] List message templates
+- [ ] Search message templates
 - [ ] Create message templates
 - [ ] Update message templates
 - [ ] Delete message templates
+- [ ] Segments structure
 
+- [ ] Invite member
 - [ ] Permissions & Roles
+- [ ] Metrics & Graphs
+- [ ] Template variables
