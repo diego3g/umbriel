@@ -44,8 +44,6 @@ export class RegisterEventController implements Controller {
         },
       })
 
-      console.log(`registered ${data.eventType}`)
-
       if (result.isLeft()) {
         const error = result.value
 
@@ -54,8 +52,6 @@ export class RegisterEventController implements Controller {
         return ok()
       }
     } catch (err) {
-      console.log(err)
-
       return fail(err)
     }
   }

@@ -11,7 +11,9 @@ const validateSNSMessage = promisify(snsValidator.validate).bind(snsValidator)
 export class AmazonSNSValidatorMiddleware implements Middleware {
   async handle(_: any, body: any): Promise<HttpResponse | false> {
     try {
-      await validateSNSMessage(body)
+      if (process.env.NODE_ENV === 'production') {
+        await validateSNSMessage(body)
+      }
 
       switch (body.Type) {
         case 'SubscriptionConfirmation':

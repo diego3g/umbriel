@@ -2,7 +2,7 @@ import { Either, left, right } from '@core/logic/Either'
 
 import { InvalidTypeError } from './errors/InvalidTypeError'
 
-const validEventTypes = [
+export const validEventTypes = [
   'DELIVER',
   'OPEN',
   'CLICK',

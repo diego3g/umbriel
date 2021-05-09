@@ -18,9 +18,12 @@ describe('Recipient model', () => {
       contactId: 'fake-contact-id',
     })
 
-    const type = Type.create('deliver').value as Type
+    const type = Type.create('DELIVER').value as Type
 
-    const eventOrError = Event.create({ type })
+    const eventOrError = Event.create({
+      type,
+      recipientId: 'fake-recipient-id',
+    })
     const event = eventOrError.value as Event
 
     recipient.addEvent(event)
