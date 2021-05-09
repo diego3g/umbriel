@@ -32,10 +32,10 @@ model Template {
 }
 
 model Tag {
-  id       String       @id
-  title    String       @unique
-  contacts Contact[]
-  messages MessageTag[]
+  id          String         @id
+  title       String         @unique
+  subscribers Subscription[]
+  messages    MessageTag[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -44,16 +44,26 @@ model Tag {
 }
 
 model Contact {
-  id         String      @id
-  name       String?
-  email      String      @unique
-  recipients Recipient[]
-  tags       Tag[]
+  id            String         @id
+  name          String?
+  email         String         @unique
+  recipients    Recipient[]
+  subscriptions Subscription[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
   @@map("contacts")
+}
+
+model Subscription {
+  id         String  @id
+  contact    Contact @relation(fields: [contact_id], references: [id])
+  tag        Tag     @relation(fields: [tag_id], references: [id])
+  contact_id String
+  tag_id     String
+
+  @@map("subscriptions")
 }
 
 model Message {
