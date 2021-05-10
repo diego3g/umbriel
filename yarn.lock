@@ -725,7 +725,7 @@
     "@types/mime" "*"
     "@types/node" "*"
 
-"@types/sns-validator@^0.3.0":
+"@types/sns-validator@0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/sns-validator/-/sns-validator-0.3.0.tgz#0e9e2c1936751d8a2ce65b3e8c92232ec90d4f5b"
   integrity sha512-vFyj79Ab4Lb/hIkc0UnYhnoTSHK+DxWPvbw/eHla4e1Sx+/2SjM3GNFuIxnsfp2Ir+9fbUsE4cu314++DxdQhA==
@@ -4498,7 +4498,7 @@ pretty-format@^26.0.0, pretty-format@^26.6.2:
     ansi-styles "^4.0.0"
     react-is "^17.0.1"
 
-prisma@^2.22.1:
+prisma@2.22.1:
   version "2.22.1"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-2.22.1.tgz#884687a90c7b797b34c6110ea413049078c8da6e"
   integrity sha512-hwvCM3zyxgSda/+/p+GW7nz93jRebtMU01wAG7YVVnl0OKU+dpw1wPvPFmQRldkZHk8fTCleYmjc24WaSdVPZQ==
