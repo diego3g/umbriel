@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.2",
-    "@types/express": "4.17.11",
+    "@types/express": "4.17.12",
     "@types/html-to-text": "6.0.0",
     "@types/jest": "26.0.23",
     "@types/jsonwebtoken": "8.5.1",
