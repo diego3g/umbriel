@@ -9,7 +9,7 @@
 - [x] Authentication
 - [x] Search contacts
 - [ ] See contact details (History and events)
-- [ ] Create contact
+- [x] Create contact
 - [ ] Update contact
 - [ ] Remove contact
 - [ ] Delete contact (hard delete)
