@@ -46,7 +46,7 @@ export class CreateContact {
 
     const contact = contactOrError.value
 
-    await this.contactsRepository.create(contactOrError.value)
+    await this.contactsRepository.create(contact)
 
     return right(contact)
   }

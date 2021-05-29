@@ -17,7 +17,7 @@
 - [x] Add contact to tag
 - [x] Remove contact from tag
 - [ ] Import contact list
-- [ ] Create tag
+- [x] Create tag
 - [ ] Search tags (how many subscribers)
 - [ ] Search senders
 - [ ] Create sender (not validated)
