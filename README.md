@@ -28,7 +28,7 @@
 - [x] Deliver message to recipient
 - [x] Register recipient event
 - [ ] Search message templates
-- [ ] Create message templates
+- [x] Create message templates
 - [ ] Update message templates
 - [ ] Delete message templates
 - [ ] Segments structure
