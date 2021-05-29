@@ -1,7 +1,7 @@
 # Todo
 
 - [ ] Save only necessary data on events meta
-- [ ] Test modal factories
+- [ ] Create test model factories
 - [ ] Controller validations
 
 # Use Cases
@@ -31,9 +31,10 @@
 - [x] Create message templates
 - [ ] Update message templates
 - [ ] Delete message templates
-- [ ] Segments structure
 
 - [ ] Invite member
 - [ ] Permissions & Roles
 - [ ] Metrics & Graphs
 - [ ] Template variables
+
+- [ ] Segments structure
