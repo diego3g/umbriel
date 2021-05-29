@@ -122,10 +122,11 @@ model Recipient {
 }
 
 model Sender {
-  id       String    @id
-  name     String
-  email    String    @unique
-  messages Message[]
+  id           String    @id
+  name         String
+  email        String    @unique
+  is_validated Boolean   @default(false)
+  messages     Message[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

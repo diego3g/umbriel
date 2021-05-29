@@ -9,6 +9,7 @@ import { Name } from './name'
 interface ISenderProps {
   name: Name
   email: Email
+  isValidated?: boolean
 }
 
 export class Sender extends Entity<ISenderProps> {
@@ -20,6 +21,10 @@ export class Sender extends Entity<ISenderProps> {
     return this.props.email
   }
 
+  get isValidated() {
+    return this.props.isValidated
+  }
+
   private constructor(props: ISenderProps, id?: string) {
     super(props, id)
   }
@@ -28,7 +33,13 @@ export class Sender extends Entity<ISenderProps> {
     props: ISenderProps,
     id?: string
   ): Either<InvalidNameError | InvalidEmailError, Sender> {
-    const sender = new Sender(props, id)
+    const sender = new Sender(
+      {
+        ...props,
+        isValidated: props.isValidated || false,
+      },
+      id
+    )
 
     return right(sender)
   }

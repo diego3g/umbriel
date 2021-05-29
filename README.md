@@ -20,7 +20,7 @@
 - [x] Create tag
 - [ ] Search tags (how many subscribers)
 - [ ] Search senders
-- [ ] Create sender (not validated)
+- [x] Create sender (not validated)
 - [ ] Update senders
 - [ ] Remove sender
 - [x] Create message
