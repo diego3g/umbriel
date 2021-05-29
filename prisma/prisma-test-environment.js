@@ -2,13 +2,9 @@ const { exec } = require('child_process')
 const NodeEnvironment = require('jest-environment-node')
 const { Client } = require('pg')
 const util = require('util')
-const path = require('path')
 const { v4: uuid } = require('uuid')
 
-require('dotenv').config({
-  path: path.resolve(__dirname, '..', '.env.test')
-})
-
+require('dotenv-flow').config({ node_env: 'test', silent: true })
 
 const execSync = util.promisify(exec)
 

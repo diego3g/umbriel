@@ -1,3 +1,9 @@
+# Dependencies
 node_modules
-.env
+
+# Testing
 coverage
+
+# Environment
+.env.local
+.env.*.local

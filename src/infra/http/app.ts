@@ -1,7 +1,9 @@
-import 'dotenv/config'
+import { config } from 'dotenv-flow'
 import express from 'express'
 
-import { router } from './routes'
+config({ silent: true })
+
+import { router } from './routes' // eslint-disable-line
 
 const app = express()
 
