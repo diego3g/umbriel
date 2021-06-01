@@ -1,0 +1,22 @@
+/**
+ * @jest-environment ./prisma/prisma-test-environment.js
+ */
+
+import request from 'supertest'
+
+import { app } from '@infra/http/app'
+import { prisma } from '@infra/prisma/client'
+import { redisConnection } from '@infra/redis/connection'
+
+describe('{{ titleCase name }} (e2e)', () => {
+  afterAll(async () => {
+    redisConnection.disconnect()
+    await prisma.$disconnect()
+  })
+
+  it('should be able to {{ lowerCase name }}', async () => {
+    const response = await request(app).{{ lowerCase httpMethod }}('/{{ httpPath }}').send({})
+
+    expect(response.status).toBe(200)
+  })
+})

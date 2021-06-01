@@ -1,0 +1,29 @@
+import { Controller } from '@core/infra/Controller'
+import { HttpResponse, fail, ok, clientError } from '@core/infra/HttpResponse'
+
+import { {{ pascalCase name }} } from './{{ pascalCase name }}'
+
+type {{ pascalCase name }}ControllerRequest = {}
+
+export class {{ pascalCase name }}Controller implements Controller {
+  constructor(private {{ camelCase name }}: {{ pascalCase name }}) {}
+
+  async handle(params: {{ pascalCase name }}ControllerRequest): Promise<HttpResponse> {
+    try {
+      const result = await this.{{ camelCase name }}.execute({})
+
+      if (result.isLeft()) {
+        const error = result.value
+
+        switch (error.constructor) {
+          default:
+            return clientError(error)
+        }
+      } else {
+        return ok()
+      }
+    } catch (err) {
+      return fail(err)
+    }
+  }
+}

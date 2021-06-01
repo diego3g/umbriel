@@ -1,0 +1,13 @@
+import { Either, right } from '@core/logic/Either'
+
+type {{ pascalCase name }}Request = {}
+
+type {{ pascalCase name }}Response = Either<Error, null>
+
+export class {{ pascalCase name }} {
+  constructor() {}
+
+  async execute(params: {{ pascalCase name }}Request): Promise<{{ pascalCase name }}Response> {
+    return right(null)
+  }
+}

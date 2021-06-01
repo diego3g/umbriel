@@ -1,0 +1,15 @@
+import { {{ pascalCase name }} } from './{{ pascalCase name }}'
+
+let {{ camelCase name }}: {{ pascalCase name }}
+
+describe('{{ titleCase name }}', () => {
+  beforeEach(() => {
+    {{ camelCase name }} = new {{ pascalCase name }}()
+  })
+
+  it('should be able to {{ lowerCase name }}', async () => {
+    const response = await {{ camelCase name }}.execute({})
+
+    expect(response.isRight()).toBeTruthy()
+  })
+})

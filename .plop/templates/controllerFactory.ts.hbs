@@ -1,0 +1,10 @@
+import { Controller } from '@core/infra/Controller'
+import { {{ pascalCase name }} } from '@modules/{{ module }}/useCases/{{ pascalCase name }}/{{ pascalCase name }}'
+import { {{ pascalCase name }}Controller } from '@modules/{{ module }}/useCases/{{ pascalCase name }}/{{ pascalCase name }}Controller'
+
+export function make{{ pascalCase name }}Controller(): Controller {
+  const {{ camelCase name }} = new {{ pascalCase name }}()
+  const {{ camelCase name }}Controller = new {{ pascalCase name }}Controller({{ camelCase name }})
+
+  return {{ camelCase name }}Controller
+}
