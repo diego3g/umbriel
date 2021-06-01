@@ -5483,7 +5483,7 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-plop@^2.7.4:
+plop@2.7.4:
   version "2.7.4"
   resolved "https://registry.yarnpkg.com/plop/-/plop-2.7.4.tgz#835280aef3541102063b758f5116cce899e1c72b"
   integrity sha512-SaqN3mwug/Ur2RE/ryo05oLTLy+8qZGwosNt9JnrFWca+dLCsPJR1j2ZXwjrccmNu6LA7eB56lRyk/G0fKf9HA==

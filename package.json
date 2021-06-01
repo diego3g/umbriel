@@ -34,7 +34,7 @@
     "eslint-plugin-promise": "5.1.0",
     "jest": "27.0.1",
     "pg": "8.6.0",
-    "plop": "^2.7.4",
+    "plop": "2.7.4",
     "prettier": "2.3.0",
     "prisma": "2.23.0",
     "supertest": "6.1.3",
