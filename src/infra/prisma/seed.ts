@@ -22,7 +22,7 @@ async function main() {
       id: v4(),
       name: 'John Doe',
       email: 'johndoe@example.com',
-      tags: {
+      subscriptions: {
         connect: [
           {
             id: tag1.id,
@@ -40,7 +40,7 @@ async function main() {
       id: v4(),
       name: 'John Tag 01',
       email: 'johntag01@example.com',
-      tags: {
+      subscriptions: {
         connect: [
           {
             id: tag1.id,

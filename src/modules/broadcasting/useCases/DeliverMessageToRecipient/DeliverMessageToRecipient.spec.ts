@@ -1,5 +1,3 @@
-import { mocked } from 'ts-jest/utils'
-
 import { MailLogProvider } from '@infra/providers/implementations/mail/MailLogProvider'
 import { IMailProvider } from '@infra/providers/models/IMailProvider'
 
