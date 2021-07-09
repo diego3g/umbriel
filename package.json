@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/bcryptjs": "2.4.2",
     "@types/dotenv-flow": "3.1.0",
-    "@types/express": "4.17.12",
+    "@types/express": "4.17.13",
     "@types/html-to-text": "6.0.0",
     "@types/jest": "26.0.23",
     "@types/jsonwebtoken": "8.5.1",
