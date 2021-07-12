@@ -18,11 +18,11 @@
 - [x] Remove contact from tag
 - [ ] Import contact list
 - [x] Create tag
-- [ ] Search tags (how many subscribers)
+- [x] Search tags (how many subscribers)
 - [ ] Search senders
 - [x] Create sender (not validated)
-- [ ] Update senders
-- [ ] Remove sender
+- [ ] Update sender
+- [x] Remove sender
 - [x] Create message
 - [x] Send message
 - [x] Deliver message to recipient

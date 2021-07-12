@@ -1,8 +1,10 @@
 import { prisma } from '@infra/prisma/client'
+import { TagWithSubscribersCount } from '@modules/subscriptions/dtos/TagWithSubscribersCount'
 import { TagMapper } from '@modules/subscriptions/mappers/TagMapper'
+import { TagWithSubscribersMapper } from '@modules/subscriptions/mappers/TagWithSubscribersMapper'
 
 import { Tag } from '../../domain/tag/tag'
-import { ITagsRepository } from '../ITagsRepository'
+import { ITagsRepository, TagsSearchParams } from '../ITagsRepository'
 
 export class PrismaTagsRepository implements ITagsRepository {
   async exists(title: string): Promise<boolean> {
@@ -58,5 +60,36 @@ export class PrismaTagsRepository implements ITagsRepository {
     const data = TagMapper.toPersistence(tag)
 
     await prisma.tag.create({ data })
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: TagsSearchParams): Promise<TagWithSubscribersCount[]> {
+    const queryPayload = {
+      take: perPage,
+      skip: (page - 1) * perPage,
+      where: {},
+    }
+
+    if (query) {
+      queryPayload.where = {
+        title: { contains: query },
+      }
+    }
+
+    const tags = await prisma.tag.findMany({
+      ...queryPayload,
+      include: {
+        _count: {
+          select: {
+            subscribers: true,
+          },
+        },
+      },
+    })
+
+    return tags.map(tag => TagWithSubscribersMapper.toDto(tag))
   }
 }

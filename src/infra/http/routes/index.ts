@@ -5,6 +5,7 @@ import { eventsRouter } from './events.routes'
 import { messagesRouter } from './messages.routes'
 import { sendersRouter } from './senders.routes'
 import { sessionsRouter } from './sessions.routes'
+import { tagsRouter } from './tags.routes'
 import { usersRouter } from './users.routes'
 
 const router = Router()
@@ -15,5 +16,6 @@ router.use('/messages', messagesRouter)
 router.use('/events', eventsRouter)
 router.use('/contacts', contactsRouter)
 router.use('/senders', sendersRouter)
+router.use('/tags', tagsRouter)
 
 export { router }
