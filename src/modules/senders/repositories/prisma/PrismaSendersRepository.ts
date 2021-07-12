@@ -16,4 +16,10 @@ export class PrismaSendersRepository implements ISendersRepository {
 
     await prisma.sender.create({ data })
   }
+
+  async delete(id: string): Promise<void> {
+    await prisma.sender.delete({
+      where: { id },
+    })
+  }
 }

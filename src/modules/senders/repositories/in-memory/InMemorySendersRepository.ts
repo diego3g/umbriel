@@ -12,4 +12,8 @@ export class InMemorySendersRepository implements ISendersRepository {
   async create(sender: Sender): Promise<void> {
     this.items.push(sender)
   }
+
+  async delete(id: string): Promise<void> {
+    this.items = this.items.filter(item => item.id !== id)
+  }
 }
