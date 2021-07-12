@@ -891,10 +891,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ioredis@^4.22.2":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.26.1.tgz#761f1812c48a3ecfbd9d9ecd35c49849f8693e2e"
-  integrity sha512-k9f+bda6y0ZNrwUMNYI9mqIPqjPZ4Jqc+jTRTUyhFz8aD8cHQBk+uenTKCZj9RhdfrU4sSqrot5sn5LqkAHODw==
+"@types/ioredis@^4.26.4":
+  version "4.26.5"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.26.5.tgz#2e216efcb853eda3093a6e1f1fca489becf13b4c"
+  integrity sha512-aP/SUSFShzoVYcHHKKEq7+kQ5YaDsMRe64rcHCp+w4Unkfw2tico1vA6siPnMDe7+jIxuZRU/h8km6uZjEtswg==
   dependencies:
     "@types/node" "*"
 
@@ -1603,15 +1603,15 @@ buffer@4.9.2:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-bullmq@1.28.0:
-  version "1.28.0"
-  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-1.28.0.tgz#f90f30cb6a326cdcb5e34d3a72830e2a56315050"
-  integrity sha512-1EjaZTaurJ4E9FYrDEdEyuotfG8lAATignQrpl6VtXSaElwN9TWNQR2G1EwNq2X0TqFKHINqkW52z68v7ZG33Q==
+bullmq@1.38.1:
+  version "1.38.1"
+  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-1.38.1.tgz#91e5aa7a6fa48e75fd07e269214465feffe652d9"
+  integrity sha512-Te0vI3J2JKygCpAHe6jy7A9PCl8iTVogfjAir3P+dYQHm/eLQ3BcfXx2KM32Fo7FuRhznDqaN2VYVo3ebjosNg==
   dependencies:
-    "@types/ioredis" "^4.22.2"
+    "@types/ioredis" "^4.26.4"
     cron-parser "^2.7.3"
     get-port "^5.0.0"
-    ioredis "^4.25.0"
+    ioredis "^4.27.5"
     lodash "^4.17.21"
     semver "^6.3.0"
     tslib "^1.10.0"
@@ -3506,10 +3506,10 @@ ioredis@4.27.3:
     redis-parser "^3.0.0"
     standard-as-callback "^2.1.0"
 
-ioredis@^4.25.0:
-  version "4.27.2"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.27.2.tgz#6a79bca05164482da796f8fa010bccefd3bf4811"
-  integrity sha512-7OpYymIthonkC2Jne5uGWXswdhlua1S1rWGAERaotn0hGJWTSURvxdHA9G6wNbT/qKCloCja/FHsfKXW8lpTmg==
+ioredis@^4.27.5:
+  version "4.27.6"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.27.6.tgz#a53d427d3fe75fbd10ed7ad150ce00559df8dcf8"
+  integrity sha512-6W3ZHMbpCa8ByMyC1LJGOi7P2WiOKP9B3resoZOVLDhi+6dDBOW+KNsRq3yI36Hmnb2sifCxHX+YSarTeXh48A==
   dependencies:
     cluster-key-slot "^1.1.0"
     debug "^4.3.1"
