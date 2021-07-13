@@ -6,7 +6,10 @@ export class ValidatorCompositor implements Validator {
 
   validate(input: RegisterUserControllerRequest): Error {
     for (const validator of this.validators) {
-      return validator.validate(input)
+      const error = validator.validate(input)
+      if (error !== null) return error
     }
+
+    return null
   }
 }
