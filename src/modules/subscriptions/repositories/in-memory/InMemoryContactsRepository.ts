@@ -1,3 +1,5 @@
+import { ContactWithDetails } from '@modules/subscriptions/dtos/ContactWithDetails'
+
 import { Contact } from '../../domain/contact/contact'
 import {
   ContactsSearchParams,
@@ -13,6 +15,23 @@ export class InMemoryContactsRepository implements IContactsRepository {
 
   async findById(id: string): Promise<Contact> {
     return this.items.find(contact => contact.id === id)
+  }
+
+  async findByIdWithDetails(id: string): Promise<ContactWithDetails> {
+    const contact = this.items.find(contact => contact.id === id)
+
+    return {
+      id: contact.id,
+      name: contact.name.value,
+      email: contact.email.value,
+      subscriptions: contact.tags.map(tag => {
+        return {
+          id: tag.id,
+          tag: tag.title.value,
+        }
+      }),
+      messages: [],
+    }
   }
 
   async findByEmail(email: string): Promise<Contact> {

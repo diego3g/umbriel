@@ -1,39 +1,19 @@
-import { Tag as PersistenceTag } from '@prisma/client'
+import { Tag } from '@prisma/client'
 
-import { Tag } from '../domain/tag/tag'
-import { Title } from '../domain/tag/title'
+import { TagWithSubscribersCount } from '../dtos/TagWithSubscribersCount'
 
-type PersistenceRaw = PersistenceTag & {
+type PersistenceRaw = Tag & {
   _count: {
     subscribers: number
   }
 }
 
 export class TagWithSubscribersMapper {
-  static toDto(raw: PersistenceRaw) {
-    const titleOrError = Title.create(raw.title)
-
-    if (titleOrError.isLeft()) {
-      throw new Error('Title value is invalid.')
+  static toDto(raw: PersistenceRaw): TagWithSubscribersCount {
+    return {
+      id: raw.id,
+      title: raw.title,
+      subscribersCount: raw._count.subscribers,
     }
-
-    const tagOrError = Tag.create(
-      {
-        title: titleOrError.value,
-      },
-      raw.id
-    )
-
-    if (tagOrError.isRight()) {
-      const tag = tagOrError.value
-
-      return {
-        id: tag.id,
-        title: tag.title.value,
-        subscribersCount: raw._count.subscribers,
-      }
-    }
-
-    return null
   }
 }

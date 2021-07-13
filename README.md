@@ -8,7 +8,7 @@
 
 - [x] Authentication
 - [x] Search contacts
-- [ ] See contact details (History and events)
+- [x] See contact details (History and events)
 - [x] Create contact
 - [ ] Update contact
 - [ ] Remove contact

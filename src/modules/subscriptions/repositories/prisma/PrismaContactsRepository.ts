@@ -1,5 +1,7 @@
 import { prisma } from '@infra/prisma/client'
+import { ContactWithDetails } from '@modules/subscriptions/dtos/ContactWithDetails'
 import { ContactMapper } from '@modules/subscriptions/mappers/ContactMapper'
+import { ContactWithDetailsMapper } from '@modules/subscriptions/mappers/ContactWithDetailsMapper'
 
 import { Contact } from '../../domain/contact/contact'
 import {
@@ -18,6 +20,27 @@ export class PrismaContactsRepository implements IContactsRepository {
     const contact = await prisma.contact.findUnique({ where: { id } })
 
     return ContactMapper.toDomain(contact)
+  }
+
+  async findByIdWithDetails(id: string): Promise<ContactWithDetails> {
+    const contact = await prisma.contact.findUnique({
+      where: { id },
+      include: {
+        recipients: {
+          include: {
+            message: true,
+            events: true,
+          },
+        },
+        subscriptions: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    })
+
+    return ContactWithDetailsMapper.toDto(contact)
   }
 
   async findByEmail(email: string): Promise<Contact> {
