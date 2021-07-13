@@ -6,6 +6,7 @@ import {
   created,
   fail,
 } from '@core/infra/HttpResponse'
+import { Validator } from '@modules/accounts/validation/Validator'
 
 import { AccountAlreadyExistsError } from './errors/AccountAlreadyExistsError'
 import { RegisterUser } from './RegisterUser'
@@ -18,7 +19,10 @@ export type RegisterUserControllerRequest = {
 }
 
 export class RegisterUserController implements Controller {
-  constructor(private registerUser: RegisterUser) {}
+  constructor(
+    private readonly validator: Validator,
+    private registerUser: RegisterUser
+  ) {}
 
   async handle({
     name,
@@ -28,6 +32,16 @@ export class RegisterUserController implements Controller {
   }: RegisterUserControllerRequest): Promise<HttpResponse> {
     try {
       // TODO: Add validation
+      const error = this.validator.validate({
+        name,
+        email,
+        password,
+        password_confirmation,
+      })
+
+      if (error !== null) {
+        return clientError(error)
+      }
 
       const result = await this.registerUser.execute({
         name,
