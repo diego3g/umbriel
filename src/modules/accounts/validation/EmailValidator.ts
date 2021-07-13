@@ -4,6 +4,8 @@ import { Validator } from './Validator'
 export class EmailValidator implements Validator {
   validate(data: RegisterUserControllerRequest): Error {
     const email = data.email
+    if (!email) return new Error('Missing param: email')
+
     const pattern =
       /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
 

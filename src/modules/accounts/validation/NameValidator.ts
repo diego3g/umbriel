@@ -4,6 +4,7 @@ import { Validator } from './Validator'
 export class NameValidator implements Validator {
   validate(data: RegisterUserControllerRequest): Error {
     const { name } = data
+    if (!name) return new Error('Missing param: name')
 
     // review minimum name length (business rules)
     // add a maximum name length if any

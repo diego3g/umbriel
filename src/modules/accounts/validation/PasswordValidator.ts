@@ -4,6 +4,7 @@ import { Validator } from './Validator'
 export class PasswordValidator implements Validator {
   validate(data: RegisterUserControllerRequest): Error {
     const { password, password_confirmation } = data
+    if (!password) return new Error('Missing param: password')
 
     // review minimum password length (business rules)
     // add a maximum password length if any
