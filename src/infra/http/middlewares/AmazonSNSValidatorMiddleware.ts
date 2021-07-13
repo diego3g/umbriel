@@ -8,6 +8,8 @@ import { Middleware } from '@core/infra/Middleware'
 const snsValidator = new SNSValidator()
 const validateSNSMessage = promisify(snsValidator.validate).bind(snsValidator)
 
+const promiseRequest = promisify(request)
+
 export class AmazonSNSValidatorMiddleware implements Middleware {
   async handle(_: any, body: any): Promise<HttpResponse | false> {
     try {
@@ -18,7 +20,7 @@ export class AmazonSNSValidatorMiddleware implements Middleware {
       switch (body.Type) {
         case 'SubscriptionConfirmation':
         case 'UnsubscribeConfirmation':
-          await request(body.SubscribeURL)
+          await promiseRequest(body.SubscribeURL)
 
           return false
         default:
