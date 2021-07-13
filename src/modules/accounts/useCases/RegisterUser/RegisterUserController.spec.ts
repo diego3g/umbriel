@@ -36,6 +36,7 @@ describe('Register User (e2e)', () => {
       name: 'John Doe',
       email: 'john@doe.com',
       password: '123456',
+      password_confirmation: '123456',
     })
 
     expect(response.status).toBe(201)
