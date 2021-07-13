@@ -1,12 +1,16 @@
+import { InMemorySubscriptionsRepository } from '@modules/subscriptions/repositories/in-memory/InMemorySubscriptionsRepository'
+
 import { InMemoryContactsRepository } from '../../repositories/in-memory/InMemoryContactsRepository'
 import { CreateContact } from './CreateContact'
 
+let subscriptionsRepository: InMemorySubscriptionsRepository
 let contactsRepository: InMemoryContactsRepository
 let createContact: CreateContact
 
 describe('Create Contact', () => {
   beforeEach(async () => {
-    contactsRepository = new InMemoryContactsRepository()
+    subscriptionsRepository = new InMemorySubscriptionsRepository()
+    contactsRepository = new InMemoryContactsRepository(subscriptionsRepository)
     createContact = new CreateContact(contactsRepository)
   })
 

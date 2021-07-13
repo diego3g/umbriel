@@ -7,12 +7,16 @@ import { SendMessage } from '@modules/broadcasting/useCases/SendMessage/SendMess
 import { SendMessageController } from '@modules/broadcasting/useCases/SendMessage/SendMessageController'
 import { PrismaSendersRepository } from '@modules/senders/repositories/prisma/PrismaSendersRepository'
 import { PrismaContactsRepository } from '@modules/subscriptions/repositories/prisma/PrismaContactsRepository'
+import { PrismaSubscriptionsRepository } from '@modules/subscriptions/repositories/prisma/PrismaSubscriptionsRepository'
 
 export function makeSendMessageController(): Controller {
   const messageTagsRepository = new PrismaMessageTagsRepository()
   const messagesRepository = new PrismaMessagesRepository(messageTagsRepository)
   const templatesRepository = new PrismaTemplatesRepository()
-  const contactsRepository = new PrismaContactsRepository()
+  const prismaSubscriptionsRepository = new PrismaSubscriptionsRepository()
+  const contactsRepository = new PrismaContactsRepository(
+    prismaSubscriptionsRepository
+  )
   const sendersRepository = new PrismaSendersRepository()
   const mailQueueProvider = new BullProvider()
 

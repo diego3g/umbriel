@@ -1,24 +1,25 @@
 import { Email } from '@modules/subscriptions/domain/contact/email'
 import { Name } from '@modules/subscriptions/domain/contact/name'
 import { Title } from '@modules/subscriptions/domain/tag/title'
+import { InMemorySubscriptionsRepository } from '@modules/subscriptions/repositories/in-memory/InMemorySubscriptionsRepository'
 
 import { Contact } from '../../domain/contact/contact'
 import { Tag } from '../../domain/tag/tag'
-import { IContactsRepository } from '../../repositories/IContactsRepository'
 import { InMemoryContactsRepository } from '../../repositories/in-memory/InMemoryContactsRepository'
 import { InMemoryTagsRepository } from '../../repositories/in-memory/InMemoryTagsRepository'
-import { ITagsRepository } from '../../repositories/ITagsRepository'
 import { InvalidContactError } from './errors/InvalidContactError'
 import { InvalidTagError } from './errors/InvalidTagError'
 import { SubscribeContactToTag } from './SubscribeContactToTag'
 
-let contactsRepository: IContactsRepository
-let tagsRepository: ITagsRepository
+let subscriptionsRepository: InMemorySubscriptionsRepository
+let contactsRepository: InMemoryContactsRepository
+let tagsRepository: InMemoryTagsRepository
 let subscribeContactToTag: SubscribeContactToTag
 
 describe('Send Message', () => {
   beforeEach(() => {
-    contactsRepository = new InMemoryContactsRepository()
+    subscriptionsRepository = new InMemorySubscriptionsRepository()
+    contactsRepository = new InMemoryContactsRepository(subscriptionsRepository)
     tagsRepository = new InMemoryTagsRepository()
     subscribeContactToTag = new SubscribeContactToTag(
       contactsRepository,
@@ -34,6 +35,7 @@ describe('Send Message', () => {
       name,
       email,
     })
+
     const contact = contactOrError.value as Contact
 
     await contactsRepository.create(contact)
@@ -56,10 +58,20 @@ describe('Send Message', () => {
     const updatedContact = await contactsRepository.findById(contact.id)
 
     expect(response.isRight()).toBeTruthy()
-    expect(updatedContact.tags).toEqual(
+
+    expect(updatedContact.subscriptions.currentItems).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          id: tag.id,
+          tagId: tag.id,
+        }),
+      ])
+    )
+
+    expect(subscriptionsRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          contactId: contact.id,
+          tagId: tag.id,
         }),
       ])
     )

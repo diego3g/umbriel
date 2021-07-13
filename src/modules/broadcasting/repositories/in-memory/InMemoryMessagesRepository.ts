@@ -17,10 +17,13 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
     )
 
     this.items[messageIndex] = message
+
+    this.messageTagsRepository.save(message.tags)
   }
 
   async create(message: Message): Promise<void> {
     this.items.push(message)
+
     this.messageTagsRepository.create(message.tags)
   }
 }

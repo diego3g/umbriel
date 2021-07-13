@@ -1,4 +1,5 @@
 import { Either, left, right } from '@core/logic/Either'
+import { Subscription } from '@modules/subscriptions/domain/contact/subscription'
 
 import { Contact } from '../../domain/contact/contact'
 import { IContactsRepository } from '../../repositories/IContactsRepository'
@@ -38,7 +39,12 @@ export class SubscribeContactToTag {
       return left(new InvalidTagError())
     }
 
-    contact.subscribeToTag(tag)
+    const subscription = Subscription.create({
+      contactId,
+      tagId,
+    })
+
+    contact.subscribeToTag(subscription)
 
     await this.contactsRepository.save(contact)
 

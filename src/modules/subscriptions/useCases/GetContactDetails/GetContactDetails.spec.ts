@@ -2,15 +2,18 @@ import { Contact } from '@modules/subscriptions/domain/contact/contact'
 import { Email } from '@modules/subscriptions/domain/contact/email'
 import { Name } from '@modules/subscriptions/domain/contact/name'
 import { InMemoryContactsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryContactsRepository'
+import { InMemorySubscriptionsRepository } from '@modules/subscriptions/repositories/in-memory/InMemorySubscriptionsRepository'
 
 import { GetContactDetails } from './GetContactDetails'
 
 let getContactDetails: GetContactDetails
+let subscriptionsRepository: InMemorySubscriptionsRepository
 let contactsRepository: InMemoryContactsRepository
 
 describe('Get Contact Details', () => {
   beforeEach(() => {
-    contactsRepository = new InMemoryContactsRepository()
+    subscriptionsRepository = new InMemorySubscriptionsRepository()
+    contactsRepository = new InMemoryContactsRepository(subscriptionsRepository)
     getContactDetails = new GetContactDetails(contactsRepository)
   })
 

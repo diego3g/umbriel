@@ -1,20 +1,26 @@
 import { Either, left, right } from '@core/logic/Either'
+import { ISubscriptionsRepository } from '@modules/subscriptions/repositories/ISubscriptionsRepository'
 
 import { Contact } from '../../domain/contact/contact'
 import { IContactsRepository } from '../../repositories/IContactsRepository'
 import { ITagsRepository } from '../../repositories/ITagsRepository'
 import { InvalidContactError } from './errors/InvalidContactError'
 import { InvalidTagError } from './errors/InvalidTagError'
+import { NotSubscribedError } from './errors/NotSubscribedError'
 
 type UnsubscribeContactFromTagRequest = {
   contactId: string
   tagId: string
 }
 
-type UnsubscribeContactFromTagResponse = Either<Error, Contact>
+type UnsubscribeContactFromTagResponse = Either<
+  InvalidContactError | InvalidTagError | NotSubscribedError,
+  Contact
+>
 
 export class UnsubscribeContactFromTag {
   constructor(
+    private subscriptionsRepository: ISubscriptionsRepository,
     private contactsRepository: IContactsRepository,
     private tagsRepository: ITagsRepository
   ) {}
@@ -35,7 +41,18 @@ export class UnsubscribeContactFromTag {
       return left(new InvalidTagError())
     }
 
-    contact.unsubscribeFromTag(tag)
+    const subscription = await this.subscriptionsRepository.findByContactAndTag(
+      {
+        contactId,
+        tagId,
+      }
+    )
+
+    if (!subscription) {
+      return left(new NotSubscribedError())
+    }
+
+    contact.unsubscribeFromTag(subscription)
 
     await this.contactsRepository.save(contact)
 

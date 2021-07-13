@@ -1,16 +1,17 @@
 import { Entity } from '@core/domain/Entity'
 import { Either, right } from '@core/logic/Either'
 
-import { Tag } from '../tag/tag'
 import { Email } from './email'
 import { InvalidEmailError } from './errors/InvalidEmailError'
 import { InvalidNameError } from './errors/InvalidNameError'
 import { Name } from './name'
+import { Subscription } from './subscription'
+import { Subscriptions } from './subscriptions'
 
 interface IContactProps {
   name: Name
   email: Email
-  tags?: Tag[]
+  subscriptions?: Subscriptions
   createdAt?: Date
 }
 
@@ -23,8 +24,8 @@ export class Contact extends Entity<IContactProps> {
     return this.props.email
   }
 
-  get tags() {
-    return this.props.tags
+  get subscriptions() {
+    return this.props.subscriptions
   }
 
   get createdAt() {
@@ -35,14 +36,12 @@ export class Contact extends Entity<IContactProps> {
     super(props, id)
   }
 
-  public subscribeToTag(tag: Tag) {
-    this.tags.push(tag)
+  public subscribeToTag(subscription: Subscription) {
+    this.subscriptions.add(subscription)
   }
 
-  public unsubscribeFromTag(tag: Tag) {
-    const tagIndex = this.tags.findIndex(findTag => findTag.id !== tag.id)
-
-    this.tags.splice(tagIndex, 1)
+  public unsubscribeFromTag(subscription: Subscription) {
+    this.subscriptions.remove(subscription)
   }
 
   static create(
@@ -52,7 +51,7 @@ export class Contact extends Entity<IContactProps> {
     const contact = new Contact(
       {
         ...props,
-        tags: props.tags ?? [],
+        subscriptions: props.subscriptions ?? Subscriptions.create([]),
         createdAt: props.createdAt ?? new Date(),
       },
       id

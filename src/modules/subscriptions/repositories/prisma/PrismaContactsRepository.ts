@@ -8,8 +8,11 @@ import {
   ContactsSearchParams,
   IContactsRepository,
 } from '../IContactsRepository'
+import { ISubscriptionsRepository } from '../ISubscriptionsRepository'
 
 export class PrismaContactsRepository implements IContactsRepository {
+  constructor(private subscriptionsRepository: ISubscriptionsRepository) {}
+
   async exists(email: string): Promise<boolean> {
     const contact = await prisma.contact.findUnique({ where: { email } })
 
@@ -96,11 +99,15 @@ export class PrismaContactsRepository implements IContactsRepository {
       },
       data,
     })
+
+    await this.subscriptionsRepository.save(contact.subscriptions)
   }
 
   async create(contact: Contact): Promise<void> {
     const data = ContactMapper.toPersistence(contact)
 
     await prisma.contact.create({ data })
+
+    await this.subscriptionsRepository.create(contact.subscriptions)
   }
 }

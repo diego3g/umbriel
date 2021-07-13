@@ -1,17 +1,19 @@
 import { Email } from '@modules/subscriptions/domain/contact/email'
 import { Name } from '@modules/subscriptions/domain/contact/name'
+import { InMemorySubscriptionsRepository } from '@modules/subscriptions/repositories/in-memory/InMemorySubscriptionsRepository'
 
 import { Contact } from '../../domain/contact/contact'
-import { IContactsRepository } from '../../repositories/IContactsRepository'
 import { InMemoryContactsRepository } from '../../repositories/in-memory/InMemoryContactsRepository'
 import { SearchContacts } from './SearchContacts'
 
-let contactsRepository: IContactsRepository
+let subscriptionsRepository: InMemorySubscriptionsRepository
+let contactsRepository: InMemoryContactsRepository
 let searchContacts: SearchContacts
 
 describe('Search Contacts', () => {
   beforeEach(async () => {
-    contactsRepository = new InMemoryContactsRepository()
+    subscriptionsRepository = new InMemorySubscriptionsRepository()
+    contactsRepository = new InMemoryContactsRepository(subscriptionsRepository)
     searchContacts = new SearchContacts(contactsRepository)
 
     for (let i = 0; i < 20; i++) {

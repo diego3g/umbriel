@@ -64,6 +64,7 @@ model Subscription {
   contact_id String
   tag_id     String
 
+  @@unique([contact_id, tag_id])
   @@map("subscriptions")
 }
 

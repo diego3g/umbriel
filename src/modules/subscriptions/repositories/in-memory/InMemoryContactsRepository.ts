@@ -5,9 +5,12 @@ import {
   ContactsSearchParams,
   IContactsRepository,
 } from '../IContactsRepository'
+import { ISubscriptionsRepository } from '../ISubscriptionsRepository'
 
 export class InMemoryContactsRepository implements IContactsRepository {
-  constructor(public items: Contact[] = []) {}
+  public items: Contact[] = []
+
+  constructor(private subscriptionsRepository: ISubscriptionsRepository) {}
 
   async exists(email: string): Promise<boolean> {
     return this.items.some(contact => contact.email.value === email)
@@ -24,12 +27,7 @@ export class InMemoryContactsRepository implements IContactsRepository {
       id: contact.id,
       name: contact.name.value,
       email: contact.email.value,
-      subscriptions: contact.tags.map(tag => {
-        return {
-          id: tag.id,
-          tag: tag.title.value,
-        }
-      }),
+      subscriptions: [],
       messages: [],
     }
   }
@@ -40,7 +38,9 @@ export class InMemoryContactsRepository implements IContactsRepository {
 
   async findByTagsIds(tagIds: string[]): Promise<Contact[]> {
     return this.items.filter(contact =>
-      contact.tags.some(contactTag => tagIds.includes(contactTag.id))
+      contact.subscriptions.currentItems.some(subscription =>
+        tagIds.includes(subscription.tagId)
+      )
     )
   }
 
@@ -68,9 +68,13 @@ export class InMemoryContactsRepository implements IContactsRepository {
     )
 
     this.items[contactIndex] = contact
+
+    this.subscriptionsRepository.save(contact.subscriptions)
   }
 
   async create(contact: Contact): Promise<void> {
     this.items.push(contact)
+
+    this.subscriptionsRepository.create(contact.subscriptions)
   }
 }

@@ -10,6 +10,7 @@ import { ISendersRepository } from '@modules/senders/repositories/ISendersReposi
 import { Tag } from '@modules/subscriptions/domain/tag/tag'
 import { Title as TagTitle } from '@modules/subscriptions/domain/tag/title'
 import { InMemoryContactsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryContactsRepository'
+import { InMemorySubscriptionsRepository } from '@modules/subscriptions/repositories/in-memory/InMemorySubscriptionsRepository'
 
 import { Body } from '../../domain/message/body'
 import { Message } from '../../domain/message/message'
@@ -25,6 +26,7 @@ import { InvalidTemplateError } from './errors/InvalidTemplateError'
 import { MessageAlreadySentError } from './errors/MessageAlreadySentError'
 import { SendMessage } from './SendMessage'
 
+let subscriptionsRepository: InMemorySubscriptionsRepository
 let messageTagsRepository: InMemoryMessageTagsRepository
 let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
@@ -44,7 +46,8 @@ describe('Send Message', () => {
     messageTagsRepository = new InMemoryMessageTagsRepository()
     messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
     templatesRepository = new InMemoryTemplatesRepository()
-    contactsRepository = new InMemoryContactsRepository()
+    subscriptionsRepository = new InMemorySubscriptionsRepository()
+    contactsRepository = new InMemoryContactsRepository(subscriptionsRepository)
     sendersRepository = new InMemorySendersRepository()
     mailQueueProvider = new SyncQueueProvider()
 
