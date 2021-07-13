@@ -10,13 +10,13 @@ import { prisma } from '@infra/prisma/client'
 import { redisConnection } from '@infra/redis/connection'
 import { createAndAuthenticateUser } from '@test/factories/UserFactory'
 
-describe('Subscribe Contact To Tag (e2e)', () => {
+describe('Unsubscribe Contact From Tag (e2e)', () => {
   afterAll(async () => {
     redisConnection.disconnect()
     await prisma.$disconnect()
   })
 
-  it('should be able to subscribe a contact to a tag', async () => {
+  it('should be able to unsubscribe a contact from a tag', async () => {
     const {
       jwt: { token },
     } = createAndAuthenticateUser()
@@ -29,22 +29,26 @@ describe('Subscribe Contact To Tag (e2e)', () => {
         id: contactId,
         name: 'John Doe',
         email: 'john@doe.com',
-      },
-    })
-
-    await prisma.tag.create({
-      data: {
-        id: tagId,
-        title: 'Tag 01',
+        subscriptions: {
+          create: {
+            id: uuid(),
+            tag: {
+              create: {
+                id: tagId,
+                title: 'Tag 01',
+              },
+            },
+          },
+        },
       },
     })
 
     const response = await request(app)
-      .post(`/tags/${tagId}/subscribers`)
+      .delete(`/tags/${tagId}/subscribers/${contactId}`)
       .set('x-access-token', token)
-      .send({ contactId })
+      .send()
 
-    expect(response.status).toBe(201)
+    expect(response.status).toBe(200)
 
     const subscriptionInDatabase = await prisma.subscription.findUnique({
       where: {
@@ -55,6 +59,6 @@ describe('Subscribe Contact To Tag (e2e)', () => {
       },
     })
 
-    expect(subscriptionInDatabase).toBeTruthy()
+    expect(subscriptionInDatabase).toBeFalsy()
   })
 })
