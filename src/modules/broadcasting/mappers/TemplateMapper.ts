@@ -21,6 +21,7 @@ export class TemplateMapper {
       {
         title: titleOrError.value,
         content: contentOrError.value,
+        isDefault: raw.is_default,
       },
       raw.id
     )
@@ -37,6 +38,7 @@ export class TemplateMapper {
       id: template.id,
       title: template.title.value,
       content: template.content.value,
+      is_default: template.isDefault,
     }
   }
 }

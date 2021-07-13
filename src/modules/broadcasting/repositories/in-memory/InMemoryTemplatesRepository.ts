@@ -1,5 +1,8 @@
 import { Template } from '../../domain/template/template'
-import { ITemplatesRepository } from '../ITemplatesRepository'
+import {
+  ITemplatesRepository,
+  TemplatesSearchParams,
+} from '../ITemplatesRepository'
 
 export class InMemoryTemplatesRepository implements ITemplatesRepository {
   constructor(public items: Template[] = []) {}
@@ -18,5 +21,19 @@ export class InMemoryTemplatesRepository implements ITemplatesRepository {
 
   async create(template: Template): Promise<void> {
     this.items.push(template)
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: TemplatesSearchParams): Promise<Template[]> {
+    let tagList = this.items
+
+    if (query) {
+      tagList = this.items.filter(tag => tag.title.value.includes(query))
+    }
+
+    return tagList.slice((page - 1) * perPage, page * perPage)
   }
 }

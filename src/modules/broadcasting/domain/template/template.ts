@@ -9,6 +9,7 @@ import { Title } from './title'
 interface ITemplateProps {
   title: Title
   content: Content
+  isDefault?: boolean
 }
 
 export class Template extends Entity<ITemplateProps> {
@@ -20,6 +21,10 @@ export class Template extends Entity<ITemplateProps> {
     return this.props.content
   }
 
+  get isDefault() {
+    return this.props.isDefault
+  }
+
   private constructor(props: ITemplateProps, id?: string) {
     super(props, id)
   }
@@ -28,7 +33,13 @@ export class Template extends Entity<ITemplateProps> {
     props: ITemplateProps,
     id?: string
   ): Either<InvalidTitleLengthError | InvalidContentError, Template> {
-    const template = new Template(props, id)
+    const template = new Template(
+      {
+        ...props,
+        isDefault: props.isDefault ?? false,
+      },
+      id
+    )
 
     return right(template)
   }

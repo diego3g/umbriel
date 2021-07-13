@@ -2,7 +2,10 @@ import { prisma } from '@infra/prisma/client'
 import { TemplateMapper } from '@modules/broadcasting/mappers/TemplateMapper'
 
 import { Template } from '../../domain/template/template'
-import { ITemplatesRepository } from '../ITemplatesRepository'
+import {
+  ITemplatesRepository,
+  TemplatesSearchParams,
+} from '../ITemplatesRepository'
 
 export class PrismaTemplatesRepository implements ITemplatesRepository {
   async findById(id: string): Promise<Template> {
@@ -26,5 +29,29 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
     const data = TemplateMapper.toPersistence(template)
 
     await prisma.template.create({ data })
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: TemplatesSearchParams): Promise<Template[]> {
+    const queryPayload = {
+      take: perPage,
+      skip: (page - 1) * perPage,
+      where: {},
+    }
+
+    if (query) {
+      queryPayload.where = {
+        title: { contains: query },
+      }
+    }
+
+    const templates = await prisma.template.findMany({
+      ...queryPayload,
+    })
+
+    return templates.map(template => TemplateMapper.toDomain(template))
   }
 }

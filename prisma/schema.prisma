@@ -21,10 +21,11 @@ model User {
 }
 
 model Template {
-  id       String    @id
-  title    String    @unique
-  content  String
-  messages Message[]
+  id         String    @id
+  title      String    @unique
+  content    String
+  messages   Message[]
+  is_default Boolean   @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
