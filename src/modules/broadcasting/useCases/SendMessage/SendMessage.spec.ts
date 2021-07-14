@@ -277,8 +277,6 @@ describe('Send Message', () => {
 
     const response = await sendMessage.execute(message.id)
 
-    console.log(mailQueueProvider.jobs)
-
     expect(response.isRight()).toBeTruthy()
     expect(mailQueueProvider.jobs).toEqual([
       expect.objectContaining({

@@ -13,7 +13,7 @@
 - [ ] Update contact
 - [ ] Remove contact
 - [ ] Delete contact (hard delete)
-- [ ] Unsubscribe contact (unsubscribe from everything)
+- [x] Unsubscribe contact (unsubscribe from everything)
 - [ ] Block contact (unsubscribe and block new subscriptions)
 - [x] Add contact to tag
 - [x] Remove contact from tag

@@ -41,6 +41,10 @@ export class Contact extends Entity<IContactProps> {
     super(props, id)
   }
 
+  public unsubscribe() {
+    this.props.isUnsubscribed = true
+  }
+
   public subscribeToTag(subscription: Subscription) {
     this.subscriptions.add(subscription)
   }
