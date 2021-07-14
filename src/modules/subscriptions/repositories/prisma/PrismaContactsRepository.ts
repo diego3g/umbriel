@@ -52,9 +52,10 @@ export class PrismaContactsRepository implements IContactsRepository {
     return ContactMapper.toDomain(contact)
   }
 
-  async findByTagsIds(tagIds: string[]): Promise<Contact[]> {
+  async findSubscribedByTags(tagIds: string[]): Promise<Contact[]> {
     const contacts = await prisma.contact.findMany({
       where: {
+        is_unsubscribed: false,
         subscriptions: {
           some: {
             tag_id: {

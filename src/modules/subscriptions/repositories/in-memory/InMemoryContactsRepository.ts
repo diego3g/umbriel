@@ -36,12 +36,14 @@ export class InMemoryContactsRepository implements IContactsRepository {
     return this.items.find(contact => contact.email.value === email)
   }
 
-  async findByTagsIds(tagIds: string[]): Promise<Contact[]> {
-    return this.items.filter(contact =>
-      contact.subscriptions.currentItems.some(subscription =>
-        tagIds.includes(subscription.tagId)
+  async findSubscribedByTags(tagIds: string[]): Promise<Contact[]> {
+    return this.items.filter(contact => {
+      return (
+        contact.subscriptions.currentItems.some(subscription =>
+          tagIds.includes(subscription.tagId)
+        ) && contact.isUnsubscribed === false
       )
-    )
+    })
   }
 
   async search({

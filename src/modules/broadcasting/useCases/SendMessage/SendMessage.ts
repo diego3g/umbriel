@@ -62,7 +62,7 @@ export class SendMessage {
     )
 
     const tagsIds = messageTags.map(messageTag => messageTag.tagId)
-    const contacts = await this.contactsRepository.findByTagsIds(tagsIds)
+    const contacts = await this.contactsRepository.findSubscribedByTags(tagsIds)
 
     const sender = await this.sendersRepository.findById(message.senderId)
 

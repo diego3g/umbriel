@@ -46,11 +46,12 @@ model Tag {
 }
 
 model Contact {
-  id            String         @id
-  name          String?
-  email         String         @unique
-  recipients    Recipient[]
-  subscriptions Subscription[]
+  id              String         @id
+  name            String?
+  email           String         @unique
+  recipients      Recipient[]
+  subscriptions   Subscription[]
+  is_unsubscribed Boolean        @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

@@ -12,6 +12,7 @@ interface IContactProps {
   name: Name
   email: Email
   subscriptions?: Subscriptions
+  isUnsubscribed?: boolean
   createdAt?: Date
 }
 
@@ -26,6 +27,10 @@ export class Contact extends Entity<IContactProps> {
 
   get subscriptions() {
     return this.props.subscriptions
+  }
+
+  get isUnsubscribed() {
+    return this.props.isUnsubscribed
   }
 
   get createdAt() {
@@ -52,6 +57,7 @@ export class Contact extends Entity<IContactProps> {
       {
         ...props,
         subscriptions: props.subscriptions ?? Subscriptions.create([]),
+        isUnsubscribed: props.isUnsubscribed ?? false,
         createdAt: props.createdAt ?? new Date(),
       },
       id

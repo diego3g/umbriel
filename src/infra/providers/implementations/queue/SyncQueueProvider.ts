@@ -3,7 +3,7 @@ import { IDeliverMessageJob } from '@modules/broadcasting/jobs/IDeliverMessageJo
 import { IMailQueueProvider, Job } from '../../models/IMailQueueProvider'
 
 export class SyncQueueProvider implements IMailQueueProvider {
-  private jobs: IDeliverMessageJob[] = []
+  public jobs: IDeliverMessageJob[] = []
 
   async addManyJobs(jobs: IDeliverMessageJob[]): Promise<void> {
     this.jobs.push(...jobs)
