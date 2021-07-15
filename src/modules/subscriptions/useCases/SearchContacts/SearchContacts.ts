@@ -7,7 +7,10 @@ type SearchContactsRequest = {
   perPage?: number
 }
 
-type SearchContactsResponse = Contact[]
+type SearchContactsResponse = {
+  data: Contact[]
+  totalCount: number
+}
 
 export class SearchContacts {
   constructor(private contactsRepository: IContactsRepository) {}
@@ -17,12 +20,12 @@ export class SearchContacts {
     page = 1,
     perPage = 20,
   }: SearchContactsRequest): Promise<SearchContactsResponse> {
-    const contacts = await this.contactsRepository.search({
+    const { data, totalCount } = await this.contactsRepository.search({
       query,
       page,
       perPage,
     })
 
-    return contacts
+    return { data, totalCount }
   }
 }

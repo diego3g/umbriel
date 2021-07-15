@@ -7,12 +7,17 @@ export type ContactsSearchParams = {
   perPage: number
 }
 
+export type ContactsSearchResult = {
+  data: Contact[]
+  totalCount: number
+}
+
 export interface IContactsRepository {
   exists(email: string): Promise<boolean>
   findById(id: string): Promise<Contact>
   findByIdWithDetails(id: string): Promise<ContactWithDetails>
   findByEmail(email: string): Promise<Contact>
-  search(params: ContactsSearchParams): Promise<Contact[]>
+  search(params: ContactsSearchParams): Promise<ContactsSearchResult>
   findSubscribedByTags(tagIds: string[]): Promise<Contact[]>
   save(contact: Contact): Promise<void>
   create(contact: Contact): Promise<void>

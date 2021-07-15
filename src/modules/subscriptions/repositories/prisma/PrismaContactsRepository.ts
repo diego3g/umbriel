@@ -6,6 +6,7 @@ import { ContactWithDetailsMapper } from '@modules/subscriptions/mappers/Contact
 import { Contact } from '../../domain/contact/contact'
 import {
   ContactsSearchParams,
+  ContactsSearchResult,
   IContactsRepository,
 } from '../IContactsRepository'
 import { ISubscriptionsRepository } from '../ISubscriptionsRepository'
@@ -73,7 +74,7 @@ export class PrismaContactsRepository implements IContactsRepository {
     query,
     page,
     perPage,
-  }: ContactsSearchParams): Promise<Contact[]> {
+  }: ContactsSearchParams): Promise<ContactsSearchResult> {
     const queryPayload = {
       take: perPage,
       skip: (page - 1) * perPage,
@@ -88,7 +89,15 @@ export class PrismaContactsRepository implements IContactsRepository {
 
     const contacts = await prisma.contact.findMany(queryPayload)
 
-    return contacts.map(contact => ContactMapper.toDomain(contact))
+    const contactsCount = await prisma.contact.aggregate({
+      _count: true,
+      where: queryPayload.where,
+    })
+
+    return {
+      data: contacts.map(contact => ContactMapper.toDomain(contact)),
+      totalCount: contactsCount._count,
+    }
   }
 
   async save(contact: Contact): Promise<void> {

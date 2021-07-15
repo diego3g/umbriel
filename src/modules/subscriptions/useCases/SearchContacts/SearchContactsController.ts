@@ -18,13 +18,13 @@ export class SearchContactsController implements Controller {
     per_page,
   }: SearchContactsControllerRequest): Promise<HttpResponse> {
     try {
-      const result = await this.searchContacts.execute({
+      const { data, totalCount } = await this.searchContacts.execute({
         query,
         page: page ? Number(page) : undefined,
         perPage: per_page ? Number(per_page) : undefined,
       })
 
-      const contacts = result.map(contact => {
+      const contacts = data.map(contact => {
         return {
           id: contact.id,
           name: contact.name.value,
@@ -33,7 +33,10 @@ export class SearchContactsController implements Controller {
         }
       })
 
-      return ok(contacts)
+      return ok({
+        data: contacts,
+        totalCount,
+      })
     } catch (err) {
       return fail(err)
     }

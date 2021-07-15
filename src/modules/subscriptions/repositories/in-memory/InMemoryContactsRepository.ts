@@ -3,6 +3,7 @@ import { ContactWithDetails } from '@modules/subscriptions/dtos/ContactWithDetai
 import { Contact } from '../../domain/contact/contact'
 import {
   ContactsSearchParams,
+  ContactsSearchResult,
   IContactsRepository,
 } from '../IContactsRepository'
 import { ISubscriptionsRepository } from '../ISubscriptionsRepository'
@@ -50,7 +51,7 @@ export class InMemoryContactsRepository implements IContactsRepository {
     query,
     page,
     perPage,
-  }: ContactsSearchParams): Promise<Contact[]> {
+  }: ContactsSearchParams): Promise<ContactsSearchResult> {
     let contactList = this.items
 
     if (query) {
@@ -61,7 +62,10 @@ export class InMemoryContactsRepository implements IContactsRepository {
       )
     }
 
-    return contactList.slice((page - 1) * perPage, page * perPage)
+    return {
+      data: contactList.slice((page - 1) * perPage, page * perPage),
+      totalCount: contactList.length,
+    }
   }
 
   async save(contact: Contact): Promise<void> {

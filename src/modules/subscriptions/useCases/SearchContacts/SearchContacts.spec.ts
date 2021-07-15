@@ -29,25 +29,29 @@ describe('Search Contacts', () => {
   it('should be able to list contacts without search', async () => {
     const response = await searchContacts.execute({ query: '' })
 
-    expect(response.length).toEqual(20)
+    expect(response.data.length).toEqual(20)
+    expect(response.totalCount).toEqual(20)
   })
 
   it('should be able to search through contacts', async () => {
     const response = await searchContacts.execute({ query: 'Doe5' })
 
-    expect(response.length).toEqual(1)
-    expect(response[0].name.value).toEqual('John Doe5')
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].name.value).toEqual('John Doe5')
   })
 
   it('should be able to paginate through contacts', async () => {
     let response = await searchContacts.execute({ perPage: 10 })
 
-    expect(response.length).toEqual(10)
-    expect(response[0].name.value).toEqual('John Doe0')
+    expect(response.data.length).toEqual(10)
+    expect(response.totalCount).toEqual(20)
+    expect(response.data[0].name.value).toEqual('John Doe0')
 
     response = await searchContacts.execute({ perPage: 10, page: 2 })
 
-    expect(response.length).toEqual(10)
-    expect(response[0].name.value).toEqual('John Doe10')
+    expect(response.data.length).toEqual(10)
+    expect(response.totalCount).toEqual(20)
+    expect(response.data[0].name.value).toEqual('John Doe10')
   })
 })
