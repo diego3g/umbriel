@@ -20,7 +20,7 @@ export class PrismaSendersRepository implements ISendersRepository {
       where: { is_default: true },
     })
 
-    return SenderMapper.toDomain(sender)
+    return sender ? SenderMapper.toDomain(sender) : null
   }
 
   async search({

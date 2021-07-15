@@ -20,7 +20,7 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
       where: { is_default: true },
     })
 
-    return TemplateMapper.toDomain(template)
+    return template ? TemplateMapper.toDomain(template) : null
   }
 
   async save(template: Template): Promise<void> {
