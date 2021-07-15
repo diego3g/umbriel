@@ -25,6 +25,14 @@ export class Template extends Entity<ITemplateProps> {
     return this.props.isDefault
   }
 
+  public unsetAsDefault() {
+    this.props.isDefault = false
+  }
+
+  public setAsDefault() {
+    this.props.isDefault = true
+  }
+
   private constructor(props: ITemplateProps, id?: string) {
     super(props, id)
   }

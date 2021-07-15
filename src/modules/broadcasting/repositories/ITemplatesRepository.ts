@@ -8,6 +8,7 @@ export type TemplatesSearchParams = {
 
 export interface ITemplatesRepository {
   findById(id: string): Promise<Template>
+  findDefaultTemplate(): Promise<Template>
   save(template: Template): Promise<void>
   create(template: Template): Promise<void>
   search(params: TemplatesSearchParams): Promise<Template[]>

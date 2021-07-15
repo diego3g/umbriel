@@ -11,6 +11,10 @@ export class InMemoryTemplatesRepository implements ITemplatesRepository {
     return this.items.find(template => template.id === id)
   }
 
+  async findDefaultTemplate(): Promise<Template> {
+    return this.items.find(template => template.isDefault === true)
+  }
+
   async save(template: Template): Promise<void> {
     const templateIndex = this.items.findIndex(
       findTemplate => findTemplate.id === template.id

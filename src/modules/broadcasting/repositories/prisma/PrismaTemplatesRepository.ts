@@ -14,6 +14,14 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
     return TemplateMapper.toDomain(template)
   }
 
+  async findDefaultTemplate(): Promise<Template> {
+    const template = await prisma.template.findFirst({
+      where: { is_default: true },
+    })
+
+    return TemplateMapper.toDomain(template)
+  }
+
   async save(template: Template): Promise<void> {
     const data = TemplateMapper.toPersistence(template)
 
