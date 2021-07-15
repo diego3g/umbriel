@@ -4,6 +4,7 @@ import { adaptMiddleware } from '../adapters/ExpressMiddlewareAdapter'
 import { adaptRoute } from '../adapters/ExpressRouteAdapter'
 import { makeCreateSenderController } from '../factories/controllers/CreateSenderControllerFactory'
 import { makeRemoveSenderController } from '../factories/controllers/RemoveSenderControllerFactory'
+import { makeSearchSendersController } from '../factories/controllers/SearchSendersControllerFactory'
 import { makeSetDefaultSenderController } from '../factories/controllers/SetDefaultSenderControllerFactory'
 import { makeEnsureAuthenticatedMiddleware } from '../factories/middlewares/EnsureAuthenticatedMiddlewareFactory'
 
@@ -11,6 +12,7 @@ const sendersRouter = express.Router()
 
 sendersRouter.use(adaptMiddleware(makeEnsureAuthenticatedMiddleware()))
 
+sendersRouter.get('/search', adaptRoute(makeSearchSendersController()))
 sendersRouter.post('/', adaptRoute(makeCreateSenderController()))
 sendersRouter.delete('/:id', adaptRoute(makeRemoveSenderController()))
 sendersRouter.patch(

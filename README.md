@@ -20,9 +20,9 @@
 - [ ] Import contact list
 - [x] Create tag
 - [x] Search tags (how many subscribers)
-- [ ] Search senders
+- [x] Search senders
 - [x] Create sender (not validated)
-- [ ] Set default sender
+- [x] Set default sender
 - [ ] Update sender
 - [x] Remove sender
 - [ ] Search messages
@@ -34,7 +34,7 @@
 - [x] Create message templates
 - [ ] Update message templates
 - [ ] Delete message templates
-- [ ] Set default template
+- [x] Set default template
 
 - [ ] Invite member
 - [ ] Permissions & Roles
