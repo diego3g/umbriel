@@ -1,6 +1,10 @@
 import { Sender } from '@modules/senders/domain/sender/sender'
 
-import { ISendersRepository, SendersSearchParams } from '../ISendersRepository'
+import {
+  ISendersRepository,
+  SendersSearchParams,
+  SendersSearchResult,
+} from '../ISendersRepository'
 
 export class InMemorySendersRepository implements ISendersRepository {
   constructor(public items: Sender[] = []) {}
@@ -17,7 +21,7 @@ export class InMemorySendersRepository implements ISendersRepository {
     query,
     page,
     perPage,
-  }: SendersSearchParams): Promise<Sender[]> {
+  }: SendersSearchParams): Promise<SendersSearchResult> {
     let senderList = this.items
 
     if (query) {
@@ -28,7 +32,10 @@ export class InMemorySendersRepository implements ISendersRepository {
       )
     }
 
-    return senderList.slice((page - 1) * perPage, page * perPage)
+    return {
+      data: senderList.slice((page - 1) * perPage, page * perPage),
+      totalCount: senderList.length,
+    }
   }
 
   async create(sender: Sender): Promise<void> {

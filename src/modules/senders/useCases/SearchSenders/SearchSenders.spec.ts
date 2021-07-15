@@ -26,25 +26,29 @@ describe('Search Senders', () => {
   it('should be able to list senders without search', async () => {
     const response = await searchSenders.execute({ query: '' })
 
-    expect(response.length).toEqual(20)
+    expect(response.data.length).toEqual(20)
+    expect(response.totalCount).toEqual(20)
   })
 
   it('should be able to search through senders', async () => {
     const response = await searchSenders.execute({ query: 'Doe5' })
 
-    expect(response.length).toEqual(1)
-    expect(response[0].name.value).toEqual('John Doe5')
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].name.value).toEqual('John Doe5')
   })
 
   it('should be able to paginate through senders', async () => {
     let response = await searchSenders.execute({ perPage: 10 })
 
-    expect(response.length).toEqual(10)
-    expect(response[0].name.value).toEqual('John Doe0')
+    expect(response.data.length).toEqual(10)
+    expect(response.totalCount).toEqual(20)
+    expect(response.data[0].name.value).toEqual('John Doe0')
 
     response = await searchSenders.execute({ perPage: 10, page: 2 })
 
-    expect(response.length).toEqual(10)
-    expect(response[0].name.value).toEqual('John Doe10')
+    expect(response.data.length).toEqual(10)
+    expect(response.totalCount).toEqual(20)
+    expect(response.data[0].name.value).toEqual('John Doe10')
   })
 })

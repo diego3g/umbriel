@@ -7,7 +7,10 @@ type SearchSendersRequest = {
   perPage?: number
 }
 
-type SearchSendersResponse = Sender[]
+type SearchSendersResponse = {
+  data: Sender[]
+  totalCount: number
+}
 
 export class SearchSenders {
   constructor(private sendersRepository: ISendersRepository) {}
@@ -17,12 +20,12 @@ export class SearchSenders {
     page = 1,
     perPage = 20,
   }: SearchSendersRequest): Promise<SearchSendersResponse> {
-    const contacts = await this.sendersRepository.search({
+    const { data, totalCount } = await this.sendersRepository.search({
       query,
       page,
       perPage,
     })
 
-    return contacts
+    return { data, totalCount }
   }
 }

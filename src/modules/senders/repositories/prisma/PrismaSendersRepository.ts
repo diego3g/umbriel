@@ -2,7 +2,11 @@ import { prisma } from '@infra/prisma/client'
 import { Sender } from '@modules/senders/domain/sender/sender'
 import { SenderMapper } from '@modules/senders/mappers/SenderMapper'
 
-import { ISendersRepository, SendersSearchParams } from '../ISendersRepository'
+import {
+  ISendersRepository,
+  SendersSearchParams,
+  SendersSearchResult,
+} from '../ISendersRepository'
 
 export class PrismaSendersRepository implements ISendersRepository {
   async findById(id: string): Promise<Sender> {
@@ -23,7 +27,7 @@ export class PrismaSendersRepository implements ISendersRepository {
     query,
     page,
     perPage,
-  }: SendersSearchParams): Promise<Sender[]> {
+  }: SendersSearchParams): Promise<SendersSearchResult> {
     const queryPayload = {
       take: perPage,
       skip: (page - 1) * perPage,
@@ -38,7 +42,15 @@ export class PrismaSendersRepository implements ISendersRepository {
 
     const senders = await prisma.sender.findMany(queryPayload)
 
-    return senders.map(sender => SenderMapper.toDomain(sender))
+    const sendersCount = await prisma.sender.aggregate({
+      _count: true,
+      where: queryPayload.where,
+    })
+
+    return {
+      data: senders.map(sender => SenderMapper.toDomain(sender)),
+      totalCount: sendersCount._count,
+    }
   }
 
   async create(sender: Sender): Promise<void> {

@@ -45,8 +45,9 @@ describe('Search Senders (e2e)', () => {
       .send()
 
     expect(response.status).toBe(200)
-    expect(response.body.length).toBe(1)
-    expect(response.body).toEqual(
+    expect(response.body.data.length).toBe(1)
+    expect(response.body.totalCount).toBe(1)
+    expect(response.body.data).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'John Doe 1',

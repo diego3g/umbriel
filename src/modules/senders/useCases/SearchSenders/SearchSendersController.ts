@@ -18,13 +18,13 @@ export class SearchSendersController implements Controller {
     per_page,
   }: SearchSendersControllerRequest): Promise<HttpResponse> {
     try {
-      const result = await this.searchSenders.execute({
+      const { data, totalCount } = await this.searchSenders.execute({
         query,
         page: page ? Number(page) : undefined,
         perPage: per_page ? Number(per_page) : undefined,
       })
 
-      const senders = result.map(sender => {
+      const senders = data.map(sender => {
         return {
           id: sender.id,
           name: sender.name.value,
@@ -34,7 +34,10 @@ export class SearchSendersController implements Controller {
         }
       })
 
-      return ok(senders)
+      return ok({
+        data: senders,
+        totalCount,
+      })
     } catch (err) {
       return fail(err)
     }

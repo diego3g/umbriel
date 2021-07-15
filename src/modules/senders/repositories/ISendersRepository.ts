@@ -6,10 +6,15 @@ export type SendersSearchParams = {
   perPage: number
 }
 
+export type SendersSearchResult = {
+  data: Sender[]
+  totalCount: number
+}
+
 export interface ISendersRepository {
   findById(id: string): Promise<Sender>
   findDefaultSender(): Promise<Sender>
-  search(params: SendersSearchParams): Promise<Sender[]>
+  search(params: SendersSearchParams): Promise<SendersSearchResult>
   create(sender: Sender): Promise<void>
   delete(id: string): Promise<void>
   save(sender: Sender): Promise<void>
