@@ -1,5 +1,9 @@
 import { Message } from '../../domain/message/message'
-import { IMessagesRepository } from '../IMessagesRepository'
+import {
+  IMessagesRepository,
+  MessagesSearchParams,
+  MessagesSearchResult,
+} from '../IMessagesRepository'
 import { IMessageTagsRepository } from '../IMessageTagsRepository'
 
 export class InMemoryMessagesRepository implements IMessagesRepository {
@@ -9,6 +13,25 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
 
   async findById(id: string): Promise<Message> {
     return this.items.find(message => message.id === id)
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: MessagesSearchParams): Promise<MessagesSearchResult> {
+    let messageList = this.items
+
+    if (query) {
+      messageList = this.items.filter(message =>
+        message.subject.value.includes(query)
+      )
+    }
+
+    return {
+      data: messageList.slice((page - 1) * perPage, page * perPage),
+      totalCount: messageList.length,
+    }
   }
 
   async save(message: Message): Promise<void> {

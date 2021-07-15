@@ -24,7 +24,7 @@
 - [x] Set default sender
 - [ ] Update sender
 - [x] Remove sender
-- [ ] Search messages
+- [x] Search messages
 - [x] Create message
 - [x] Send message
 - [x] Deliver message to recipient

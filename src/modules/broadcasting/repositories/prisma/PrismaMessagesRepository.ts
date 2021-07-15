@@ -2,7 +2,11 @@ import { prisma } from '@infra/prisma/client'
 
 import { Message } from '../../domain/message/message'
 import { MessageMapper } from '../../mappers/MessageMapper'
-import { IMessagesRepository } from '../IMessagesRepository'
+import {
+  IMessagesRepository,
+  MessagesSearchParams,
+  MessagesSearchResult,
+} from '../IMessagesRepository'
 import { IMessageTagsRepository } from '../IMessageTagsRepository'
 
 export class PrismaMessagesRepository implements IMessagesRepository {
@@ -21,6 +25,66 @@ export class PrismaMessagesRepository implements IMessagesRepository {
     }
 
     return MessageMapper.toDomain(message)
+  }
+
+  async getMessageStats(
+    messageId: string
+  ): Promise<{ OPEN: number; CLICK: number }> {
+    const stats = await prisma.event.groupBy({
+      by: ['type'],
+      _count: true,
+      where: {
+        type: {
+          in: ['OPEN', 'CLICK'],
+        },
+        recipient: {
+          message_id: messageId,
+        },
+      },
+    })
+
+    const statsParsed = stats.reduce((acc, item) => {
+      acc[item.type] = item._count
+
+      return acc
+    }, {}) as {
+      OPEN: number
+      CLICK: number
+    }
+
+    return statsParsed
+  }
+
+  async search({
+    query,
+    page,
+    perPage,
+  }: MessagesSearchParams): Promise<MessagesSearchResult> {
+    const queryPayload = {
+      take: perPage,
+      skip: (page - 1) * perPage,
+      where: {},
+    }
+
+    if (query) {
+      queryPayload.where = {
+        subject: { contains: query },
+      }
+    }
+
+    const messages = await prisma.message.findMany({
+      ...queryPayload,
+    })
+
+    const messagesCount = await prisma.message.aggregate({
+      _count: true,
+      where: queryPayload.where,
+    })
+
+    return {
+      data: messages.map(message => MessageMapper.toDomain(message)),
+      totalCount: messagesCount._count,
+    }
   }
 
   async save(message: Message): Promise<void> {
