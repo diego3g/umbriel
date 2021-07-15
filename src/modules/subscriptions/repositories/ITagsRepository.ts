@@ -7,6 +7,11 @@ export type TagsSearchParams = {
   perPage: number
 }
 
+export type TagsSearchResult = {
+  data: TagWithSubscribersCount[]
+  totalCount: number
+}
+
 export interface ITagsRepository {
   exists(title: string): Promise<boolean>
   findById(id: string): Promise<Tag>
@@ -14,5 +19,5 @@ export interface ITagsRepository {
   findByTitle(title: string): Promise<Tag>
   save(tag: Tag): Promise<void>
   create(tag: Tag): Promise<void>
-  search(params: TagsSearchParams): Promise<TagWithSubscribersCount[]>
+  search(params: TagsSearchParams): Promise<TagsSearchResult>
 }

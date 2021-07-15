@@ -7,7 +7,10 @@ type SearchTagsRequest = {
   perPage?: number
 }
 
-type SearchTagsResponse = TagWithSubscribersCount[]
+type SearchTagsResponse = {
+  data: TagWithSubscribersCount[]
+  totalCount: number
+}
 
 export class SearchTags {
   constructor(private tagsRepository: ITagsRepository) {}
@@ -17,12 +20,12 @@ export class SearchTags {
     page = 1,
     perPage = 20,
   }: SearchTagsRequest): Promise<SearchTagsResponse> {
-    const tags = await this.tagsRepository.search({
+    const { data, totalCount } = await this.tagsRepository.search({
       query,
       page,
       perPage,
     })
 
-    return tags
+    return { data, totalCount }
   }
 }

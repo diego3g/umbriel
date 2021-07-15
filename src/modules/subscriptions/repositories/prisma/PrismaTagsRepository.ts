@@ -1,10 +1,13 @@
 import { prisma } from '@infra/prisma/client'
-import { TagWithSubscribersCount } from '@modules/subscriptions/dtos/TagWithSubscribersCount'
 import { TagMapper } from '@modules/subscriptions/mappers/TagMapper'
 import { TagWithSubscribersMapper } from '@modules/subscriptions/mappers/TagWithSubscribersMapper'
 
 import { Tag } from '../../domain/tag/tag'
-import { ITagsRepository, TagsSearchParams } from '../ITagsRepository'
+import {
+  ITagsRepository,
+  TagsSearchParams,
+  TagsSearchResult,
+} from '../ITagsRepository'
 
 export class PrismaTagsRepository implements ITagsRepository {
   async exists(title: string): Promise<boolean> {
@@ -66,7 +69,7 @@ export class PrismaTagsRepository implements ITagsRepository {
     query,
     page,
     perPage,
-  }: TagsSearchParams): Promise<TagWithSubscribersCount[]> {
+  }: TagsSearchParams): Promise<TagsSearchResult> {
     const queryPayload = {
       take: perPage,
       skip: (page - 1) * perPage,
@@ -90,6 +93,14 @@ export class PrismaTagsRepository implements ITagsRepository {
       },
     })
 
-    return tags.map(tag => TagWithSubscribersMapper.toDto(tag))
+    const tagsCount = await prisma.tag.aggregate({
+      _count: true,
+      where: queryPayload.where,
+    })
+
+    return {
+      data: tags.map(tag => TagWithSubscribersMapper.toDto(tag)),
+      totalCount: tagsCount._count,
+    }
   }
 }

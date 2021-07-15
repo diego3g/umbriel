@@ -18,13 +18,16 @@ export class SearchTagsController implements Controller {
     per_page,
   }: SearchTagsControllerRequest): Promise<HttpResponse> {
     try {
-      const result = await this.searchTags.execute({
+      const { data, totalCount } = await this.searchTags.execute({
         query,
         page: page ? Number(page) : undefined,
         perPage: per_page ? Number(per_page) : undefined,
       })
 
-      return ok(result)
+      return ok({
+        data,
+        totalCount,
+      })
     } catch (err) {
       return fail(err)
     }

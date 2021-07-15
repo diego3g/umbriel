@@ -1,7 +1,9 @@
-import { TagWithSubscribersCount } from '@modules/subscriptions/dtos/TagWithSubscribersCount'
-
 import { Tag } from '../../domain/tag/tag'
-import { ITagsRepository, TagsSearchParams } from '../ITagsRepository'
+import {
+  ITagsRepository,
+  TagsSearchParams,
+  TagsSearchResult,
+} from '../ITagsRepository'
 
 export class InMemoryTagsRepository implements ITagsRepository {
   constructor(public items: Tag[] = []) {}
@@ -36,19 +38,22 @@ export class InMemoryTagsRepository implements ITagsRepository {
     query,
     page,
     perPage,
-  }: TagsSearchParams): Promise<TagWithSubscribersCount[]> {
+  }: TagsSearchParams): Promise<TagsSearchResult> {
     let tagList = this.items
 
     if (query) {
       tagList = this.items.filter(tag => tag.title.value.includes(query))
     }
 
-    return tagList.slice((page - 1) * perPage, page * perPage).map(tag => {
-      return {
-        id: tag.id,
-        title: tag.title.value,
-        subscribersCount: 0,
-      }
-    })
+    return {
+      data: tagList.slice((page - 1) * perPage, page * perPage).map(tag => {
+        return {
+          id: tag.id,
+          title: tag.title.value,
+          subscribersCount: 0,
+        }
+      }),
+      totalCount: tagList.length,
+    }
   }
 }
