@@ -21,10 +21,6 @@ export class SetDefaultTemplate {
       return left(new InvalidTemplateError())
     }
 
-    template.setAsDefault()
-
-    await this.templatesRepository.save(template)
-
     const currentDefaultTemplate =
       await this.templatesRepository.findDefaultTemplate()
 
@@ -33,6 +29,10 @@ export class SetDefaultTemplate {
 
       await this.templatesRepository.save(currentDefaultTemplate)
     }
+
+    template.setAsDefault()
+
+    await this.templatesRepository.save(template)
 
     return right(null)
   }

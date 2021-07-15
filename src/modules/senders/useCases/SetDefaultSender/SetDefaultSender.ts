@@ -21,10 +21,6 @@ export class SetDefaultSender {
       return left(new InvalidSenderError())
     }
 
-    sender.setAsDefault()
-
-    await this.sendersRepository.save(sender)
-
     const currentDefaultSender =
       await this.sendersRepository.findDefaultSender()
 
@@ -33,6 +29,10 @@ export class SetDefaultSender {
 
       await this.sendersRepository.save(currentDefaultSender)
     }
+
+    sender.setAsDefault()
+
+    await this.sendersRepository.save(sender)
 
     return right(null)
   }
