@@ -130,6 +130,7 @@ model Sender {
   name         String
   email        String    @unique
   is_validated Boolean   @default(false)
+  is_default   Boolean   @default(false)
   messages     Message[]
 
   created_at DateTime @default(now())

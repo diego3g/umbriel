@@ -10,6 +10,7 @@ interface ISenderProps {
   name: Name
   email: Email
   isValidated?: boolean
+  isDefault?: boolean
 }
 
 export class Sender extends Entity<ISenderProps> {
@@ -25,6 +26,18 @@ export class Sender extends Entity<ISenderProps> {
     return this.props.isValidated
   }
 
+  get isDefault() {
+    return this.props.isDefault
+  }
+
+  public unsetAsDefault() {
+    this.props.isDefault = false
+  }
+
+  public setAsDefault() {
+    this.props.isDefault = true
+  }
+
   private constructor(props: ISenderProps, id?: string) {
     super(props, id)
   }
@@ -37,6 +50,7 @@ export class Sender extends Entity<ISenderProps> {
       {
         ...props,
         isValidated: props.isValidated || false,
+        isDefault: props.isDefault || false,
       },
       id
     )

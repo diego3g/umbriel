@@ -11,10 +11,29 @@ export class PrismaSendersRepository implements ISendersRepository {
     return SenderMapper.toDomain(sender)
   }
 
+  async findDefaultSender(): Promise<Sender> {
+    const sender = await prisma.sender.findFirst({
+      where: { is_default: true },
+    })
+
+    return SenderMapper.toDomain(sender)
+  }
+
   async create(sender: Sender): Promise<void> {
     const data = SenderMapper.toPersistence(sender)
 
     await prisma.sender.create({ data })
+  }
+
+  async save(sender: Sender): Promise<void> {
+    const data = SenderMapper.toPersistence(sender)
+
+    await prisma.sender.update({
+      where: {
+        id: sender.id,
+      },
+      data,
+    })
   }
 
   async delete(id: string): Promise<void> {

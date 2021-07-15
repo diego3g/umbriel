@@ -14,7 +14,7 @@ describe('Set Default Template', () => {
     setDefaultTemplate = new SetDefaultTemplate(templatesRepository)
   })
 
-  it('should be able to setdefaulttemplate', async () => {
+  it('should be able to set default template', async () => {
     const defaultTemplate = Template.create({
       title: Title.create('Default template').value as Title,
       content: Content.create(

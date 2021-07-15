@@ -22,6 +22,7 @@ export class SenderMapper {
         name: nameOrError.value,
         email: emailOrError.value,
         isValidated: raw.is_validated,
+        isDefault: raw.is_default,
       },
       raw.id
     )
@@ -39,6 +40,7 @@ export class SenderMapper {
       name: sender.name.value,
       email: sender.email.value,
       is_validated: sender.isValidated,
+      is_default: sender.isDefault,
     }
   }
 }
