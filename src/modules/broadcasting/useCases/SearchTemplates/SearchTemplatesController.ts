@@ -18,13 +18,13 @@ export class SearchTemplatesController implements Controller {
     per_page,
   }: SearchTemplatesControllerRequest): Promise<HttpResponse> {
     try {
-      const result = await this.searchTemplates.execute({
+      const { data, totalCount } = await this.searchTemplates.execute({
         query,
         page: page ? Number(page) : undefined,
         perPage: per_page ? Number(per_page) : undefined,
       })
 
-      const templates = result.map(template => {
+      const templates = data.map(template => {
         return {
           id: template.id,
           title: template.title.value,
@@ -32,7 +32,10 @@ export class SearchTemplatesController implements Controller {
         }
       })
 
-      return ok(templates)
+      return ok({
+        data: templates,
+        totalCount,
+      })
     } catch (err) {
       return fail(err)
     }

@@ -7,7 +7,10 @@ type SearchTemplatesRequest = {
   perPage?: number
 }
 
-type SearchTemplatesResponse = Template[]
+type SearchTemplatesResponse = {
+  data: Template[]
+  totalCount: number
+}
 
 export class SearchTemplates {
   constructor(private templatesRepository: ITemplatesRepository) {}
@@ -17,12 +20,15 @@ export class SearchTemplates {
     page = 1,
     perPage = 20,
   }: SearchTemplatesRequest): Promise<SearchTemplatesResponse> {
-    const templates = await this.templatesRepository.search({
+    const { data, totalCount } = await this.templatesRepository.search({
       query,
       page,
       perPage,
     })
 
-    return templates
+    return {
+      data,
+      totalCount,
+    }
   }
 }

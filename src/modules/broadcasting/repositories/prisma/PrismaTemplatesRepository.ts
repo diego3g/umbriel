@@ -5,6 +5,7 @@ import { Template } from '../../domain/template/template'
 import {
   ITemplatesRepository,
   TemplatesSearchParams,
+  TemplatesSearchResult,
 } from '../ITemplatesRepository'
 
 export class PrismaTemplatesRepository implements ITemplatesRepository {
@@ -43,7 +44,7 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
     query,
     page,
     perPage,
-  }: TemplatesSearchParams): Promise<Template[]> {
+  }: TemplatesSearchParams): Promise<TemplatesSearchResult> {
     const queryPayload = {
       take: perPage,
       skip: (page - 1) * perPage,
@@ -60,6 +61,14 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
       ...queryPayload,
     })
 
-    return templates.map(template => TemplateMapper.toDomain(template))
+    const estimatedCount = await prisma.template.aggregate({
+      _count: true,
+      where: queryPayload.where,
+    })
+
+    return {
+      data: templates.map(template => TemplateMapper.toDomain(template)),
+      totalCount: estimatedCount._count,
+    }
   }
 }

@@ -11,7 +11,6 @@
 - [x] See contact details (History and events)
 - [x] Create contact
 - [ ] Update contact
-- [ ] Remove contact
 - [ ] Delete contact (hard delete)
 - [x] Unsubscribe contact (unsubscribe from everything)
 - [ ] Block contact (unsubscribe and block new subscriptions)

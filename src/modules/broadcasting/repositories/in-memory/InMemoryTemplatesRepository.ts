@@ -2,6 +2,7 @@ import { Template } from '../../domain/template/template'
 import {
   ITemplatesRepository,
   TemplatesSearchParams,
+  TemplatesSearchResult,
 } from '../ITemplatesRepository'
 
 export class InMemoryTemplatesRepository implements ITemplatesRepository {
@@ -31,13 +32,16 @@ export class InMemoryTemplatesRepository implements ITemplatesRepository {
     query,
     page,
     perPage,
-  }: TemplatesSearchParams): Promise<Template[]> {
+  }: TemplatesSearchParams): Promise<TemplatesSearchResult> {
     let tagList = this.items
 
     if (query) {
       tagList = this.items.filter(tag => tag.title.value.includes(query))
     }
 
-    return tagList.slice((page - 1) * perPage, page * perPage)
+    return {
+      data: tagList.slice((page - 1) * perPage, page * perPage),
+      totalCount: tagList.length,
+    }
   }
 }
