@@ -1,4 +1,9 @@
 import { prisma } from '@infra/prisma/client'
+import { MessageStats } from '@modules/broadcasting/dtos/MessageStats'
+import {
+  MessageStatsMapper,
+  MessageStatsRaw,
+} from '@modules/broadcasting/mappers/MessageStatsMapper'
 
 import { Message } from '../../domain/message/message'
 import { MessageMapper } from '../../mappers/MessageMapper'
@@ -27,15 +32,13 @@ export class PrismaMessagesRepository implements IMessagesRepository {
     return MessageMapper.toDomain(message)
   }
 
-  async getMessageStats(
-    messageId: string
-  ): Promise<{ OPEN: number; CLICK: number }> {
+  async getMessageStats(messageId: string): Promise<MessageStats> {
     const stats = await prisma.event.groupBy({
       by: ['type'],
       _count: true,
       where: {
         type: {
-          in: ['OPEN', 'CLICK'],
+          in: ['OPEN', 'CLICK', 'DELIVER'],
         },
         recipient: {
           message_id: messageId,
@@ -47,12 +50,9 @@ export class PrismaMessagesRepository implements IMessagesRepository {
       acc[item.type] = item._count
 
       return acc
-    }, {}) as {
-      OPEN: number
-      CLICK: number
-    }
+    }, {}) as MessageStatsRaw
 
-    return statsParsed
+    return MessageStatsMapper.toDto(statsParsed)
   }
 
   async search({

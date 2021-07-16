@@ -1,4 +1,5 @@
 import { Message } from '../domain/message/message'
+import { MessageStats } from '../dtos/MessageStats'
 
 export type MessagesSearchParams = {
   query?: string
@@ -16,4 +17,5 @@ export interface IMessagesRepository {
   save(message: Message): Promise<void>
   create(message: Message): Promise<void>
   search(params: MessagesSearchParams): Promise<MessagesSearchResult>
+  getMessageStats(messageId: string): Promise<MessageStats>
 }

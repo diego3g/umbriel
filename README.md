@@ -4,6 +4,12 @@
 - [ ] Create test model factories
 - [ ] Controller validations
 
+- [ ] Invite member
+- [ ] Permissions & Roles
+- [ ] Metrics & Graphs
+- [ ] Template variables
+- [ ] Segments structure
+
 # Use Cases
 
 - [x] Authentication
@@ -25,6 +31,7 @@
 - [ ] Update sender
 - [x] Remove sender
 - [x] Search messages
+- [x] Get message stats
 - [x] Create message
 - [x] Send message
 - [x] Deliver message to recipient
@@ -35,9 +42,3 @@
 - [ ] Delete message templates
 - [x] Set default template
 
-- [ ] Invite member
-- [ ] Permissions & Roles
-- [ ] Metrics & Graphs
-- [ ] Template variables
-
-- [ ] Segments structure
