@@ -1,7 +1,5 @@
-import { Email } from '../../domain/user/email'
-import { Name } from '../../domain/user/name'
-import { Password } from '../../domain/user/password'
-import { User } from '../../domain/user/user'
+import { createUser } from '@test/factories/UserFactory'
+
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
 import { AccountAlreadyExistsError } from './errors/AccountAlreadyExistsError'
@@ -38,17 +36,11 @@ describe('Register User', () => {
   })
 
   it('should not be able to register new user with existing email', async () => {
-    const name = Name.create('John Doe').value as Name
-    const email = Email.create('john@doe.com').value as Email
-    const password = Password.create('123456').value as Password
-
-    const user = User.create({
-      name,
-      email,
-      password,
+    const user = createUser({
+      email: 'john@doe.com',
     })
 
-    usersRepository.create(user.value as User)
+    usersRepository.create(user)
 
     const response = await registerUser.execute({
       name: 'John Doe',

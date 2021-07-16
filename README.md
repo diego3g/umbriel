@@ -4,6 +4,7 @@
 - [ ] Create test model factories
 - [ ] Controller validations
 
+- [ ] Import contact list
 - [ ] Invite member
 - [ ] Permissions & Roles
 - [ ] Metrics & Graphs
@@ -20,11 +21,11 @@
 - [ ] Delete contact (hard delete)
 - [x] Unsubscribe contact (unsubscribe from everything)
 - [ ] Resubscribe contact
+- [ ] Public route for unsubscribe (sent in emails)
 - [x] Block contact (unsubscribe and block new subscriptions)
 - [ ] Unblock contact
 - [x] Add contact to tag
 - [x] Remove contact from tag
-- [ ] Import contact list
 - [x] Create tag
 - [x] Search tags (how many subscribers)
 - [x] Search senders
