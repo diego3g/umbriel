@@ -52,6 +52,7 @@ model Contact {
   recipients      Recipient[]
   subscriptions   Subscription[]
   is_unsubscribed Boolean        @default(false)
+  is_blocked      Boolean        @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

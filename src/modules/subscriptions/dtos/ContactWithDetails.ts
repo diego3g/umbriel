@@ -2,6 +2,8 @@ export type ContactWithDetails = {
   id: string
   name: string
   email: string
+  is_unsubscribed: boolean
+  is_blocked: boolean
   subscriptions: Array<{
     id: string
     tag: string

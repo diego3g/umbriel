@@ -287,4 +287,70 @@ describe('Send Message', () => {
       }),
     ])
   })
+
+  it('should not send the message to blocked contacts', async () => {
+    const subscribedContact = Contact.create({
+      name: ContactName.create('John Subscribed').value as ContactName,
+      email: ContactEmail.create('johnsubscribed@example.com')
+        .value as ContactEmail,
+      isBlocked: false,
+    }).value as Contact
+
+    const unsubscribedContact = Contact.create({
+      name: ContactName.create('John Doe').value as ContactName,
+      email: ContactEmail.create('johndoe@example.com').value as ContactEmail,
+      isBlocked: true,
+    }).value as Contact
+
+    subscribedContact.subscribeToTag(
+      Subscription.create({
+        tagId: tag.id,
+        contactId: subscribedContact.id,
+      })
+    )
+
+    unsubscribedContact.subscribeToTag(
+      Subscription.create({
+        tagId: tag.id,
+        contactId: unsubscribedContact.id,
+      })
+    )
+
+    await contactsRepository.create(subscribedContact)
+    await contactsRepository.create(unsubscribedContact)
+
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
+    const message = Message.create({
+      subject,
+      body,
+      senderId: sender.id,
+    }).value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
+
+    await messagesRepository.create(message)
+
+    const response = await sendMessage.execute(message.id)
+
+    expect(response.isRight()).toBeTruthy()
+    expect(mailQueueProvider.jobs).toEqual([
+      expect.objectContaining({
+        recipient: expect.objectContaining({
+          name: 'John Subscribed',
+          email: 'johnsubscribed@example.com',
+        }),
+      }),
+    ])
+  })
 })

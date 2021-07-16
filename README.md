@@ -19,7 +19,9 @@
 - [ ] Update contact
 - [ ] Delete contact (hard delete)
 - [x] Unsubscribe contact (unsubscribe from everything)
-- [ ] Block contact (unsubscribe and block new subscriptions)
+- [ ] Resubscribe contact
+- [x] Block contact (unsubscribe and block new subscriptions)
+- [ ] Unblock contact
 - [x] Add contact to tag
 - [x] Remove contact from tag
 - [ ] Import contact list

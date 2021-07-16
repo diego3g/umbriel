@@ -57,6 +57,7 @@ export class PrismaContactsRepository implements IContactsRepository {
     const contacts = await prisma.contact.findMany({
       where: {
         is_unsubscribed: false,
+        is_blocked: false,
         subscriptions: {
           some: {
             tag_id: {

@@ -25,6 +25,8 @@ export class ContactWithDetailsMapper {
       id: raw.id,
       name: raw.name,
       email: raw.email,
+      is_unsubscribed: raw.is_unsubscribed,
+      is_blocked: raw.is_blocked,
       subscriptions: raw.subscriptions.map(subscription => {
         return {
           id: subscription.id,

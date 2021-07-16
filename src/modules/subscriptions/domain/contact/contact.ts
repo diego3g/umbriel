@@ -13,6 +13,7 @@ interface IContactProps {
   email: Email
   subscriptions?: Subscriptions
   isUnsubscribed?: boolean
+  isBlocked?: boolean
   createdAt?: Date
 }
 
@@ -33,12 +34,28 @@ export class Contact extends Entity<IContactProps> {
     return this.props.isUnsubscribed
   }
 
+  get isBlocked() {
+    return this.props.isBlocked
+  }
+
   get createdAt() {
     return this.props.createdAt
   }
 
+  get shouldReceiveMailing() {
+    return !this.isUnsubscribed && !this.isBlocked
+  }
+
   private constructor(props: IContactProps, id?: string) {
     super(props, id)
+  }
+
+  public unblock() {
+    this.props.isBlocked = false
+  }
+
+  public block() {
+    this.props.isBlocked = true
   }
 
   public unsubscribe() {
@@ -62,6 +79,7 @@ export class Contact extends Entity<IContactProps> {
         ...props,
         subscriptions: props.subscriptions ?? Subscriptions.create([]),
         isUnsubscribed: props.isUnsubscribed ?? false,
+        isBlocked: props.isBlocked ?? false,
         createdAt: props.createdAt ?? new Date(),
       },
       id

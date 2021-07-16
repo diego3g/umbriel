@@ -22,6 +22,7 @@ export class ContactMapper {
         name: nameOrError.value,
         email: emailOrError.value,
         isUnsubscribed: raw.is_unsubscribed,
+        isBlocked: raw.is_blocked,
         createdAt: raw.created_at,
       },
       raw.id
@@ -40,6 +41,7 @@ export class ContactMapper {
       name: contact.name.value,
       email: contact.email.value,
       is_unsubscribed: contact.isUnsubscribed,
+      is_blocked: contact.isBlocked,
       created_at: contact.createdAt,
     }
   }

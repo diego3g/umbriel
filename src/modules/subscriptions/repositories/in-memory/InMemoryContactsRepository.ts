@@ -28,6 +28,8 @@ export class InMemoryContactsRepository implements IContactsRepository {
       id: contact.id,
       name: contact.name.value,
       email: contact.email.value,
+      is_unsubscribed: contact.isUnsubscribed,
+      is_blocked: contact.isBlocked,
       subscriptions: [],
       messages: [],
     }
@@ -42,7 +44,9 @@ export class InMemoryContactsRepository implements IContactsRepository {
       return (
         contact.subscriptions.currentItems.some(subscription =>
           tagIds.includes(subscription.tagId)
-        ) && contact.isUnsubscribed === false
+        ) &&
+        contact.isUnsubscribed === false &&
+        contact.isBlocked === false
       )
     })
   }

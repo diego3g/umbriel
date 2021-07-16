@@ -2,6 +2,7 @@ import express from 'express'
 
 import { adaptMiddleware } from '../adapters/ExpressMiddlewareAdapter'
 import { adaptRoute } from '../adapters/ExpressRouteAdapter'
+import { makeBlockContactController } from '../factories/controllers/BlockContactControllerFactory'
 import { makeCreateContactController } from '../factories/controllers/CreateContactControllerFactory'
 import { makeGetContactDetailsController } from '../factories/controllers/GetContactDetailsControllerFactory'
 import { makeSearchContactsController } from '../factories/controllers/SearchContactsControllerFactory'
@@ -19,6 +20,11 @@ contactsRouter.get('/:id', adaptRoute(makeGetContactDetailsController()))
 contactsRouter.patch(
   '/:contactId/unsubscribe',
   adaptRoute(makeUnsubscribeContactController())
+)
+
+contactsRouter.patch(
+  '/:contactId/block',
+  adaptRoute(makeBlockContactController())
 )
 
 export { contactsRouter }
