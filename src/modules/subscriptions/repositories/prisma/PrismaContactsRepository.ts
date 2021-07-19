@@ -53,6 +53,24 @@ export class PrismaContactsRepository implements IContactsRepository {
     return ContactMapper.toDomain(contact)
   }
 
+  async countSubscribersByTags(tagsIds: string[]): Promise<number> {
+    const contacts = await prisma.contact.count({
+      where: {
+        is_unsubscribed: false,
+        is_blocked: false,
+        subscriptions: {
+          some: {
+            tag_id: {
+              in: tagsIds,
+            },
+          },
+        },
+      },
+    })
+
+    return contacts
+  }
+
   async findSubscribedByTags(tagIds: string[]): Promise<Contact[]> {
     const contacts = await prisma.contact.findMany({
       where: {

@@ -18,6 +18,7 @@ export interface IContactsRepository {
   findByIdWithDetails(id: string): Promise<ContactWithDetails>
   findByEmail(email: string): Promise<Contact>
   search(params: ContactsSearchParams): Promise<ContactsSearchResult>
+  countSubscribersByTags(tags: string[]): Promise<number>
   findSubscribedByTags(tagIds: string[]): Promise<Contact[]>
   save(contact: Contact): Promise<void>
   create(contact: Contact): Promise<void>

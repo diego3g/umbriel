@@ -39,6 +39,18 @@ export class InMemoryContactsRepository implements IContactsRepository {
     return this.items.find(contact => contact.email.value === email)
   }
 
+  async countSubscribersByTags(tagsIds: string[]): Promise<number> {
+    return this.items.filter(contact => {
+      return (
+        contact.subscriptions.currentItems.some(subscription =>
+          tagsIds.includes(subscription.tagId)
+        ) &&
+        contact.isUnsubscribed === false &&
+        contact.isBlocked === false
+      )
+    }).length
+  }
+
   async findSubscribedByTags(tagIds: string[]): Promise<Contact[]> {
     return this.items.filter(contact => {
       return (
