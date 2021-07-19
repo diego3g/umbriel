@@ -4,10 +4,8 @@ import { Body } from '@modules/broadcasting/domain/message/body'
 import { Message } from '@modules/broadcasting/domain/message/message'
 import { Subject } from '@modules/broadcasting/domain/message/subject'
 import { Recipient } from '@modules/broadcasting/domain/recipient/recipient'
-import { Content } from '@modules/broadcasting/domain/template/content'
 import { InMemoryMessagesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
-import { InMemoryRecipientsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryRecipientsRepository'
 
 import { GetMessageStats } from './GetMessageStats'
 
