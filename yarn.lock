@@ -1654,10 +1654,10 @@ buffer@4.9.2:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-bullmq@1.40.0:
-  version "1.40.0"
-  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-1.40.0.tgz#8a0b9b79f73bc4bd28494baf94c551868e7c5cfd"
-  integrity sha512-37wMjUTsBZ6yNZFyxJ+nf7m/qq5EYBeee5PRzwBSbwFZkSkVfplWEvo4U7px+eItFQcvR8UIFBuiXlxhSqogSQ==
+bullmq@1.40.1:
+  version "1.40.1"
+  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-1.40.1.tgz#2bf4b0c33f9efdd3e10e6b65cf40815beb890dd1"
+  integrity sha512-JQ1hGF8EO0ubOXcq/VAO2NJhuFACApLo+bN+NQ8NIV+VAvcjxvcSqvMl770ynzuVd8LeAjEED6kmWURLMl1hoA==
   dependencies:
     "@types/ioredis" "^4.26.4"
     cron-parser "^2.7.3"
