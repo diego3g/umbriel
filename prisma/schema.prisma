@@ -34,10 +34,11 @@ model Template {
 }
 
 model Tag {
-  id          String         @id
-  title       String         @unique
-  subscribers Subscription[]
-  messages    MessageTag[]
+  id             String         @id
+  title          String         @unique
+  subscribers    Subscription[]
+  messages       MessageTag[]
+  integration_id String?        @unique
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -53,6 +54,7 @@ model Contact {
   subscriptions   Subscription[]
   is_unsubscribed Boolean        @default(false)
   is_blocked      Boolean        @default(false)
+  integration_id  String?        @unique
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

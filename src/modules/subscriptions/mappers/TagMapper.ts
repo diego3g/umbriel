@@ -14,6 +14,7 @@ export class TagMapper {
     const tagOrError = Tag.create(
       {
         title: titleOrError.value,
+        integrationId: raw.integration_id,
       },
       raw.id
     )
@@ -29,6 +30,7 @@ export class TagMapper {
     return {
       id: tag.id,
       title: tag.title.value,
+      integration_id: tag.integrationId,
     }
   }
 }

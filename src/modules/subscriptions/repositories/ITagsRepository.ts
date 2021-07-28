@@ -15,6 +15,7 @@ export type TagsSearchResult = {
 export interface ITagsRepository {
   exists(title: string): Promise<boolean>
   findById(id: string): Promise<Tag>
+  findByIntegrationId(integrationId: string): Promise<Tag>
   findManyByIds(ids: string[]): Promise<Tag[]>
   findByTitle(title: string): Promise<Tag>
   save(tag: Tag): Promise<void>

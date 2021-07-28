@@ -16,6 +16,10 @@ export class InMemoryTagsRepository implements ITagsRepository {
     return this.items.find(tag => tag.id === id)
   }
 
+  async findByIntegrationId(integrationId: string): Promise<Tag> {
+    return this.items.find(tag => tag.integrationId === integrationId)
+  }
+
   async findManyByIds(ids: string[]): Promise<Tag[]> {
     return this.items.filter(tag => ids.includes(tag.id))
   }

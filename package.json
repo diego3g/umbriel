@@ -57,6 +57,7 @@
     "html-to-text": "8.0.0",
     "ioredis": "4.27.6",
     "jsonwebtoken": "8.5.1",
+    "kafkajs": "^1.15.0",
     "nodemailer": "6.6.3",
     "request": "^2.88.2",
     "sns-validator": "^0.3.4",

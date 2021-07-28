@@ -14,6 +14,7 @@ interface IContactProps {
   subscriptions?: Subscriptions
   isUnsubscribed?: boolean
   isBlocked?: boolean
+  integrationId?: string
   createdAt?: Date
 }
 
@@ -36,6 +37,10 @@ export class Contact extends Entity<IContactProps> {
 
   get isBlocked() {
     return this.props.isBlocked
+  }
+
+  get integrationId() {
+    return this.props.integrationId
   }
 
   get createdAt() {
@@ -68,6 +73,10 @@ export class Contact extends Entity<IContactProps> {
 
   public unsubscribeFromTag(subscription: Subscription) {
     this.subscriptions.remove(subscription)
+  }
+
+  public setIntegrationId(integrationId: string) {
+    this.props.integrationId = integrationId
   }
 
   static create(

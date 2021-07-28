@@ -23,6 +23,7 @@ export class ContactMapper {
         email: emailOrError.value,
         isUnsubscribed: raw.is_unsubscribed,
         isBlocked: raw.is_blocked,
+        integrationId: raw.integration_id,
         createdAt: raw.created_at,
       },
       raw.id

@@ -15,6 +15,7 @@ export type ContactsSearchResult = {
 export interface IContactsRepository {
   exists(email: string): Promise<boolean>
   findById(id: string): Promise<Contact>
+  findByIntegrationId(integrationId: string): Promise<Contact>
   findByIdWithDetails(id: string): Promise<ContactWithDetails>
   findByEmail(email: string): Promise<Contact>
   search(params: ContactsSearchParams): Promise<ContactsSearchResult>

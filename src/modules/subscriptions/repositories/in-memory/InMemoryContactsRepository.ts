@@ -21,6 +21,10 @@ export class InMemoryContactsRepository implements IContactsRepository {
     return this.items.find(contact => contact.id === id)
   }
 
+  async findByIntegrationId(integrationId: string): Promise<Contact> {
+    return this.items.find(contact => contact.integrationId === integrationId)
+  }
+
   async findByIdWithDetails(id: string): Promise<ContactWithDetails> {
     const contact = this.items.find(contact => contact.id === id)
 

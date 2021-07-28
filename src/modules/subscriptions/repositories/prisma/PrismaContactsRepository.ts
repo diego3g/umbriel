@@ -23,6 +23,22 @@ export class PrismaContactsRepository implements IContactsRepository {
   async findById(id: string): Promise<Contact> {
     const contact = await prisma.contact.findUnique({ where: { id } })
 
+    if (!contact) {
+      return null
+    }
+
+    return ContactMapper.toDomain(contact)
+  }
+
+  async findByIntegrationId(integration_id: string): Promise<Contact> {
+    const contact = await prisma.contact.findUnique({
+      where: { integration_id },
+    })
+
+    if (!contact) {
+      return null
+    }
+
     return ContactMapper.toDomain(contact)
   }
 
