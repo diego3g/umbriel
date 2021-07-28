@@ -2,7 +2,6 @@ import { Either, left, right } from '@core/logic/Either'
 import { InvalidTitleLengthError } from '@modules/subscriptions/domain/tag/errors/InvalidTitleLengthError'
 import { createTag } from '@modules/subscriptions/domain/tag/services/createTag'
 import { Tag } from '@modules/subscriptions/domain/tag/tag'
-import { Title } from '@modules/subscriptions/domain/tag/title'
 import { ITagsRepository } from '@modules/subscriptions/repositories/ITagsRepository'
 
 type CreateTagRequest = {
