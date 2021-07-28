@@ -17,6 +17,7 @@ export interface ITagsRepository {
   findById(id: string): Promise<Tag>
   findByIntegrationId(integrationId: string): Promise<Tag>
   findManyByIds(ids: string[]): Promise<Tag[]>
+  findManyByIntegrationIds(integrationIds: string[]): Promise<Tag[]>
   findByTitle(title: string): Promise<Tag>
   save(tag: Tag): Promise<void>
   create(tag: Tag): Promise<void>

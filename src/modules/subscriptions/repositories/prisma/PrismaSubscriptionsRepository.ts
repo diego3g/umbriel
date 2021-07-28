@@ -5,6 +5,7 @@ import { SubscriptionMapper } from '@modules/subscriptions/mappers/SubscriptionM
 
 import {
   FindByContactAndTagParams,
+  FindByContactAndTagsParams,
   ISubscriptionsRepository,
 } from '../ISubscriptionsRepository'
 
@@ -23,6 +24,22 @@ export class PrismaSubscriptionsRepository implements ISubscriptionsRepository {
     })
 
     return SubscriptionMapper.toDomain(raw)
+  }
+
+  async findByContactAndTags({
+    contactId,
+    tagIds,
+  }: FindByContactAndTagsParams): Promise<Subscription[]> {
+    const raw = await prisma.subscription.findMany({
+      where: {
+        contact_id: contactId,
+        tag_id: {
+          in: tagIds,
+        },
+      },
+    })
+
+    return raw.map(item => SubscriptionMapper.toDomain(item))
   }
 
   async save(subscriptions: Subscriptions): Promise<void> {

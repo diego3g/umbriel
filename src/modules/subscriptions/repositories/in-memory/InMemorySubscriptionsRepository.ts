@@ -3,6 +3,7 @@ import { Subscriptions } from '@modules/subscriptions/domain/contact/subscriptio
 
 import {
   FindByContactAndTagParams,
+  FindByContactAndTagsParams,
   ISubscriptionsRepository,
 } from '../ISubscriptionsRepository'
 
@@ -22,6 +23,17 @@ export class InMemorySubscriptionsRepository
     })
 
     return subscription
+  }
+
+  async findByContactAndTags({
+    contactId,
+    tagIds,
+  }: FindByContactAndTagsParams): Promise<Subscription[]> {
+    const subscriptions = this.items.filter(item => {
+      return item.contactId === contactId && tagIds.includes(item.tagId)
+    })
+
+    return subscriptions
   }
 
   async save(subscriptions: Subscriptions): Promise<void> {
