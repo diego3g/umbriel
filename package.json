@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@prisma/client": "^2.26.0",
-    "aws-sdk": "2.943.0",
+    "aws-sdk": "2.956.0",
     "bcryptjs": "2.4.3",
     "bullmq": "1.40.1",
     "cors": "^2.8.5",
