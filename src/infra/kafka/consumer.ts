@@ -1,5 +1,6 @@
 import { adaptKafkaHandler } from './adapters/KafkaHandlerAdapter'
 import { kafka } from './client'
+import { makeDeleteUserHandler } from './factories/DeleteUserHandlerFactory'
 import { makeSubscribeUserHandler } from './factories/SubscribeUserHandlerFactory'
 import { makeUnsubscribeUserHandler } from './factories/UnsubscribeUserHandlerFactory'
 import { makeUpdateUserInfoHandler } from './factories/UpdateUserInfoHandlerFactory'
@@ -21,6 +22,7 @@ type Topic = typeof topics[number]
 const subscribeUserHandler = adaptKafkaHandler(makeSubscribeUserHandler())
 const unsubscribeUserHandler = adaptKafkaHandler(makeUnsubscribeUserHandler())
 const updateUserInfoHandler = adaptKafkaHandler(makeUpdateUserInfoHandler())
+const deleteUserHandler = adaptKafkaHandler(makeDeleteUserHandler())
 
 export async function start() {
   await consumer.connect()
@@ -44,6 +46,7 @@ export async function start() {
           await updateUserInfoHandler(message)
           break
         case 'umbriel.delete-user':
+          await deleteUserHandler(message)
           break
         default:
           console.error(`Kafka topic not handled: ${topic}`)

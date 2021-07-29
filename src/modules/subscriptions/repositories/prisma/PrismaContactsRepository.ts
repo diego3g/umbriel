@@ -155,4 +155,8 @@ export class PrismaContactsRepository implements IContactsRepository {
 
     await this.subscriptionsRepository.create(contact.subscriptions)
   }
+
+  async delete(contact: Contact): Promise<void> {
+    await prisma.contact.delete({ where: { id: contact.id } })
+  }
 }

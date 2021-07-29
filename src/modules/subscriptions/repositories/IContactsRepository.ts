@@ -23,4 +23,5 @@ export interface IContactsRepository {
   findSubscribedByTags(tagIds: string[]): Promise<Contact[]>
   save(contact: Contact): Promise<void>
   create(contact: Contact): Promise<void>
+  delete(contact: Contact): Promise<void>
 }

@@ -103,4 +103,12 @@ export class InMemoryContactsRepository implements IContactsRepository {
 
     this.subscriptionsRepository.create(contact.subscriptions)
   }
+
+  async delete(contact: Contact): Promise<void> {
+    const contactIndex = this.items.findIndex(contactItem => {
+      return contactItem.id === contact.id
+    })
+
+    this.items.splice(contactIndex, 1)
+  }
 }
