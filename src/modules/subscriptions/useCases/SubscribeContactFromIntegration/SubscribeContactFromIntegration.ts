@@ -73,13 +73,13 @@ export class SubscribeContactFromIntegration {
     }
 
     if (!subscribedTag.integrationId) {
-      subscribedTag.setIntegrationId(tag.integrationId)
+      subscribedTag.integrationId = tag.integrationId
 
       await this.tagsRepository.save(subscribedTag)
     }
 
     if (!subscribedContact.integrationId) {
-      subscribedContact.setIntegrationId(contact.integrationId)
+      subscribedContact.integrationId = contact.integrationId
 
       await this.contactsRepository.save(subscribedContact)
     }

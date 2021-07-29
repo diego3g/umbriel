@@ -18,7 +18,7 @@ export class Tag extends Entity<ITagProps> {
     return this.props.integrationId
   }
 
-  public setIntegrationId(integrationId: string) {
+  set integrationId(integrationId: string) {
     this.props.integrationId = integrationId
   }
 

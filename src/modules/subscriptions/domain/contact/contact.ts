@@ -51,6 +51,18 @@ export class Contact extends Entity<IContactProps> {
     return !this.isUnsubscribed && !this.isBlocked
   }
 
+  set name(name: Name) {
+    this.props.name = name
+  }
+
+  set email(email: Email) {
+    this.props.email = email
+  }
+
+  set integrationId(integrationId: string) {
+    this.props.integrationId = integrationId
+  }
+
   private constructor(props: IContactProps, id?: string) {
     super(props, id)
   }
@@ -73,10 +85,6 @@ export class Contact extends Entity<IContactProps> {
 
   public unsubscribeFromTag(subscription: Subscription) {
     this.subscriptions.remove(subscription)
-  }
-
-  public setIntegrationId(integrationId: string) {
-    this.props.integrationId = integrationId
   }
 
   static create(

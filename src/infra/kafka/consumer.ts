@@ -2,6 +2,7 @@ import { adaptKafkaHandler } from './adapters/KafkaHandlerAdapter'
 import { kafka } from './client'
 import { makeSubscribeUserHandler } from './factories/SubscribeUserHandlerFactory'
 import { makeUnsubscribeUserHandler } from './factories/UnsubscribeUserHandlerFactory'
+import { makeUpdateUserInfoHandler } from './factories/UpdateUserInfoHandlerFactory'
 
 export const consumer = kafka.consumer({
   groupId: 'umbriel-consumer',
@@ -19,6 +20,7 @@ type Topic = typeof topics[number]
 
 const subscribeUserHandler = adaptKafkaHandler(makeSubscribeUserHandler())
 const unsubscribeUserHandler = adaptKafkaHandler(makeUnsubscribeUserHandler())
+const updateUserInfoHandler = adaptKafkaHandler(makeUpdateUserInfoHandler())
 
 export async function start() {
   await consumer.connect()
@@ -39,6 +41,7 @@ export async function start() {
           await unsubscribeUserHandler(message)
           break
         case 'umbriel.change-user-info':
+          await updateUserInfoHandler(message)
           break
         case 'umbriel.delete-user':
           break
