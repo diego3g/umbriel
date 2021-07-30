@@ -1,4 +1,7 @@
 import { Controller } from '@core/infra/Controller'
+import { CompareFieldsValidator } from '@infra/http/validation/CompareFieldsValidator'
+import { ValidatorCompositor } from '@infra/http/validation/Compositor'
+import { RequiredFieldsValidator } from '@infra/http/validation/RequiredFieldsValidator'
 import { PrismaUsersRepository } from '@modules/accounts/repositories/prisma/PrismaUsersRepository'
 import { RegisterUser } from '@modules/accounts/useCases/RegisterUser/RegisterUser'
 import { RegisterUserController } from '@modules/accounts/useCases/RegisterUser/RegisterUserController'
@@ -6,7 +9,15 @@ import { RegisterUserController } from '@modules/accounts/useCases/RegisterUser/
 export function makeRegisterUserController(): Controller {
   const prismaUsersRepository = new PrismaUsersRepository()
   const registerUser = new RegisterUser(prismaUsersRepository)
-  const registerUserController = new RegisterUserController(registerUser)
+  const validator = new ValidatorCompositor([
+    new RequiredFieldsValidator(),
+    new CompareFieldsValidator('password', 'password_confirmation'),
+  ])
+
+  const registerUserController = new RegisterUserController(
+    validator,
+    registerUser
+  )
 
   return registerUserController
 }

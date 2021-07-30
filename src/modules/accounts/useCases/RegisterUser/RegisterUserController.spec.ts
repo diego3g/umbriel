@@ -19,6 +19,7 @@ describe('Register User (e2e)', () => {
       name: 'John Doe',
       email: 'john@doe.com',
       password: '123456',
+      password_confirmation: '123456',
     })
 
     expect(response.status).toBe(201)
@@ -28,5 +29,15 @@ describe('Register User (e2e)', () => {
     })
 
     expect(userInDatabase).toBeTruthy()
+  })
+
+  it('should return an error if validation fails', async () => {
+    const response = await request(app).post('/users').send({
+      name: 'John Doe',
+      email: 'john@doe.com',
+      password: '123456', // missing password confirmation
+    })
+
+    expect(response.status).toBe(400)
   })
 })
