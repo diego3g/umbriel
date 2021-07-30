@@ -6,6 +6,7 @@
   "scripts": {
     "dev:server": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/http/server.ts",
     "dev:worker": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/queue/worker.ts",
+    "dev:kafka": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/kafka/app.ts",
     "lint": "eslint src --ext ts,tsx",
     "test": "jest",
     "test:watch": "jest --watch",

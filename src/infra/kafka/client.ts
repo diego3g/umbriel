@@ -1,11 +1,16 @@
-import { Kafka } from 'kafkajs'
+import { Kafka, KafkaConfig } from 'kafkajs'
 
-export const kafka = new Kafka({
+const config: KafkaConfig = {
   clientId: 'umbriel',
   brokers: process.env.KAFKA_BROKERS.split(','),
-  sasl: {
+}
+
+if (process.env.KAFKA_USERNAME) {
+  config.sasl = {
     mechanism: 'plain',
     username: process.env.KAFKA_USERNAME,
     password: process.env.KAFKA_PASSWORD,
-  },
-})
+  }
+}
+
+export const kafka = new Kafka(config)
