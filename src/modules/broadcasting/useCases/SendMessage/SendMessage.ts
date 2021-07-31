@@ -49,10 +49,7 @@ export class SendMessage {
         return left(new InvalidTemplateError())
       }
 
-      const messageBodyContent = template.content.value.replace(
-        '{{ message_content }}',
-        message.body.value
-      )
+      const messageBodyContent = template.compose(message.body.value)
 
       messageBody = Body.create(messageBodyContent).value as Body
     }

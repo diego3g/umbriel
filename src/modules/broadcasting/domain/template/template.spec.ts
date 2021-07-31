@@ -16,4 +16,15 @@ describe('Template model', () => {
 
     expect(templateOrError.isRight()).toBeTruthy()
   })
+
+  it('should be able to compose the template', () => {
+    const template = Template.create({
+      title,
+      content,
+    }).value as Template
+
+    const composed = template.compose('test')
+
+    expect(composed).toEqual('A message content with test template variable')
+  })
 })
