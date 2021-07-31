@@ -2,6 +2,7 @@ import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositorie
 import { Email } from '@modules/senders/domain/sender/email'
 import { Name } from '@modules/senders/domain/sender/name'
 import { Sender } from '@modules/senders/domain/sender/sender'
+import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
 import { Tag } from '@modules/subscriptions/domain/tag/tag'
 import { Title as TagTitle } from '@modules/subscriptions/domain/tag/title'
 import { InMemoryTagsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryTagsRepository'
@@ -14,6 +15,7 @@ import { InMemoryMessagesRepository } from '../../repositories/in-memory/InMemor
 import { InMemoryTemplatesRepository } from '../../repositories/in-memory/InMemoryTemplatesRepository'
 import { CreateMessage } from './CreateMessage'
 
+let sendersRepository: InMemorySendersRepository
 let messageTagsRepository: InMemoryMessageTagsRepository
 let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
@@ -30,8 +32,12 @@ const sender = Sender.create({
 
 describe('Create Message', () => {
   beforeEach(async () => {
+    sendersRepository = new InMemorySendersRepository()
     messageTagsRepository = new InMemoryMessageTagsRepository()
-    messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
+    messagesRepository = new InMemoryMessagesRepository(
+      messageTagsRepository,
+      sendersRepository
+    )
     templatesRepository = new InMemoryTemplatesRepository()
     tagsRepository = new InMemoryTagsRepository()
     createMessage = new CreateMessage(messagesRepository, templatesRepository)

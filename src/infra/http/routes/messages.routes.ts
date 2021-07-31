@@ -13,8 +13,8 @@ const messagesRouter = express.Router()
 
 messagesRouter.use(adaptMiddleware(makeEnsureAuthenticatedMiddleware()))
 
-messagesRouter.get('/:id', adaptRoute(makeGetMessageDetailsController()))
 messagesRouter.get('/search', adaptRoute(makeSearchMessagesController()))
+messagesRouter.get('/:id', adaptRoute(makeGetMessageDetailsController()))
 messagesRouter.post('/', adaptRoute(makeCreateMessageController()))
 messagesRouter.post('/:id/send', adaptRoute(makeSendMessageController()))
 messagesRouter.get(

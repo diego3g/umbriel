@@ -45,12 +45,15 @@ const tag = Tag.create({ title: tagTitle }).value as Tag
 
 describe('Send Message', () => {
   beforeEach(() => {
+    sendersRepository = new InMemorySendersRepository()
     messageTagsRepository = new InMemoryMessageTagsRepository()
-    messagesRepository = new InMemoryMessagesRepository(messageTagsRepository)
+    messagesRepository = new InMemoryMessagesRepository(
+      messageTagsRepository,
+      sendersRepository
+    )
     templatesRepository = new InMemoryTemplatesRepository()
     subscriptionsRepository = new InMemorySubscriptionsRepository()
     contactsRepository = new InMemoryContactsRepository(subscriptionsRepository)
-    sendersRepository = new InMemorySendersRepository()
     mailQueueProvider = new SyncQueueProvider()
 
     sendMessage = new SendMessage(
