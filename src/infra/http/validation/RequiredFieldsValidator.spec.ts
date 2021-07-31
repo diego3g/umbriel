@@ -9,20 +9,15 @@ describe('Required Fields Validator', () => {
   const validator = new RequiredFieldsValidator<RequiredFields>()
 
   it('should return no errors if receive all required fields', () => {
-    const err = validator.validate({
-      field1: 'lorem ipsum',
-      field2: 3,
-      field3: false,
-    })
+    const err = validator.validate({ field1: 'abc', field2: 3, field3: false })
     expect(err.isRight()).toBeTruthy()
   })
 
   it('should return an error if any required fields are missing', () => {
-    const err = validator.validate({
-      field1: undefined,
-      field2: 3,
-      field3: false,
-    })
+    let err = validator.validate({ field1: null, field2: 3, field3: false })
+    expect(err.isLeft()).toBeTruthy()
+
+    err = validator.validate({ field1: '  ', field2: 0, field3: true })
     expect(err.isLeft()).toBeTruthy()
   })
 })
