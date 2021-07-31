@@ -6,7 +6,7 @@ import {
   fail,
   HttpResponse,
 } from '@core/infra/HttpResponse'
-import { Validator } from '../../../../infra/http/validation/Validator'
+import { Validator } from '@core/infra/Validator'
 import { AccountAlreadyExistsError } from './errors/AccountAlreadyExistsError'
 import { RegisterUser } from './RegisterUser'
 

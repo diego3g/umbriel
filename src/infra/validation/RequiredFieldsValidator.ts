@@ -1,6 +1,6 @@
-import { Either, left, right } from '../../../core/logic/Either'
+import { Validator } from '@core/infra/Validator'
+import { Either, left, right } from '@core/logic/Either'
 import { MissingParamError } from './errors/MissingParamError'
-import { Validator } from './Validator'
 
 export class RequiredFieldsValidator<T = any> implements Validator<T> {
   public validate(data: T): Either<MissingParamError, null> {
