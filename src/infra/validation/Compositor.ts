@@ -1,5 +1,5 @@
+import { Validator } from '@core/infra/Validator'
 import { Either } from '@core/logic/Either'
-import { Validator } from './Validator'
 
 export class ValidatorCompositor<T = any> implements Validator<T> {
   constructor(private readonly validators: Validator<T>[]) {}
