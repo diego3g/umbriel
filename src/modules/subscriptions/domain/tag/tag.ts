@@ -22,6 +22,10 @@ export class Tag extends Entity<ITagProps> {
     this.props.integrationId = integrationId
   }
 
+  set title(title: Title) {
+    this.props.title = title
+  }
+
   private constructor(props: ITagProps, id?: string) {
     super(props, id)
   }

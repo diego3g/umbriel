@@ -3,6 +3,7 @@ import { kafka } from './client'
 import { makeDeleteUserHandler } from './factories/DeleteUserHandlerFactory'
 import { makeSubscribeUserHandler } from './factories/SubscribeUserHandlerFactory'
 import { makeUnsubscribeUserHandler } from './factories/UnsubscribeUserHandlerFactory'
+import { makeUpdateTeamTitleHandler } from './factories/UpdateTeamTitleHandlerFactory'
 import { makeUpdateUserInfoHandler } from './factories/UpdateUserInfoHandlerFactory'
 
 export const consumer = kafka.consumer({
@@ -15,6 +16,7 @@ const topics = [
   'umbriel.unsubscribe-from-tags',
   'umbriel.change-user-info',
   'umbriel.delete-user',
+  'umbriel.update-team-title',
 ] as const
 
 type Topic = typeof topics[number]
@@ -23,6 +25,7 @@ const subscribeUserHandler = adaptKafkaHandler(makeSubscribeUserHandler())
 const unsubscribeUserHandler = adaptKafkaHandler(makeUnsubscribeUserHandler())
 const updateUserInfoHandler = adaptKafkaHandler(makeUpdateUserInfoHandler())
 const deleteUserHandler = adaptKafkaHandler(makeDeleteUserHandler())
+const updateTeamTitleHandler = adaptKafkaHandler(makeUpdateTeamTitleHandler())
 
 export async function start() {
   await consumer.connect()
@@ -35,6 +38,8 @@ export async function start() {
 
   await consumer.run({
     async eachMessage({ topic, message }) {
+      console.log({ topic, message: message.value.toString() })
+
       switch (topic as Topic) {
         case 'umbriel.subscribe-to-tag':
           await subscribeUserHandler(message)
@@ -47,6 +52,9 @@ export async function start() {
           break
         case 'umbriel.delete-user':
           await deleteUserHandler(message)
+          break
+        case 'umbriel.update-team-title':
+          await updateTeamTitleHandler(message)
           break
         default:
           console.error(`Kafka topic not handled: ${topic}`)
