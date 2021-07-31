@@ -1,4 +1,3 @@
-import { KafkaHandler } from '@core/infra/KafkaHandler'
 import { PrismaContactsRepository } from '@modules/subscriptions/repositories/prisma/PrismaContactsRepository'
 import { PrismaSubscriptionsRepository } from '@modules/subscriptions/repositories/prisma/PrismaSubscriptionsRepository'
 import { PrismaTagsRepository } from '@modules/subscriptions/repositories/prisma/PrismaTagsRepository'
@@ -6,7 +5,7 @@ import { UnsubscribeContactFromIntegration } from '@modules/subscriptions/useCas
 
 import { UnsubscribeUserHandler } from '../handlers/UnsubscribeUserHandler'
 
-export function makeUnsubscribeUserHandler(): KafkaHandler {
+export function makeUnsubscribeUserHandler() {
   const prismaSubscriptionsRepository = new PrismaSubscriptionsRepository()
   const prismaContactsRepository = new PrismaContactsRepository(
     prismaSubscriptionsRepository

@@ -43,6 +43,7 @@ export class ContactMapper {
       email: contact.email.value,
       is_unsubscribed: contact.isUnsubscribed,
       is_blocked: contact.isBlocked,
+      integration_id: contact.integrationId,
       created_at: contact.createdAt,
     }
   }

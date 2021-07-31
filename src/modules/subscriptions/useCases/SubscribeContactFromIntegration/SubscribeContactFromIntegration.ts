@@ -80,8 +80,6 @@ export class SubscribeContactFromIntegration {
 
     if (!subscribedContact.integrationId) {
       subscribedContact.integrationId = contact.integrationId
-
-      await this.contactsRepository.save(subscribedContact)
     }
 
     const subscription = Subscription.create({

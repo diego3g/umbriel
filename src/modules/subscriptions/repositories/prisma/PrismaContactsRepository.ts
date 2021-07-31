@@ -60,11 +60,19 @@ export class PrismaContactsRepository implements IContactsRepository {
       },
     })
 
+    if (!contact) {
+      return null
+    }
+
     return ContactWithDetailsMapper.toDto(contact)
   }
 
   async findByEmail(email: string): Promise<Contact> {
     const contact = await prisma.contact.findUnique({ where: { email } })
+
+    if (!contact) {
+      return null
+    }
 
     return ContactMapper.toDomain(contact)
   }

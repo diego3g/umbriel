@@ -1,11 +1,10 @@
-import { KafkaHandler } from '@core/infra/KafkaHandler'
 import { PrismaContactsRepository } from '@modules/subscriptions/repositories/prisma/PrismaContactsRepository'
 import { PrismaSubscriptionsRepository } from '@modules/subscriptions/repositories/prisma/PrismaSubscriptionsRepository'
 import { DeleteContactFromIntegration } from '@modules/subscriptions/useCases/DeleteContactFromIntegration/DeleteContactFromIntegration'
 
 import { DeleteUserHandler } from '../handlers/DeleteUserHandler'
 
-export function makeDeleteUserHandler(): KafkaHandler {
+export function makeDeleteUserHandler() {
   const prismaSubscriptionsRepository = new PrismaSubscriptionsRepository()
   const prismaContactsRepository = new PrismaContactsRepository(
     prismaSubscriptionsRepository
