@@ -1,8 +1,11 @@
 import { MessageStats } from '@modules/broadcasting/dtos/MessageStats'
+import { MessageWithDetails } from '@modules/broadcasting/dtos/MessageWithDetails'
 import {
   MessageStatsMapper,
   MessageStatsRaw,
 } from '@modules/broadcasting/mappers/MessageStatsMapper'
+import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
+import { InMemoryTagsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryTagsRepository'
 
 import { Message } from '../../domain/message/message'
 import {
@@ -15,10 +18,30 @@ import { InMemoryMessageTagsRepository } from './InMemoryMessageTagsRepository'
 export class InMemoryMessagesRepository implements IMessagesRepository {
   public items: Message[] = []
 
-  constructor(private messageTagsRepository: InMemoryMessageTagsRepository) {}
+  constructor(
+    private messageTagsRepository: InMemoryMessageTagsRepository,
+    private sendersRepository: InMemorySendersRepository
+  ) {}
 
   async findById(id: string): Promise<Message> {
     return this.items.find(message => message.id === id)
+  }
+
+  async findByIdWithDetails(id: string): Promise<MessageWithDetails> {
+    const message = this.items.find(message => message.id === id)
+
+    const sender = await this.sendersRepository.findById(message.senderId)
+
+    return {
+      id: message.id,
+      subject: message.subject.value,
+      body: message.body.value,
+      sender: {
+        name: sender.name.value,
+        email: sender.email.value,
+      },
+      tags: [],
+    }
   }
 
   async search({

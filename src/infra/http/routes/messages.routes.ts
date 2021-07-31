@@ -3,6 +3,7 @@ import express from 'express'
 import { adaptMiddleware } from '../adapters/ExpressMiddlewareAdapter'
 import { adaptRoute } from '../adapters/ExpressRouteAdapter'
 import { makeCreateMessageController } from '../factories/controllers/CreateMessageControllerFactory'
+import { makeGetMessageDetailsController } from '../factories/controllers/GetMessageDetailsControllerFactory'
 import { makeGetMessageStatsController } from '../factories/controllers/GetMessageStatsControllerFactory'
 import { makeSearchMessagesController } from '../factories/controllers/SearchMessagesControllerFactory'
 import { makeSendMessageController } from '../factories/controllers/SendMessageControllerFactory'
@@ -12,6 +13,7 @@ const messagesRouter = express.Router()
 
 messagesRouter.use(adaptMiddleware(makeEnsureAuthenticatedMiddleware()))
 
+messagesRouter.get('/:id', adaptRoute(makeGetMessageDetailsController()))
 messagesRouter.get('/search', adaptRoute(makeSearchMessagesController()))
 messagesRouter.post('/', adaptRoute(makeCreateMessageController()))
 messagesRouter.post('/:id/send', adaptRoute(makeSendMessageController()))

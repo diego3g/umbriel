@@ -1,9 +1,11 @@
 import { prisma } from '@infra/prisma/client'
 import { MessageStats } from '@modules/broadcasting/dtos/MessageStats'
+import { MessageWithDetails } from '@modules/broadcasting/dtos/MessageWithDetails'
 import {
   MessageStatsMapper,
   MessageStatsRaw,
 } from '@modules/broadcasting/mappers/MessageStatsMapper'
+import { MessageWithDetailsMapper } from '@modules/broadcasting/mappers/MessageWithDetailsMapper'
 
 import { Message } from '../../domain/message/message'
 import { MessageMapper } from '../../mappers/MessageMapper'
@@ -30,6 +32,26 @@ export class PrismaMessagesRepository implements IMessagesRepository {
     }
 
     return MessageMapper.toDomain(message)
+  }
+
+  async findByIdWithDetails(id: string): Promise<MessageWithDetails> {
+    const message = await prisma.message.findUnique({
+      where: { id },
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        sender: true,
+      },
+    })
+
+    if (!message) {
+      return null
+    }
+
+    return MessageWithDetailsMapper.toDto(message)
   }
 
   async getMessageStats(messageId: string): Promise<MessageStats> {
