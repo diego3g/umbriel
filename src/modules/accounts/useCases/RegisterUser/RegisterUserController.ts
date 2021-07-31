@@ -23,21 +23,15 @@ export class RegisterUserController implements Controller {
     private registerUser: RegisterUser
   ) {}
 
-  async handle({
-    name,
-    email,
-    password,
-    password_confirmation,
-  }: RegisterUserControllerRequest): Promise<HttpResponse> {
+  async handle(request: RegisterUserControllerRequest): Promise<HttpResponse> {
     try {
-      const validation = this.validator.validate({
-        name,
-        email,
-        password,
-        password_confirmation,
-      })
+      const validationResult = this.validator.validate(request)
 
-      if (validation.isLeft()) return clientError(validation.value)
+      if (validationResult.isLeft()) {
+        return clientError(validationResult.value)
+      }
+
+      const { name, email, password } = request
 
       const result = await this.registerUser.execute({
         name,
