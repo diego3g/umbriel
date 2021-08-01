@@ -49,7 +49,7 @@ export class SendMessage {
         return left(new InvalidTemplateError())
       }
 
-      const messageBodyContent = template.compose(message.body.value)
+      const messageBodyContent = template.content.compose(message.body.value)
 
       messageBody = Body.create(messageBodyContent).value as Body
     }

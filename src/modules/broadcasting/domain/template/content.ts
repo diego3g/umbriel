@@ -9,6 +9,10 @@ export class Content {
     return this.content
   }
 
+  public compose(messageContent: string) {
+    return this.value.replace('{{ message_content }}', messageContent)
+  }
+
   private constructor(content: string) {
     this.content = content
   }

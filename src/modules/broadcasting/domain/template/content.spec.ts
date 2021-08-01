@@ -14,4 +14,14 @@ describe('Template content value object', () => {
 
     expect(contentOrError.isLeft()).toBeTruthy()
   })
+
+  it('should be able to compose the template content', () => {
+    const content = Content.create(
+      'A message content with {{ message_content }} template variable'
+    ).value as Content
+
+    const composed = content.compose('test')
+
+    expect(composed).toEqual('A message content with test template variable')
+  })
 })

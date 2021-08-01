@@ -33,10 +33,6 @@ export class Template extends Entity<ITemplateProps> {
     this.props.isDefault = true
   }
 
-  public compose(content: string) {
-    return this.content.value.replace('{{ message_content }}', content)
-  }
-
   private constructor(props: ITemplateProps, id?: string) {
     super(props, id)
   }
