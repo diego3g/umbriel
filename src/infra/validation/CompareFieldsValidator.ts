@@ -1,5 +1,6 @@
 import { Validator } from '@core/infra/Validator'
 import { Either, left, right } from '@core/logic/Either'
+
 import { InvalidParamError } from './errors/InvalidParamError'
 
 export class CompareFieldsValidator<T = any> implements Validator<T> {
