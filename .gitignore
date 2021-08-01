@@ -7,3 +7,6 @@ coverage
 # Environment
 .env.local
 .env.*.local
+
+# Build
+dist
