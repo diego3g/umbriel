@@ -5,7 +5,6 @@ import {
   MessageStatsRaw,
 } from '@modules/broadcasting/mappers/MessageStatsMapper'
 import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
-import { InMemoryTagsRepository } from '@modules/subscriptions/repositories/in-memory/InMemoryTagsRepository'
 
 import { Message } from '../../domain/message/message'
 import {
