@@ -1,0 +1,42 @@
+"on":
+  push:
+    branches:
+    - master
+name: Deploy to Porter
+jobs:
+  porter-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2.3.4
+    - name: Download Porter
+      id: download_porter
+      run: |2
+
+        name=$(curl -s https://api.github.com/repos/porter-dev/porter/releases/latest | grep "browser_download_url.*/porter_.*_Linux_x86_64\.zip" | cut -d ":" -f 2,3 | tr -d \")
+        name=$(basename $name)
+        curl -L https://github.com/porter-dev/porter/releases/latest/download/$name --output $name
+        unzip -a $name
+        rm $name
+        chmod +x ./porter
+        sudo mv ./porter /usr/local/bin/porter
+    - name: Configure Porter
+      id: configure_porter
+      run: |2
+
+        sudo porter config set-host https://dashboard.getporter.dev
+        sudo porter auth login --token ${{secrets.PORTER_TOKEN_661}}
+        sudo porter docker configure
+    - name: Docker build, push
+      id: docker_build_push
+      run: |2
+
+        export $(echo "${{secrets.ENV_UMBRIEL_API}}" | xargs)
+        echo "${{secrets.ENV_UMBRIEL_API}}" > ./env_porter
+        sudo docker build . $(cat ./env_porter | awk 'NF' | sed 's@^@--build-arg @g' | paste -s -d " " -) --file Dockerfile -t gcr.io/rocketseat-42/umbriel-api-default:$(git rev-parse --short HEAD)
+        sudo docker push gcr.io/rocketseat-42/umbriel-api-default:$(git rev-parse --short HEAD)
+    - name: Deploy on Porter
+      id: deploy_porter
+      run: |2
+
+        curl -X POST "https://dashboard.getporter.dev/api/webhooks/deploy/${{secrets.WEBHOOK_UMBRIEL_API}}?commit=$(git rev-parse --short HEAD)"
