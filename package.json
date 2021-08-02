@@ -15,12 +15,12 @@
     "build": "babel src --extensions \".ts\" --out-dir dist --copy-files"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.14.8",
-    "@babel/node": "^7.14.9",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/preset-env": "^7.14.9",
-    "@babel/preset-typescript": "^7.14.5",
+    "@babel/cli": "7.14.8",
+    "@babel/core": "7.14.8",
+    "@babel/node": "7.14.9",
+    "@babel/plugin-proposal-class-properties": "7.14.5",
+    "@babel/preset-env": "7.14.9",
+    "@babel/preset-typescript": "7.14.5",
     "@types/bcryptjs": "2.4.2",
     "@types/cors": "2.8.12",
     "@types/dotenv-flow": "3.1.1",

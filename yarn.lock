@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@babel/cli@^7.14.8":
+"@babel/cli@7.14.8":
   version "7.14.8"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.14.8.tgz#fac73c0e2328a8af9fd3560c06b096bfa3730933"
   integrity sha512-lcy6Lymft9Rpfqmrqdd4oTDdUx9ZwaAhAfywVrHG4771Pa6PPT0danJ1kDHBXYqh4HHSmIdA+nlmfxfxSDPtBg==
@@ -56,6 +56,27 @@
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.14.4.tgz#45720fe0cecf3fd42019e1d12cc3d27fadc98d58"
   integrity sha512-i2wXrWQNkH6JplJQGn3Rd2I4Pij8GdHkXwHMxm+zV5YG/Jci+bCNrWZEWC4o+umiDkRrRs4dVzH3X4GP7vyjQQ==
 
+"@babel/core@7.14.8":
+  version "7.14.8"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.8.tgz#20cdf7c84b5d86d83fac8710a8bc605a7ba3f010"
+  integrity sha512-/AtaeEhT6ErpDhInbXmjHcUQXH0L0TEgscfcxk1qbOvLuKCa5aZT0SOOtDKFY96/CLROwbLSKyFor6idgNaU4Q==
+  dependencies:
+    "@babel/code-frame" "^7.14.5"
+    "@babel/generator" "^7.14.8"
+    "@babel/helper-compilation-targets" "^7.14.5"
+    "@babel/helper-module-transforms" "^7.14.8"
+    "@babel/helpers" "^7.14.8"
+    "@babel/parser" "^7.14.8"
+    "@babel/template" "^7.14.5"
+    "@babel/traverse" "^7.14.8"
+    "@babel/types" "^7.14.8"
+    convert-source-map "^1.7.0"
+    debug "^4.1.0"
+    gensync "^1.0.0-beta.2"
+    json5 "^2.1.2"
+    semver "^6.3.0"
+    source-map "^0.5.0"
+
 "@babel/core@^7.1.0", "@babel/core@^7.7.5":
   version "7.12.9"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.12.9.tgz#fd450c4ec10cdbb980e2928b7aa7a28484593fc8"
@@ -76,27 +97,6 @@
     lodash "^4.17.19"
     resolve "^1.3.2"
     semver "^5.4.1"
-    source-map "^0.5.0"
-
-"@babel/core@^7.14.8":
-  version "7.14.8"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.8.tgz#20cdf7c84b5d86d83fac8710a8bc605a7ba3f010"
-  integrity sha512-/AtaeEhT6ErpDhInbXmjHcUQXH0L0TEgscfcxk1qbOvLuKCa5aZT0SOOtDKFY96/CLROwbLSKyFor6idgNaU4Q==
-  dependencies:
-    "@babel/code-frame" "^7.14.5"
-    "@babel/generator" "^7.14.8"
-    "@babel/helper-compilation-targets" "^7.14.5"
-    "@babel/helper-module-transforms" "^7.14.8"
-    "@babel/helpers" "^7.14.8"
-    "@babel/parser" "^7.14.8"
-    "@babel/template" "^7.14.5"
-    "@babel/traverse" "^7.14.8"
-    "@babel/types" "^7.14.8"
-    convert-source-map "^1.7.0"
-    debug "^4.1.0"
-    gensync "^1.0.0-beta.2"
-    json5 "^2.1.2"
-    semver "^6.3.0"
     source-map "^0.5.0"
 
 "@babel/core@^7.7.2":
@@ -576,7 +576,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/node@^7.14.9":
+"@babel/node@7.14.9":
   version "7.14.9"
   resolved "https://registry.yarnpkg.com/@babel/node/-/node-7.14.9.tgz#c15b1c8ecb33c079cb7666c8b4861791150c7aa1"
   integrity sha512-7QJvGn3ID2TjoFst3UdLu3LOxn/Q6Nhr/mo0MENstbPHehl/0wnod2gmVDB+zDxRL6pFFS7z0WeBK3b94k4CLg==
@@ -621,7 +621,7 @@
     "@babel/helper-remap-async-to-generator" "^7.14.5"
     "@babel/plugin-syntax-async-generators" "^7.8.4"
 
-"@babel/plugin-proposal-class-properties@^7.14.5":
+"@babel/plugin-proposal-class-properties@7.14.5", "@babel/plugin-proposal-class-properties@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-class-properties/-/plugin-proposal-class-properties-7.14.5.tgz#40d1ee140c5b1e31a350f4f5eed945096559b42e"
   integrity sha512-q/PLpv5Ko4dVc1LYMpCY7RVAAO4uk55qPwrIuJ5QJ8c6cVuAmhu7I/49JOppXL6gXf7ZHzpRVEUZdYoPLM04Gg==
@@ -1137,7 +1137,7 @@
     "@babel/helper-create-regexp-features-plugin" "^7.14.5"
     "@babel/helper-plugin-utils" "^7.14.5"
 
-"@babel/preset-env@^7.14.9":
+"@babel/preset-env@7.14.9":
   version "7.14.9"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.14.9.tgz#4a3bbbd745f20e9121d5925170bef040a21b7819"
   integrity sha512-BV5JvCwBDebkyh67bPKBYVCC6gGw0MCzU6HfKe5Pm3upFpPVqiC/hB33zkOe0tVdAzaMywah0LSXQeD9v/BYdQ==
@@ -1227,7 +1227,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/preset-typescript@^7.14.5":
+"@babel/preset-typescript@7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.14.5.tgz#aa98de119cf9852b79511f19e7f44a2d379bcce0"
   integrity sha512-u4zO6CdbRKbS9TypMqrlGH7sd2TAJppZwn3c/ZRLeO/wGsbddxgbPDUZVNrie3JWYLQ9vpineKlsrWFvO6Pwkw==
