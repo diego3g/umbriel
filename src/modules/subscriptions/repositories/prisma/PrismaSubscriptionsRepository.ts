@@ -23,6 +23,10 @@ export class PrismaSubscriptionsRepository implements ISubscriptionsRepository {
       },
     })
 
+    if (!raw) {
+      return null
+    }
+
     return SubscriptionMapper.toDomain(raw)
   }
 

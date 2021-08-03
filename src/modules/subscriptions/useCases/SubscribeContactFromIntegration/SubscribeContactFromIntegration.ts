@@ -3,6 +3,7 @@ import { createContact } from '@modules/subscriptions/domain/contact/services/cr
 import { Subscription } from '@modules/subscriptions/domain/contact/subscription'
 import { createTag } from '@modules/subscriptions/domain/tag/services/createTag'
 import { IContactsRepository } from '@modules/subscriptions/repositories/IContactsRepository'
+import { ISubscriptionsRepository } from '@modules/subscriptions/repositories/ISubscriptionsRepository'
 import { ITagsRepository } from '@modules/subscriptions/repositories/ITagsRepository'
 
 type SubscribeContactFromIntegrationRequest = {
@@ -22,7 +23,8 @@ type SubscribeContactFromIntegrationResponse = Either<Error, null>
 export class SubscribeContactFromIntegration {
   constructor(
     private tagsRepository: ITagsRepository,
-    private contactsRepository: IContactsRepository
+    private contactsRepository: IContactsRepository,
+    private subscriptionsRepository: ISubscriptionsRepository
   ) {}
 
   async execute({
@@ -82,12 +84,20 @@ export class SubscribeContactFromIntegration {
       subscribedContact.integrationId = contact.integrationId
     }
 
-    const subscription = Subscription.create({
-      tagId: subscribedTag.id,
-      contactId: subscribedContact.id,
-    })
+    const alreadySubscribed =
+      await this.subscriptionsRepository.findByContactAndTag({
+        tagId: subscribedTag.id,
+        contactId: subscribedContact.id,
+      })
 
-    subscribedContact.subscribeToTag(subscription)
+    if (!alreadySubscribed) {
+      const subscription = Subscription.create({
+        tagId: subscribedTag.id,
+        contactId: subscribedContact.id,
+      })
+
+      subscribedContact.subscribeToTag(subscription)
+    }
 
     await this.contactsRepository.save(subscribedContact)
 

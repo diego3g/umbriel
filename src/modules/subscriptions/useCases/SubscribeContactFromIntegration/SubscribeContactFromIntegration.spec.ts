@@ -20,7 +20,8 @@ describe('Subscribe Contact From Integration', () => {
 
     subscribeContactFromIntegration = new SubscribeContactFromIntegration(
       tagsRepository,
-      contactsRepository
+      contactsRepository,
+      subscriptionsRepository
     )
   })
 

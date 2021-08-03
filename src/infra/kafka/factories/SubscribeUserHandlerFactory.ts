@@ -14,7 +14,8 @@ export function makeSubscribeUserHandler() {
 
   const subscribeContactFromIntegration = new SubscribeContactFromIntegration(
     prismaTagsRepository,
-    prismaContactsRepository
+    prismaContactsRepository,
+    prismaSubscriptionsRepository
   )
 
   const subscribeUserHandler = new SubscribeUserHandler(
