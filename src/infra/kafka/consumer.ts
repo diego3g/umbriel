@@ -38,27 +38,31 @@ export async function start() {
 
   await consumer.run({
     async eachMessage({ topic, message }) {
-      console.log({ topic, message: message.value.toString() })
+      try {
+        console.log({ topic, message: message.value.toString() })
 
-      switch (topic as Topic) {
-        case 'umbriel.subscribe-to-tag':
-          await subscribeUserHandler(message)
-          break
-        case 'umbriel.unsubscribe-from-tags':
-          await unsubscribeUserHandler(message)
-          break
-        case 'umbriel.change-user-info':
-          await updateUserInfoHandler(message)
-          break
-        case 'umbriel.delete-user':
-          await deleteUserHandler(message)
-          break
-        case 'umbriel.update-team-title':
-          await updateTeamTitleHandler(message)
-          break
-        default:
-          console.error(`Kafka topic not handled: ${topic}`)
-          break
+        switch (topic as Topic) {
+          case 'umbriel.subscribe-to-tag':
+            await subscribeUserHandler(message)
+            break
+          case 'umbriel.unsubscribe-from-tags':
+            await unsubscribeUserHandler(message)
+            break
+          case 'umbriel.change-user-info':
+            await updateUserInfoHandler(message)
+            break
+          case 'umbriel.delete-user':
+            await deleteUserHandler(message)
+            break
+          case 'umbriel.update-team-title':
+            await updateTeamTitleHandler(message)
+            break
+          default:
+            console.error(`Kafka topic not handled: ${topic}`)
+            break
+        }
+      } catch (err) {
+        console.error(`[${topic}] Error on message: ${message}`, err)
       }
     },
   })
