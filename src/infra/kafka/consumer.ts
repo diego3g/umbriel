@@ -39,8 +39,6 @@ export async function start() {
   await consumer.run({
     async eachMessage({ topic, message }) {
       try {
-        console.log({ topic, message: message.value.toString() })
-
         switch (topic as Topic) {
           case 'umbriel.subscribe-to-tag':
             await subscribeUserHandler(message)
