@@ -9,13 +9,13 @@ import { makeUpdateUserInfoHandler } from './factories/UpdateUserInfoHandlerFact
 export const consumer = kafka.consumer({
   groupId: 'umbriel-consumer',
   allowAutoTopicCreation: true,
-  retry: {
-    async restartOnFailure(err: Error) {
-      console.error(err)
+  // retry: {
+  //   async restartOnFailure(err: Error) {
+  //     console.error(err)
 
-      return false
-    },
-  },
+  //     return false
+  //   },
+  // },
 })
 
 const topics = [
@@ -45,25 +45,29 @@ export async function start() {
 
   await consumer.run({
     async eachMessage({ topic, message }) {
-      switch (topic as Topic) {
-        case 'umbriel.subscribe-to-tag':
-          await subscribeUserHandler(message)
-          break
-        case 'umbriel.unsubscribe-from-tags':
-          await unsubscribeUserHandler(message)
-          break
-        case 'umbriel.change-user-info':
-          await updateUserInfoHandler(message)
-          break
-        case 'umbriel.delete-user':
-          await deleteUserHandler(message)
-          break
-        case 'umbriel.update-team-title':
-          await updateTeamTitleHandler(message)
-          break
-        default:
-          console.error(`Kafka topic not handled: ${topic}`)
-          break
+      try {
+        switch (topic as Topic) {
+          case 'umbriel.subscribe-to-tag':
+            await subscribeUserHandler(message)
+            break
+          case 'umbriel.unsubscribe-from-tags':
+            await unsubscribeUserHandler(message)
+            break
+          case 'umbriel.change-user-info':
+            await updateUserInfoHandler(message)
+            break
+          case 'umbriel.delete-user':
+            await deleteUserHandler(message)
+            break
+          case 'umbriel.update-team-title':
+            await updateTeamTitleHandler(message)
+            break
+          default:
+            console.error(`Kafka topic not handled: ${topic}`)
+            break
+        }
+      } catch (err) {
+        console.error(err)
       }
     },
   })
