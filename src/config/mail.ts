@@ -14,7 +14,7 @@ export const mail = {
     },
 
     ses: {
-      maxSendRate: 160,
+      maxSendRate: 400,
     },
   },
 }
