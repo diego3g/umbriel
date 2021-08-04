@@ -35,6 +35,10 @@ export class RegisterEventController implements Controller {
         Open: 'open',
       }
 
+      if (!data.mail.tags.contactId[0] || !data.mail.tags.messageId[0]) {
+        return ok()
+      }
+
       const result = await this.registerEvent.execute({
         contactId: data.mail.tags.contactId[0],
         messageId: data.mail.tags.messageId[0],
