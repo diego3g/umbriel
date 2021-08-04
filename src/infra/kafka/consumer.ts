@@ -1,3 +1,5 @@
+import { KafkaJSNonRetriableError } from 'kafkajs'
+
 import { adaptKafkaHandler } from './adapters/KafkaHandlerAdapter'
 import { kafka } from './client'
 import { makeDeleteUserHandler } from './factories/DeleteUserHandlerFactory'
@@ -9,13 +11,15 @@ import { makeUpdateUserInfoHandler } from './factories/UpdateUserInfoHandlerFact
 export const consumer = kafka.consumer({
   groupId: 'umbriel-consumer',
   allowAutoTopicCreation: true,
-  // retry: {
-  //   async restartOnFailure(err: Error) {
-  //     console.error(err)
+  retry: {
+    async restartOnFailure(err: KafkaJSNonRetriableError) {
+      if (err.name === 'KafkaJSNumberOfRetriesExceeded') {
+      } else {
+      }
 
-  //     return false
-  //   },
-  // },
+      return false
+    },
+  },
 })
 
 const topics = [
@@ -23,7 +27,7 @@ const topics = [
   'umbriel.unsubscribe-from-tags',
   'umbriel.change-user-info',
   'umbriel.delete-user',
-  'umbriel.update-team-title',
+  'umbriel.change-team-info',
 ] as const
 
 type Topic = typeof topics[number]
@@ -59,7 +63,7 @@ export async function start() {
           case 'umbriel.delete-user':
             await deleteUserHandler(message)
             break
-          case 'umbriel.update-team-title':
+          case 'umbriel.change-team-info':
             await updateTeamTitleHandler(message)
             break
           default:
