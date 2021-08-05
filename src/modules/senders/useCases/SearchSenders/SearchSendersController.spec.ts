@@ -57,7 +57,7 @@ describe('Search Senders (e2e)', () => {
       ])
     )
   })
-  it.only('should be able to search senders with case-insensitive', async () => {
+  it('should be able to search senders with case-insensitive', async () => {
     const {
       jwt: { token },
     } = createAndAuthenticateUser()

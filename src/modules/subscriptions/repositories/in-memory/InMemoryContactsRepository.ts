@@ -77,8 +77,8 @@ export class InMemoryContactsRepository implements IContactsRepository {
     if (query) {
       contactList = this.items.filter(
         contact =>
-          contact.name.value.includes(query) ||
-          contact.email.value.includes(query)
+          contact.name.value.toLowerCase().includes(query.toLowerCase()) ||
+          contact.email.value.toLowerCase().includes(query.toLowerCase())
       )
     }
 
