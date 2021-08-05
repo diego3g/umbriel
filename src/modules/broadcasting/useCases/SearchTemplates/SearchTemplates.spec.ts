@@ -39,6 +39,13 @@ describe('Search Templates', () => {
     expect(response.totalCount).toEqual(1)
     expect(response.data[0].title.value).toEqual('template-5')
   })
+  it('should be able to search through templates with case-insensitive', async () => {
+    const response = await searchTemplates.execute({ query: `pLaTe-5` })
+
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].title.value).toEqual('template-5')
+  })
 
   it('should be able to paginate through templates', async () => {
     let response = await searchTemplates.execute({ perPage: 10 })
