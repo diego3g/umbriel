@@ -50,7 +50,9 @@ export class InMemoryTagsRepository implements ITagsRepository {
     let tagList = this.items
 
     if (query) {
-      tagList = this.items.filter(tag => tag.title.value.includes(query))
+      tagList = this.items.filter(tag =>
+        tag.title.value.includes(query.toLowerCase())
+      )
     }
 
     return {
