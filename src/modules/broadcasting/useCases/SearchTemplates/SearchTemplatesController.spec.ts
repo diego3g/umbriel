@@ -56,7 +56,7 @@ describe('Search Templates (e2e)', () => {
       ])
     )
   })
-  it.only('should be able to search templates with case-insensitive', async () => {
+  it('should be able to search templates with case-insensitive', async () => {
     const {
       jwt: { token },
     } = createAndAuthenticateUser()
