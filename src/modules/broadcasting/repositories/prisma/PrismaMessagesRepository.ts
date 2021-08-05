@@ -90,7 +90,7 @@ export class PrismaMessagesRepository implements IMessagesRepository {
 
     if (query) {
       queryPayload.where = {
-        subject: { contains: query },
+        subject: { contains: query, mode: 'insensitive' },
       }
     }
 
