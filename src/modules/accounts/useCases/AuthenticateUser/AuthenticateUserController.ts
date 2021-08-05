@@ -3,7 +3,7 @@ import { HttpResponse, ok, fail, clientError } from '@core/infra/HttpResponse'
 
 import { AuthenticateUser } from './AuthenticateUser'
 
-type AuthenticateUserControllerRequest = {
+export type AuthenticateUserControllerRequest = {
   email: string
   password: string
 }
