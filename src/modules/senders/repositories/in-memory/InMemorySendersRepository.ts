@@ -27,8 +27,8 @@ export class InMemorySendersRepository implements ISendersRepository {
     if (query) {
       senderList = this.items.filter(
         sender =>
-          sender.name.value.includes(query) ||
-          sender.email.value.includes(query)
+          sender.name.value.toLowerCase().includes(query.toLowerCase()) ||
+          sender.email.value.toLowerCase().includes(query.toLowerCase())
       )
     }
 
