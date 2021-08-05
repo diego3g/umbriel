@@ -1,5 +1,6 @@
 import { Controller } from '@core/infra/Controller'
 import { HttpResponse, ok, fail, clientError } from '@core/infra/HttpResponse'
+import { Validator } from '@core/infra/Validator'
 
 import { AuthenticateUser } from './AuthenticateUser'
 
@@ -9,14 +10,22 @@ export type AuthenticateUserControllerRequest = {
 }
 
 export class AuthenticateUserController implements Controller {
-  constructor(private authenticateUser: AuthenticateUser) {}
+  constructor(
+    private readonly validator: Validator<AuthenticateUserControllerRequest>,
+    private authenticateUser: AuthenticateUser
+  ) {}
 
-  async handle({
-    email,
-    password,
-  }: AuthenticateUserControllerRequest): Promise<HttpResponse> {
+  async handle(
+    request: AuthenticateUserControllerRequest
+  ): Promise<HttpResponse> {
     try {
-      // TODO: Add validation
+      const validationResult = this.validator.validate(request)
+
+      if (validationResult.isLeft()) {
+        return clientError(validationResult.value)
+      }
+
+      const { email, password } = request
 
       const result = await this.authenticateUser.execute({
         email,

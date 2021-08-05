@@ -40,4 +40,13 @@ describe('Authenticate User (e2e)', () => {
       })
     )
   })
+
+  it('should not be able to authenticate if validation fails', async () => {
+    const response = await request(app).post('/sessions').send({
+      email: 'john@doe.com',
+      password: null,
+    })
+
+    expect(response.status).toBe(400)
+  })
 })
