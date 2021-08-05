@@ -52,7 +52,7 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
 
     if (query) {
       messageList = this.items.filter(message =>
-        message.subject.value.includes(query)
+        message.subject.value.includes(query.toLowerCase())
       )
     }
 

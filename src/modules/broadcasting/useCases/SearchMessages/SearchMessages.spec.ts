@@ -48,6 +48,13 @@ describe('Search Messages', () => {
     expect(response.totalCount).toEqual(1)
     expect(response.data[0].subject.value).toEqual('message-5')
   })
+  it('should be able to search through messages ignoring case-sensitive', async () => {
+    const response = await searchMessages.execute({ query: 'AgE-5' })
+
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].subject.value).toEqual('message-5')
+  })
 
   it('should be able to paginate through messages', async () => {
     let response = await searchMessages.execute({ perPage: 10 })
