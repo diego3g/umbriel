@@ -1,9 +1,6 @@
 import { MessageStats } from '@modules/broadcasting/dtos/MessageStats'
 import { MessageWithDetails } from '@modules/broadcasting/dtos/MessageWithDetails'
-import {
-  MessageStatsMapper,
-  MessageStatsRaw,
-} from '@modules/broadcasting/mappers/MessageStatsMapper'
+import { MessageStatsMapper } from '@modules/broadcasting/mappers/MessageStatsMapper'
 import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
 
 import { Message } from '../../domain/message/message'
