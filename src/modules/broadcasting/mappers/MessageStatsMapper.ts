@@ -12,7 +12,7 @@ export class MessageStatsMapper {
       recipientsCount: raw.DELIVER,
       clickCount: raw.CLICK,
       openRate: Number(((raw.OPEN * 100) / raw.DELIVER).toFixed(2)),
-      clickRate: Number(((raw.CLICK * 100) / raw.DELIVER).toFixed(2)),
+      clickRate: Number(((raw.CLICK * 100) / raw.OPEN).toFixed(2)),
     }
   }
 }

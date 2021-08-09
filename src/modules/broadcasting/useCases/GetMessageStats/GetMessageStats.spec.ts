@@ -84,7 +84,7 @@ describe('Get Message Stats', () => {
     })
 
     expect(response.clickCount).toBe(1)
-    expect(response.clickRate).toBe(33.33)
+    expect(response.clickRate).toBe(50)
     expect(response.openRate).toBe(66.67)
     expect(response.recipientsCount).toBe(3)
   })
