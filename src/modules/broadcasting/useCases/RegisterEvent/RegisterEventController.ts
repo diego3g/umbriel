@@ -35,17 +35,21 @@ export class RegisterEventController implements Controller {
         Open: 'open',
       }
 
-      if (!data.mail.tags.contactId[0] || !data.mail.tags.messageId[0]) {
+      if (!data.mail?.tags.contactId[0] || !data.mail?.tags.messageId[0]) {
+        return ok()
+      }
+
+      const type = eventTypesMap[data.eventType]
+      const meta = data[eventMetaMap[data.eventType]]
+
+      if (type === 'OPEN' && meta?.userAgent?.includes('GoogleImageProxy')) {
         return ok()
       }
 
       const result = await this.registerEvent.execute({
         contactId: data.mail.tags.contactId[0],
         messageId: data.mail.tags.messageId[0],
-        event: {
-          type: eventTypesMap[data.eventType],
-          meta: data[eventMetaMap[data.eventType]],
-        },
+        event: { type, meta },
       })
 
       if (result.isLeft()) {

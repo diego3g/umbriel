@@ -147,4 +147,77 @@ describe('Register Event (e2e)', () => {
     expect(recipientInDatabase).toBeTruthy()
     expect(validEventTypes).toContain(recipientInDatabase.events[0].type)
   })
+
+  it('should filter GoogleImageProxy open events', async () => {
+    const messageId = uuid()
+    const contactId = uuid()
+
+    await prisma.message.create({
+      data: {
+        id: messageId,
+        subject: 'My new message',
+        body: 'A message to be sent with a whole body',
+        sender: {
+          create: {
+            id: uuid(),
+            name: 'John Sender',
+            email: 'johnsender2@example.com',
+          },
+        },
+        tags: {
+          create: {
+            id: uuid(),
+            tag: {
+              create: {
+                id: uuid(),
+                title: 'New tag 02',
+                subscribers: {
+                  create: {
+                    id: uuid(),
+                    contact: {
+                      create: {
+                        id: contactId,
+                        name: 'John doe',
+                        email: 'johndoe2@example.com',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    const awsMessage = {
+      eventType: 'Open',
+      open: {
+        ipAddress: '191.135.171.145',
+        timestamp: '2021-08-03T22:59:04.831Z',
+        userAgent:
+          'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)',
+      },
+    }
+
+    const response = await request(app)
+      .post(`/events/notifications`)
+      .send({
+        Type: 'Notification',
+        Message: JSON.stringify(awsMessage),
+      })
+
+    expect(response.status).toBe(200)
+
+    const recipientInDatabase = await prisma.recipient.findUnique({
+      where: {
+        message_id_contact_id: {
+          contact_id: contactId,
+          message_id: messageId,
+        },
+      },
+    })
+
+    expect(recipientInDatabase).toBeFalsy()
+  })
 })
