@@ -1,4 +1,4 @@
-import { KafkaJSNonRetriableError } from 'kafkajs'
+// import { KafkaJSNonRetriableError } from 'kafkajs'
 
 import { adaptKafkaHandler } from './adapters/KafkaHandlerAdapter'
 import { kafka } from './client'
@@ -11,15 +11,15 @@ import { makeUpdateUserInfoHandler } from './factories/UpdateUserInfoHandlerFact
 export const consumer = kafka.consumer({
   groupId: 'umbriel-consumer',
   allowAutoTopicCreation: true,
-  retry: {
-    async restartOnFailure(err: KafkaJSNonRetriableError) {
-      if (err.name === 'KafkaJSNumberOfRetriesExceeded') {
-      } else {
-      }
+  // retry: {
+  //   async restartOnFailure(err: KafkaJSNonRetriableError) {
+  //     if (err.name === 'KafkaJSNumberOfRetriesExceeded') {
+  //     } else {
+  //     }
 
-      return false
-    },
-  },
+  //     return false
+  //   },
+  // },
 })
 
 const topics = [
