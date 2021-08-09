@@ -14,7 +14,7 @@ export class Title {
   }
 
   static validate(title: string): boolean {
-    if (!title || title.trim().length < 4 || title.trim().length > 250) {
+    if (!title || title.trim().length < 3 || title.trim().length > 250) {
       return false
     }
 
