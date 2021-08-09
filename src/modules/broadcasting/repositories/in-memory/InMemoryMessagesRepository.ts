@@ -64,10 +64,10 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
 
   async getMessageStats(messageId: string): Promise<MessageStats> {
     const result = {
-      CLICK: 0,
-      DELIVER: 0,
-      OPEN: 0,
-    } as MessageStatsRaw
+      CLICK: new Set<string>(),
+      DELIVER: new Set<string>(),
+      OPEN: new Set<string>(),
+    }
 
     this.items
       .find(item => item.id === messageId)
@@ -75,13 +75,13 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
         recipient.events.forEach(event => {
           switch (event.type.value) {
             case 'CLICK':
-              result.CLICK++
+              result.CLICK.add(recipient.id)
               break
             case 'DELIVER':
-              result.DELIVER++
+              result.DELIVER.add(recipient.id)
               break
             case 'OPEN':
-              result.OPEN++
+              result.OPEN.add(recipient.id)
               break
             default:
               break
@@ -89,7 +89,11 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
         })
       })
 
-    return MessageStatsMapper.toDto(result)
+    return MessageStatsMapper.toDto({
+      CLICK: result.CLICK.size,
+      DELIVER: result.DELIVER.size,
+      OPEN: result.OPEN.size,
+    })
   }
 
   async save(message: Message): Promise<void> {

@@ -81,6 +81,10 @@ describe('Get Message Stats (e2e)', () => {
                   id: uuid(),
                   type: 'CLICK',
                 },
+                {
+                  id: uuid(),
+                  type: 'CLICK',
+                },
               ],
             },
           },
