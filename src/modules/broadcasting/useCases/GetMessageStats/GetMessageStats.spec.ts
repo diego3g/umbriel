@@ -48,6 +48,10 @@ describe('Get Message Stats', () => {
               recipientId: 'fake-recipient-id',
               type: Type.create('CLICK').value as Type,
             }).value as Event,
+            Event.create({
+              recipientId: 'fake-recipient-id',
+              type: Type.create('CLICK').value as Type,
+            }).value as Event,
           ],
         }),
         Recipient.create({

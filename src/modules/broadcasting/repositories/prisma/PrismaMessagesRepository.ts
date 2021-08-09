@@ -55,21 +55,20 @@ export class PrismaMessagesRepository implements IMessagesRepository {
   }
 
   async getMessageStats(messageId: string): Promise<MessageStats> {
-    const stats = await prisma.event.groupBy({
-      by: ['type'],
-      _count: true,
-      where: {
-        type: {
-          in: ['OPEN', 'CLICK', 'DELIVER'],
-        },
-        recipient: {
-          message_id: messageId,
-        },
-      },
-    })
+    const stats = await prisma.$queryRaw<
+      Array<{
+        type: keyof MessageStatsRaw
+        count: number
+      }>
+    >`
+      SELECT type, count(distinct events.recipient_id) FROM events
+      INNER JOIN recipients ON recipients.id = events.recipient_id
+      WHERE recipients.message_id = ${messageId}
+      GROUP BY events.type;
+    `
 
     const statsParsed = stats.reduce((acc, item) => {
-      acc[item.type] = item._count
+      acc[item.type] = item.count
 
       return acc
     }, {}) as MessageStatsRaw
