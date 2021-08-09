@@ -1,11 +1,11 @@
 import { Either, left, right } from '@core/logic/Either'
+import { Contact } from '@modules/subscriptions/domain/contact/contact'
 import { Email } from '@modules/subscriptions/domain/contact/email'
 import { InvalidEmailError } from '@modules/subscriptions/domain/contact/errors/InvalidEmailError'
 import { InvalidNameError } from '@modules/subscriptions/domain/contact/errors/InvalidNameError'
 import { Name } from '@modules/subscriptions/domain/contact/name'
 
 import { IContactsRepository } from '../../repositories/IContactsRepository'
-import { ContactNotFoundError } from './errors/ContactNotFoundError'
 
 type UpdateContactFromIntegrationRequest = {
   contactIntegrationId: string
@@ -16,7 +16,7 @@ type UpdateContactFromIntegrationRequest = {
 }
 
 type UpdateContactFromIntegrationResponse = Either<
-  ContactNotFoundError | InvalidNameError | InvalidEmailError,
+  InvalidNameError | InvalidEmailError,
   null
 >
 
@@ -27,13 +27,9 @@ export class UpdateContactFromIntegration {
     contactIntegrationId,
     data,
   }: UpdateContactFromIntegrationRequest): Promise<UpdateContactFromIntegrationResponse> {
-    const contact = await this.contactsRepository.findByIntegrationId(
+    let contact = await this.contactsRepository.findByIntegrationId(
       contactIntegrationId
     )
-
-    if (!contact) {
-      return left(new ContactNotFoundError())
-    }
 
     const nameOrError = Name.create(data.name)
 
@@ -47,10 +43,26 @@ export class UpdateContactFromIntegration {
       return left(new InvalidEmailError(data.email))
     }
 
-    contact.name = nameOrError.value
-    contact.email = emailOrError.value
+    if (!contact) {
+      const contactOrError = Contact.create({
+        name: nameOrError.value,
+        email: emailOrError.value,
+        integrationId: contactIntegrationId,
+      })
 
-    await this.contactsRepository.save(contact)
+      if (contactOrError.isLeft()) {
+        return left(contactOrError.value)
+      }
+
+      contact = contactOrError.value
+
+      await this.contactsRepository.create(contact)
+    } else {
+      contact.name = nameOrError.value
+      contact.email = emailOrError.value
+
+      await this.contactsRepository.save(contact)
+    }
 
     return right(null)
   }
