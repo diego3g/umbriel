@@ -136,7 +136,7 @@ describe('Get Message Stats (e2e)', () => {
       recipientsCount: 3,
       openRate: 66.67,
       clickCount: 1,
-      clickRate: 33.33,
+      clickRate: 50,
     })
   })
 })
