@@ -46,10 +46,45 @@ export class RegisterEventController implements Controller {
         return ok()
       }
 
+      let importantMetadata: any = {}
+
+      switch (type) {
+        case 'OPEN':
+          importantMetadata = {
+            ipAddress: meta.ipAddress,
+            userAgent: meta.userAgent,
+          }
+          break
+        case 'CLICK':
+          importantMetadata = {
+            link: meta.link,
+            linkTags: meta.linkTags,
+            ipAddress: meta.ipAddress,
+            userAgent: meta.userAgent,
+          }
+          break
+        case 'BOUNCE':
+          importantMetadata = {
+            bounceType: meta.bounceType,
+            bounceSubType: meta.bounceSubType,
+            diagnosticCode: meta.bouncedRecipients[0].diagnosticCode,
+          }
+          break
+        case 'COMPLAINT':
+          importantMetadata = {
+            userAgent: meta.userAgent,
+            complaintFeedbackType: meta.complaintFeedbackType,
+          }
+          break
+        default:
+          importantMetadata = {}
+          break
+      }
+
       const result = await this.registerEvent.execute({
         contactId: data.mail.tags.contactId[0],
         messageId: data.mail.tags.messageId[0],
-        event: { type, meta },
+        event: { type, meta: importantMetadata },
       })
 
       if (result.isLeft()) {
