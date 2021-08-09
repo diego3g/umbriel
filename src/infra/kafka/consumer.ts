@@ -71,6 +71,7 @@ export async function start() {
             break
         }
       } catch (err) {
+        console.log(`Error for message: ${message.value.toString()}`)
         console.error(err)
       }
     },
