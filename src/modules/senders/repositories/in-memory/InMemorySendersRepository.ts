@@ -9,6 +9,10 @@ import {
 export class InMemorySendersRepository implements ISendersRepository {
   constructor(public items: Sender[] = []) {}
 
+  async findAll(): Promise<Sender[]> {
+    return this.items
+  }
+
   async findById(id: string): Promise<Sender> {
     return this.items.find(sender => sender.id === id)
   }
