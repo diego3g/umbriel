@@ -16,6 +16,12 @@ export class PrismaTagsRepository implements ITagsRepository {
     return !!tag
   }
 
+  async findAll(): Promise<Tag[]> {
+    const tags = await prisma.tag.findMany()
+
+    return tags.map(tag => TagMapper.toDomain(tag))
+  }
+
   async findById(id: string): Promise<Tag> {
     const tag = await prisma.tag.findUnique({ where: { id } })
 
