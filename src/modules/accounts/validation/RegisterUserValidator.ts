@@ -18,8 +18,6 @@ export class RegisterUserValidator implements Validator<Params> {
           .string()
           .required()
           .trim()
-          .min(6)
-          .max(255)
           .is([data.password]),
       })
 
