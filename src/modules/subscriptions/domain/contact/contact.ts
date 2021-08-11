@@ -53,7 +53,7 @@ export class Contact extends Entity<IContactProps> {
   }
 
   get shouldReceiveMailing() {
-    return !this.isUnsubscribed && !this.isBlocked
+    return !this.isUnsubscribed && !this.isBlocked && !this.isBounced
   }
 
   set name(name: Name) {
