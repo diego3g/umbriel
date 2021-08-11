@@ -361,7 +361,7 @@ describe('Send Message', () => {
     const title = Title.create('My new template').value as Title
 
     const content = Content.create(
-      '<style>p { color: red; }</style><div>{{ message_content }}</div>'
+      '<style>.message-content p { color: red; }</style><div class="message-content">{{ message_content }}</div>'
     ).value as Content
 
     const templateOrError = Template.create({
@@ -402,7 +402,7 @@ describe('Send Message', () => {
 
     expect(response.isRight()).toBeTruthy()
     expect(messagesRepository.items[0].body.value).toEqual(
-      '<div><p style="color: red;">The message body</p></div>'
+      '<div class="message-content"><p style="color: red;">The message body</p></div>'
     )
   })
 })

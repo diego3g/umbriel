@@ -54,6 +54,7 @@ export class SendMessage {
       const messageBodyContent = template.content.compose(message.body.value)
       const messageBodyWithInlineCSS = await inlineCss(messageBodyContent, {
         url: 'not-required',
+        removeHtmlSelectors: true,
       })
 
       messageBody = Body.create(messageBodyWithInlineCSS).value as Body
@@ -67,6 +68,8 @@ export class SendMessage {
     const contacts = await this.contactsRepository.findSubscribedByTags(tagsIds)
 
     const sender = await this.sendersRepository.findById(message.senderId)
+
+    message.deliver([], messageBody)
 
     const queueJobs = contacts.map(contact => {
       return {
@@ -88,8 +91,6 @@ export class SendMessage {
     })
 
     await this.mailQueueProvider.addManyJobs(queueJobs)
-
-    message.deliver([], messageBody)
 
     await this.messagesRepository.save(message)
 

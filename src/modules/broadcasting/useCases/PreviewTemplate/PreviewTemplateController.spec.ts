@@ -21,7 +21,7 @@ describe('Preview Template (e2e)', () => {
     } = createAndAuthenticateUser()
 
     const response = await request(app)
-      .get(`/templates/preview`)
+      .post(`/templates/preview`)
       .set('x-access-token', token)
       .send({
         html: '<h1>Title</h1>{{ message_content }}<p>Footer</p>',
