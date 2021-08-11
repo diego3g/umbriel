@@ -405,4 +405,69 @@ describe('Send Message', () => {
       '<div class="message-content"><p style="color: red;">The message body</p></div>'
     )
   })
+
+  it('should compose the message body with the template content', async () => {
+    const subscribedContact = Contact.create({
+      name: ContactName.create('John Subscribed').value as ContactName,
+      email: ContactEmail.create('johnsubscribed@example.com')
+        .value as ContactEmail,
+      isUnsubscribed: false,
+    }).value as Contact
+
+    subscribedContact.subscribeToTag(
+      Subscription.create({
+        tagId: tag.id,
+        contactId: subscribedContact.id,
+      })
+    )
+
+    await contactsRepository.create(subscribedContact)
+
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
+    const template = Template.create({
+      title: Title.create('My new template').value as Title,
+      content: Content.create(
+        'Custom template with {{ message_content }} variable.'
+      ).value as Content,
+    }).value as Template
+
+    await templatesRepository.create(template)
+
+    const message = Message.create({
+      subject,
+      body,
+      senderId: sender.id,
+      templateId: template.id,
+    }).value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
+
+    await messagesRepository.create(message)
+
+    const response = await sendMessage.execute(message.id)
+
+    expect(response.isRight()).toBeTruthy()
+    expect(mailQueueProvider.jobs).toEqual([
+      expect.objectContaining({
+        recipient: expect.objectContaining({
+          name: 'John Subscribed',
+          email: 'johnsubscribed@example.com',
+        }),
+        message: expect.objectContaining({
+          body: 'Custom template with The long enough message body variable.',
+        }),
+      }),
+    ])
+  })
 })
