@@ -4,18 +4,18 @@ import { HttpResponse, fail, ok, clientError } from '@core/infra/HttpResponse'
 import { CountRecipientsFromTags } from './CountRecipientsFromTags'
 
 type CountRecipientsFromTagsControllerRequest = {
-  tagsIds: string[]
+  tagIds: string[]
 }
 
 export class CountRecipientsFromTagsController implements Controller {
   constructor(private countRecipientsFromTags: CountRecipientsFromTags) {}
 
   async handle({
-    tagsIds,
+    tagIds,
   }: CountRecipientsFromTagsControllerRequest): Promise<HttpResponse> {
     try {
       const result = await this.countRecipientsFromTags.execute({
-        tagsIds,
+        tagIds,
       })
 
       if (result.isLeft()) {
