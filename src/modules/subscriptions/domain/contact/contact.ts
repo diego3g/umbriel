@@ -41,7 +41,7 @@ export class Contact extends Entity<IContactProps> {
   }
 
   get isBounced() {
-    return this.props.isBlocked
+    return this.props.isBounced
   }
 
   get integrationId() {
