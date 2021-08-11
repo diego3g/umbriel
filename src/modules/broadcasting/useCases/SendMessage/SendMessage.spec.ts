@@ -17,7 +17,6 @@ import { InMemorySubscriptionsRepository } from '@modules/subscriptions/reposito
 import { Body } from '../../domain/message/body'
 import { Message } from '../../domain/message/message'
 import { Subject } from '../../domain/message/subject'
-import { Recipient } from '../../domain/recipient/recipient'
 import { Content } from '../../domain/template/content'
 import { Template } from '../../domain/template/template'
 import { Title } from '../../domain/template/title'
@@ -210,12 +209,7 @@ describe('Send Message', () => {
 
     message.setTags([messageTag])
 
-    const recipient = Recipient.create({
-      messageId: message.id,
-      contactId: 'fake-contact-id',
-    })
-
-    message.deliver([recipient], message.body)
+    message.deliver(0, message.body)
 
     await messagesRepository.create(message)
 
@@ -535,5 +529,59 @@ describe('Send Message', () => {
         }),
       }),
     ])
+  })
+
+  it('should store the recipients count when message is sent', async () => {
+    const subscribedContact = Contact.create({
+      name: ContactName.create('John Subscribed').value as ContactName,
+      email: ContactEmail.create('johnsubscribed@example.com')
+        .value as ContactEmail,
+    }).value as Contact
+
+    subscribedContact.subscribeToTag(
+      Subscription.create({
+        tagId: tag.id,
+        contactId: subscribedContact.id,
+      })
+    )
+
+    await contactsRepository.create(subscribedContact)
+
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
+    const template = Template.create({
+      title: Title.create('My new template').value as Title,
+      content: Content.create(
+        'Custom template with {{ message_content }} variable.'
+      ).value as Content,
+    }).value as Template
+
+    await templatesRepository.create(template)
+
+    const message = Message.create({
+      subject,
+      body,
+      senderId: sender.id,
+      templateId: template.id,
+    }).value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
+
+    await messagesRepository.create(message)
+
+    const response = await sendMessage.execute(message.id)
+
+    expect(response.isRight()).toBeTruthy()
+    expect(messagesRepository.items[0].recipientsCount).toEqual(1)
   })
 })

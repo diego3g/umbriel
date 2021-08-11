@@ -69,7 +69,7 @@ export class SendMessage {
 
     const sender = await this.sendersRepository.findById(message.senderId)
 
-    message.deliver([], messageBody)
+    message.deliver(contacts.length, messageBody)
 
     const queueJobs = contacts.map(contact => {
       return {

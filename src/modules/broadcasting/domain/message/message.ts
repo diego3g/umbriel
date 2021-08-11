@@ -17,6 +17,7 @@ interface IMessageProps {
   tags?: MessageTags
   sentAt?: Date
   recipients?: Recipient[]
+  recipientsCount?: number
 }
 
 export class Message extends Entity<IMessageProps> {
@@ -48,6 +49,10 @@ export class Message extends Entity<IMessageProps> {
     return this.props.recipients
   }
 
+  get recipientsCount() {
+    return this.props.recipientsCount
+  }
+
   private constructor(props: IMessageProps, id?: string) {
     super(props, id)
   }
@@ -56,9 +61,9 @@ export class Message extends Entity<IMessageProps> {
     this.props.tags = MessageTags.create(tags)
   }
 
-  public deliver(recipients: Recipient[], messageBody: Body) {
+  public deliver(recipientsCount: number, messageBody: Body) {
     this.props.sentAt = new Date()
-    this.props.recipients = recipients
+    this.props.recipientsCount = recipientsCount
     this.props.body = messageBody
   }
 
@@ -70,6 +75,7 @@ export class Message extends Entity<IMessageProps> {
       {
         ...props,
         tags: props.tags ?? MessageTags.create([]),
+        recipientsCount: props.recipientsCount ?? 0,
       },
       id
     )

@@ -75,15 +75,16 @@ model Subscription {
 }
 
 model Message {
-  id          String       @id
-  subject     String
-  body        String
-  template    Template?    @relation(fields: [template_id], references: [id])
-  template_id String?
-  recipients  Recipient[]
-  tags        MessageTag[]
-  sender      Sender       @relation(fields: [sender_id], references: [id])
-  sender_id   String
+  id               String       @id
+  subject          String
+  body             String
+  template         Template?    @relation(fields: [template_id], references: [id])
+  template_id      String?
+  recipients       Recipient[]
+  tags             MessageTag[]
+  sender           Sender       @relation(fields: [sender_id], references: [id])
+  sender_id        String
+  recipients_count Int          @default(0)
 
   sent_at    DateTime?
   created_at DateTime  @default(now())
