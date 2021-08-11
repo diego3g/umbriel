@@ -2,7 +2,6 @@ import { Validator } from '@core/infra/Validator'
 import { Either, left, right } from '@core/logic/Either'
 import { RegisterUserControllerRequest } from '../useCases/RegisterUser/RegisterUserController'
 
-import type { SchemaOf } from 'yup'
 import * as yup from 'yup'
 
 type Params = RegisterUserControllerRequest
@@ -10,7 +9,7 @@ type Params = RegisterUserControllerRequest
 export class RegisterUserValidator implements Validator<Params> {
   public validate(data: Params): Either<Error, null> {
     try {
-      const schema: SchemaOf<Params> = yup.object({
+      const schema: yup.SchemaOf<Params> = yup.object({
         name: yup.string().required().trim().min(2).max(255),
         email: yup.string().required().trim().email(),
         password: yup.string().required().trim().min(6).max(255),
@@ -18,7 +17,7 @@ export class RegisterUserValidator implements Validator<Params> {
           .string()
           .required()
           .trim()
-          .is([data.password]),
+          .test('invalid_password_comparison', p => p === data.password),
       })
 
       schema.validateSync(data) // throws an error
