@@ -16,7 +16,7 @@ templatesRouter.use(adaptMiddleware(makeEnsureAuthenticatedMiddleware()))
 templatesRouter.get('/', adaptRoute(makeGetAllTemplatesController()))
 templatesRouter.post('/', adaptRoute(makeCreateTemplateController()))
 templatesRouter.get('/search', adaptRoute(makeSearchTemplatesController()))
-templatesRouter.get('/preview', adaptRoute(makePreviewTemplateController()))
+templatesRouter.post('/preview', adaptRoute(makePreviewTemplateController()))
 templatesRouter.patch(
   '/:templateId/set-as-default',
   adaptRoute(makeSetDefaultTemplateController())
