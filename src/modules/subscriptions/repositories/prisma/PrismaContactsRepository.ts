@@ -82,6 +82,7 @@ export class PrismaContactsRepository implements IContactsRepository {
       where: {
         is_unsubscribed: false,
         is_blocked: false,
+        is_bounced: false,
         subscriptions: {
           some: {
             tag_id: {
@@ -100,6 +101,7 @@ export class PrismaContactsRepository implements IContactsRepository {
       where: {
         is_unsubscribed: false,
         is_blocked: false,
+        is_bounced: false,
         subscriptions: {
           some: {
             tag_id: {
