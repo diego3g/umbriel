@@ -35,7 +35,10 @@ export class RegisterEventController implements Controller {
         Open: 'open',
       }
 
-      if (!data.mail?.tags.contactId[0] || !data.mail?.tags.messageId[0]) {
+      if (
+        !data.mail?.tags?.contactId?.[0] ||
+        !data.mail?.tags?.messageId?.[0]
+      ) {
         return ok()
       }
 
