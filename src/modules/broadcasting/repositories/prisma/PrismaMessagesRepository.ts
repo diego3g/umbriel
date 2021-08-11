@@ -55,9 +55,15 @@ export class PrismaMessagesRepository implements IMessagesRepository {
   }
 
   async getMessageStats(messageId: string): Promise<MessageStats> {
+    const message = await prisma.message.findUnique({
+      where: {
+        id: messageId,
+      },
+    })
+
     const stats = await prisma.$queryRaw<
       Array<{
-        type: keyof MessageStatsRaw
+        type: keyof Omit<MessageStatsRaw, 'RECIPIENT'>
         count: number
       }>
     >`
@@ -71,9 +77,12 @@ export class PrismaMessagesRepository implements IMessagesRepository {
       acc[item.type] = item.count
 
       return acc
-    }, {}) as MessageStatsRaw
+    }, {}) as Omit<MessageStatsRaw, 'RECIPIENT'>
 
-    return MessageStatsMapper.toDto(statsParsed)
+    return MessageStatsMapper.toDto({
+      ...statsParsed,
+      RECIPIENT: message.recipients_count,
+    })
   }
 
   async search({

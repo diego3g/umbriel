@@ -67,27 +67,28 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
       OPEN: new Set<string>(),
     }
 
-    this.items
-      .find(item => item.id === messageId)
-      .recipients.forEach(recipient => {
-        recipient.events.forEach(event => {
-          switch (event.type.value) {
-            case 'CLICK':
-              result.CLICK.add(recipient.id)
-              break
-            case 'DELIVER':
-              result.DELIVER.add(recipient.id)
-              break
-            case 'OPEN':
-              result.OPEN.add(recipient.id)
-              break
-            default:
-              break
-          }
-        })
+    const message = this.items.find(item => item.id === messageId)
+
+    message.recipients.forEach(recipient => {
+      recipient.events.forEach(event => {
+        switch (event.type.value) {
+          case 'CLICK':
+            result.CLICK.add(recipient.id)
+            break
+          case 'DELIVER':
+            result.DELIVER.add(recipient.id)
+            break
+          case 'OPEN':
+            result.OPEN.add(recipient.id)
+            break
+          default:
+            break
+        }
       })
+    })
 
     return MessageStatsMapper.toDto({
+      RECIPIENT: message.recipientsCount,
       CLICK: result.CLICK.size,
       DELIVER: result.DELIVER.size,
       OPEN: result.OPEN.size,

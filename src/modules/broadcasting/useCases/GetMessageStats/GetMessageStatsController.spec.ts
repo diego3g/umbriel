@@ -26,6 +26,7 @@ describe('Get Message Stats (e2e)', () => {
     const contactId1 = uuid()
     const contactId2 = uuid()
     const contactId3 = uuid()
+    const contactId4 = uuid()
 
     await prisma.$transaction([
       prisma.contact.createMany({
@@ -45,6 +46,11 @@ describe('Get Message Stats (e2e)', () => {
             name: 'Contact 03',
             email: 'contact3@example.com',
           },
+          {
+            id: contactId4,
+            name: 'Contact 04',
+            email: 'contact4@example.com',
+          },
         ],
       }),
       prisma.message.create({
@@ -52,6 +58,7 @@ describe('Get Message Stats (e2e)', () => {
           id: messageId,
           subject: 'Message subject',
           body: 'Message body',
+          recipients_count: 4,
           sender: {
             create: {
               id: uuid(),
@@ -128,6 +135,13 @@ describe('Get Message Stats (e2e)', () => {
           },
         },
       }),
+      prisma.recipient.create({
+        data: {
+          id: uuid(),
+          message_id: messageId,
+          contact_id: contactId4,
+        },
+      }),
     ])
 
     const response = await request(app)
@@ -137,7 +151,8 @@ describe('Get Message Stats (e2e)', () => {
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual({
-      recipientsCount: 3,
+      recipientsCount: 4,
+      deliverCount: 3,
       openRate: 66.67,
       clickCount: 1,
       clickRate: 50,
