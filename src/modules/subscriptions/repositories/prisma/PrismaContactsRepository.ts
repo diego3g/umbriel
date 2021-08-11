@@ -130,7 +130,12 @@ export class PrismaContactsRepository implements IContactsRepository {
       }
     }
 
-    const contacts = await prisma.contact.findMany(queryPayload)
+    const contacts = await prisma.contact.findMany({
+      ...queryPayload,
+      orderBy: {
+        email: 'asc',
+      },
+    })
 
     const contactsCount = await prisma.contact.aggregate({
       _count: true,

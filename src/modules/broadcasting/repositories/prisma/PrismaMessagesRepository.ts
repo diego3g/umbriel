@@ -95,6 +95,9 @@ export class PrismaMessagesRepository implements IMessagesRepository {
 
     const messages = await prisma.message.findMany({
       ...queryPayload,
+      orderBy: {
+        created_at: 'desc',
+      },
     })
 
     const messagesCount = await prisma.message.aggregate({

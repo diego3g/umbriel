@@ -46,7 +46,12 @@ export class PrismaSendersRepository implements ISendersRepository {
       }
     }
 
-    const senders = await prisma.sender.findMany(queryPayload)
+    const senders = await prisma.sender.findMany({
+      ...queryPayload,
+      orderBy: {
+        name: 'asc',
+      },
+    })
 
     const sendersCount = await prisma.sender.aggregate({
       _count: true,

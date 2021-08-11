@@ -65,6 +65,9 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
 
     const templates = await prisma.template.findMany({
       ...queryPayload,
+      orderBy: {
+        title: 'asc',
+      },
     })
 
     const estimatedCount = await prisma.template.aggregate({
