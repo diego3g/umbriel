@@ -356,4 +356,53 @@ describe('Send Message', () => {
       }),
     ])
   })
+
+  it('should inline the CSS from the template', async () => {
+    const title = Title.create('My new template').value as Title
+
+    const content = Content.create(
+      '<style>p { color: red; }</style><div>{{ message_content }}</div>'
+    ).value as Content
+
+    const templateOrError = Template.create({
+      title,
+      content,
+    })
+
+    const template = templateOrError.value as Template
+
+    await templatesRepository.create(template)
+
+    const sender = Sender.create({
+      name: Name.create('John Doe').value as Name,
+      email: Email.create('johndoe@example.com').value as Email,
+    }).value as Sender
+
+    await sendersRepository.create(sender)
+
+    const messageOrError = Message.create({
+      subject,
+      body: Body.create('<p>The message body</p>').value as Body,
+      templateId: template.id,
+      senderId: sender.id,
+    })
+
+    const message = messageOrError.value as Message
+
+    const messageTag = MessageTag.create({
+      messageId: message.id,
+      tagId: tag.id,
+    })
+
+    message.setTags([messageTag])
+
+    await messagesRepository.create(message)
+
+    const response = await sendMessage.execute(message.id)
+
+    expect(response.isRight()).toBeTruthy()
+    expect(messagesRepository.items[0].body.value).toEqual(
+      '<div><p style="color: red;">The message body</p></div>'
+    )
+  })
 })

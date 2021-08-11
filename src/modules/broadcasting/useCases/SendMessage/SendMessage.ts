@@ -1,3 +1,5 @@
+import inlineCss from 'inline-css'
+
 import { Either, left, right } from '@core/logic/Either'
 import { IMailQueueProvider } from '@infra/providers/models/IMailQueueProvider'
 import { IMessageTagsRepository } from '@modules/broadcasting/repositories/IMessageTagsRepository'
@@ -50,8 +52,11 @@ export class SendMessage {
       }
 
       const messageBodyContent = template.content.compose(message.body.value)
+      const messageBodyWithInlineCSS = await inlineCss(messageBodyContent, {
+        url: 'not-required',
+      })
 
-      messageBody = Body.create(messageBodyContent).value as Body
+      messageBody = Body.create(messageBodyWithInlineCSS).value as Body
     }
 
     const messageTags = await this.messageTagsRepository.findManyByMessageId(
