@@ -54,6 +54,7 @@ model Contact {
   subscriptions   Subscription[]
   is_unsubscribed Boolean        @default(false)
   is_blocked      Boolean        @default(false)
+  is_bounced      Boolean        @default(false)
   integration_id  String?        @unique
 
   created_at DateTime @default(now())
