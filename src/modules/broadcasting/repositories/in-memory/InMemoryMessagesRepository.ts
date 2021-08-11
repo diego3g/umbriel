@@ -32,6 +32,7 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
       id: message.id,
       subject: message.subject.value,
       body: message.body.value,
+      sentAt: message.sentAt,
       sender: {
         name: sender.name.value,
         email: sender.email.value,
