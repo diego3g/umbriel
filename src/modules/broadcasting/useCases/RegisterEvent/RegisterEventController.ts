@@ -105,6 +105,7 @@ export class RegisterEventController implements Controller {
         return ok()
       }
     } catch (err) {
+      console.error('Failed handling AWS message: ', requestData.Message)
       return fail(err)
     }
   }
