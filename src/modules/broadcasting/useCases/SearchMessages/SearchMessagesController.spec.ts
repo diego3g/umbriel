@@ -67,7 +67,7 @@ describe('Search Messages (e2e)', () => {
       ])
     )
   })
-  it('should be able to search messages', async () => {
+  it('should be able to search messages with case-insensitive', async () => {
     const {
       jwt: { token },
     } = createAndAuthenticateUser()
