@@ -14,7 +14,7 @@ export const consumer = kafka.consumer({
   retry: {
     async restartOnFailure(err: KafkaJSNonRetriableError) {
       if (err.name === 'KafkaJSNumberOfRetriesExceeded') {
-      } else {
+        // TODO: add catchError for retries exceeded
       }
 
       return false
