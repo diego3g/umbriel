@@ -9,6 +9,12 @@ import {
 } from '../ISendersRepository'
 
 export class PrismaSendersRepository implements ISendersRepository {
+  async findAll(): Promise<Sender[]> {
+    const senders = await prisma.sender.findMany()
+
+    return senders.map(sender => SenderMapper.toDomain(sender))
+  }
+
   async findById(id: string): Promise<Sender> {
     const sender = await prisma.sender.findUnique({ where: { id } })
 
@@ -43,7 +49,12 @@ export class PrismaSendersRepository implements ISendersRepository {
       }
     }
 
-    const senders = await prisma.sender.findMany(queryPayload)
+    const senders = await prisma.sender.findMany({
+      ...queryPayload,
+      orderBy: {
+        name: 'asc',
+      },
+    })
 
     const sendersCount = await prisma.sender.aggregate({
       _count: true,

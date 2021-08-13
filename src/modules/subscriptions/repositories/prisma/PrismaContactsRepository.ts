@@ -82,6 +82,7 @@ export class PrismaContactsRepository implements IContactsRepository {
       where: {
         is_unsubscribed: false,
         is_blocked: false,
+        is_bounced: false,
         subscriptions: {
           some: {
             tag_id: {
@@ -100,6 +101,7 @@ export class PrismaContactsRepository implements IContactsRepository {
       where: {
         is_unsubscribed: false,
         is_blocked: false,
+        is_bounced: false,
         subscriptions: {
           some: {
             tag_id: {
@@ -133,7 +135,12 @@ export class PrismaContactsRepository implements IContactsRepository {
       }
     }
 
-    const contacts = await prisma.contact.findMany(queryPayload)
+    const contacts = await prisma.contact.findMany({
+      ...queryPayload,
+      orderBy: {
+        email: 'asc',
+      },
+    })
 
     const contactsCount = await prisma.contact.aggregate({
       _count: true,

@@ -15,6 +15,7 @@ export class MessageWithDetailsMapper {
       id: raw.id,
       subject: raw.subject,
       body: raw.body,
+      sentAt: raw.sent_at,
       sender: {
         name: raw.sender.name,
         email: raw.sender.email,

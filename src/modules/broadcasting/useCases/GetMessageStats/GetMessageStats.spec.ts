@@ -31,6 +31,7 @@ describe('Get Message Stats', () => {
       subject: Subject.create('Message subject').value as Subject,
       body: Body.create('Message content').value as Body,
       senderId: 'fake-sender-id',
+      recipientsCount: 3,
       recipients: [
         Recipient.create({
           messageId: 'fake-message-id',
@@ -43,6 +44,10 @@ describe('Get Message Stats', () => {
             Event.create({
               recipientId: 'fake-recipient-id',
               type: Type.create('OPEN').value as Type,
+            }).value as Event,
+            Event.create({
+              recipientId: 'fake-recipient-id',
+              type: Type.create('CLICK').value as Type,
             }).value as Event,
             Event.create({
               recipientId: 'fake-recipient-id',
@@ -84,8 +89,9 @@ describe('Get Message Stats', () => {
     })
 
     expect(response.clickCount).toBe(1)
-    expect(response.clickRate).toBe(33.33)
+    expect(response.clickRate).toBe(50)
     expect(response.openRate).toBe(66.67)
+    expect(response.deliverCount).toBe(3)
     expect(response.recipientsCount).toBe(3)
   })
 })

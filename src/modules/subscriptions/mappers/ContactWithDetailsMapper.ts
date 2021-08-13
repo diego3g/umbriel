@@ -30,7 +30,10 @@ export class ContactWithDetailsMapper {
       subscriptions: raw.subscriptions.map(subscription => {
         return {
           id: subscription.id,
-          tag: subscription.tag.title,
+          tag: {
+            id: subscription.tag.id,
+            title: subscription.tag.title,
+          },
         }
       }),
       messages: raw.recipients.map(recipient => {

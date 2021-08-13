@@ -8,6 +8,10 @@ import {
 export class InMemoryTemplatesRepository implements ITemplatesRepository {
   constructor(public items: Template[] = []) {}
 
+  async findAll(): Promise<Template[]> {
+    return this.items
+  }
+
   async findById(id: string): Promise<Template> {
     return this.items.find(template => template.id === id)
   }

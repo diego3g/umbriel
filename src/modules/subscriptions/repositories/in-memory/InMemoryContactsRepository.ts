@@ -62,7 +62,8 @@ export class InMemoryContactsRepository implements IContactsRepository {
           tagIds.includes(subscription.tagId)
         ) &&
         contact.isUnsubscribed === false &&
-        contact.isBlocked === false
+        contact.isBlocked === false &&
+        contact.isBounced === false
       )
     })
   }

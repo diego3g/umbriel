@@ -1,4 +1,8 @@
-import 'dotenv/config'
+/* eslint-disable import/first */
+
+import { config } from 'dotenv-flow'
+
+config({ silent: true })
 
 import { SESProvider } from '@infra/providers/implementations/mail/AmazonSESProvider'
 import { BullProvider } from '@infra/providers/implementations/queue/BullProvider'

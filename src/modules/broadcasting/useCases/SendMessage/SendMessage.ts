@@ -1,3 +1,5 @@
+import inlineCss from 'inline-css'
+
 import { Either, left, right } from '@core/logic/Either'
 import { IMailQueueProvider } from '@infra/providers/models/IMailQueueProvider'
 import { IMessageTagsRepository } from '@modules/broadcasting/repositories/IMessageTagsRepository'
@@ -50,8 +52,12 @@ export class SendMessage {
       }
 
       const messageBodyContent = template.content.compose(message.body.value)
+      const messageBodyWithInlineCSS = await inlineCss(messageBodyContent, {
+        url: 'not-required',
+        removeHtmlSelectors: true,
+      })
 
-      messageBody = Body.create(messageBodyContent).value as Body
+      messageBody = Body.create(messageBodyWithInlineCSS).value as Body
     }
 
     const messageTags = await this.messageTagsRepository.findManyByMessageId(
@@ -62,6 +68,8 @@ export class SendMessage {
     const contacts = await this.contactsRepository.findSubscribedByTags(tagsIds)
 
     const sender = await this.sendersRepository.findById(message.senderId)
+
+    message.deliver(contacts.length, messageBody)
 
     const queueJobs = contacts.map(contact => {
       return {
@@ -83,8 +91,6 @@ export class SendMessage {
     })
 
     await this.mailQueueProvider.addManyJobs(queueJobs)
-
-    message.deliver([], messageBody)
 
     await this.messagesRepository.save(message)
 

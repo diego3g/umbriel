@@ -7,8 +7,8 @@ describe('Template title value object', () => {
     expect(titleOrError.isRight()).toBeTruthy()
   })
 
-  it('should reject titles with less than 4 characters', () => {
-    const titleOrError = Title.create('asd')
+  it('should reject titles with less than 3 characters', () => {
+    const titleOrError = Title.create('as')
 
     expect(titleOrError.isLeft()).toBeTruthy()
   })

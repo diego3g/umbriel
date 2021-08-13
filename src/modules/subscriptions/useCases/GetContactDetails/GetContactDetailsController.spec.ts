@@ -78,7 +78,9 @@ describe('Get Contact Details (e2e)', () => {
         name: 'John Doe',
         subscriptions: [
           expect.objectContaining({
-            tag: 'Tag 01',
+            tag: expect.objectContaining({
+              title: 'Tag 01',
+            }),
           }),
         ],
         messages: [

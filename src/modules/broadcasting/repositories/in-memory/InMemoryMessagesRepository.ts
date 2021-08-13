@@ -1,9 +1,6 @@
 import { MessageStats } from '@modules/broadcasting/dtos/MessageStats'
 import { MessageWithDetails } from '@modules/broadcasting/dtos/MessageWithDetails'
-import {
-  MessageStatsMapper,
-  MessageStatsRaw,
-} from '@modules/broadcasting/mappers/MessageStatsMapper'
+import { MessageStatsMapper } from '@modules/broadcasting/mappers/MessageStatsMapper'
 import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
 
 import { Message } from '../../domain/message/message'
@@ -35,6 +32,7 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
       id: message.id,
       subject: message.subject.value,
       body: message.body.value,
+      sentAt: message.sentAt,
       sender: {
         name: sender.name.value,
         email: sender.email.value,
@@ -65,32 +63,37 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
 
   async getMessageStats(messageId: string): Promise<MessageStats> {
     const result = {
-      CLICK: 0,
-      DELIVER: 0,
-      OPEN: 0,
-    } as MessageStatsRaw
+      CLICK: new Set<string>(),
+      DELIVER: new Set<string>(),
+      OPEN: new Set<string>(),
+    }
 
-    this.items
-      .find(item => item.id === messageId)
-      .recipients.forEach(recipient => {
-        recipient.events.forEach(event => {
-          switch (event.type.value) {
-            case 'CLICK':
-              result.CLICK++
-              break
-            case 'DELIVER':
-              result.DELIVER++
-              break
-            case 'OPEN':
-              result.OPEN++
-              break
-            default:
-              break
-          }
-        })
+    const message = this.items.find(item => item.id === messageId)
+
+    message.recipients.forEach(recipient => {
+      recipient.events.forEach(event => {
+        switch (event.type.value) {
+          case 'CLICK':
+            result.CLICK.add(recipient.id)
+            break
+          case 'DELIVER':
+            result.DELIVER.add(recipient.id)
+            break
+          case 'OPEN':
+            result.OPEN.add(recipient.id)
+            break
+          default:
+            break
+        }
       })
+    })
 
-    return MessageStatsMapper.toDto(result)
+    return MessageStatsMapper.toDto({
+      RECIPIENT: message.recipientsCount,
+      CLICK: result.CLICK.size,
+      DELIVER: result.DELIVER.size,
+      OPEN: result.OPEN.size,
+    })
   }
 
   async save(message: Message): Promise<void> {

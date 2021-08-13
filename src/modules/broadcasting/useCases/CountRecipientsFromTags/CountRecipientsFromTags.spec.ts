@@ -48,7 +48,7 @@ describe('Count Recipients From Tags', () => {
     await contactsRepository.create(contact2)
 
     const response = await countRecipientsFromTags.execute({
-      tagsIds: ['fake-tag-id', 'another-tag-id'],
+      tagIds: ['fake-tag-id', 'another-tag-id'],
     })
 
     expect(response.isRight()).toBeTruthy()

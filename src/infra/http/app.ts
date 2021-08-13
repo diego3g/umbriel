@@ -19,6 +19,7 @@ app.use(
     type: ['application/json', 'text/plain'],
   })
 )
+
 app.use(router)
 
 export { app }
