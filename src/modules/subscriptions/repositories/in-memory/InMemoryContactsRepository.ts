@@ -75,11 +75,12 @@ export class InMemoryContactsRepository implements IContactsRepository {
     let contactList = this.items
 
     if (query) {
-      contactList = this.items.filter(
-        contact =>
-          contact.name.value.toLowerCase().includes(query.toLowerCase()) ||
-          contact.email.value.toLowerCase().includes(query.toLowerCase())
-      )
+      contactList = this.items.filter(contact => {
+        const search = new RegExp(query, 'i')
+        return (
+          search.test(contact.name.value) || search.test(contact.email.value)
+        )
+      })
     }
 
     return {
