@@ -33,21 +33,41 @@ export class PrismaRecipientsRepository implements IRecipientsRepository {
     const data = RecipientMapper.toPersistence(recipient)
 
     const eventsData = recipient.events.map(event => {
-      return EventMapper.toPersistence(event)
+      const rawEvent = EventMapper.toPersistence(event)
+
+      return {
+        id: rawEvent.id,
+        type: rawEvent.type,
+        meta: rawEvent.meta,
+      }
     })
 
     await prisma.recipient.upsert({
       where: {
-        id: recipient.id,
+        message_id_contact_id: {
+          contact_id: recipient.contactId,
+          message_id: recipient.messageId,
+        },
       },
       create: {
         id: data.id,
         message_id: data.message_id,
         contact_id: data.contact_id,
+        events: {
+          createMany: {
+            data: eventsData,
+            skipDuplicates: true,
+          },
+        },
       },
-      update: {},
+      update: {
+        events: {
+          createMany: {
+            data: eventsData,
+            skipDuplicates: true,
+          },
+        },
+      },
     })
-
-    await prisma.event.createMany({ data: eventsData })
   }
 }
