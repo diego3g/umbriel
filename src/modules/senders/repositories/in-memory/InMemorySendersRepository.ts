@@ -29,11 +29,10 @@ export class InMemorySendersRepository implements ISendersRepository {
     let senderList = this.items
 
     if (query) {
-      senderList = this.items.filter(
-        sender =>
-          sender.name.value.includes(query) ||
-          sender.email.value.includes(query)
-      )
+      senderList = this.items.filter(sender => {
+        const search = new RegExp(query, 'i')
+        return search.test(sender.name.value) || search.test(sender.email.value)
+      })
     }
 
     return {

@@ -114,7 +114,7 @@ export class PrismaTagsRepository implements ITagsRepository {
 
     if (query) {
       queryPayload.where = {
-        title: { contains: query },
+        title: { contains: query, mode: 'insensitive' },
       }
     }
 

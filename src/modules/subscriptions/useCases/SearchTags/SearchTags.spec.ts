@@ -36,6 +36,14 @@ describe('Search Tags', () => {
     expect(response.data[0].title).toEqual('tag-5')
   })
 
+  it('should be able to search through tags with case-insensitive', async () => {
+    const response = await searchTags.execute({ query: `G-5` })
+
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].title).toEqual('tag-5')
+  })
+
   it('should be able to paginate through contacts', async () => {
     let response = await searchTags.execute({ perPage: 10 })
 

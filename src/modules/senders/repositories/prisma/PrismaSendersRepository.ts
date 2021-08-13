@@ -42,7 +42,10 @@ export class PrismaSendersRepository implements ISendersRepository {
 
     if (query) {
       queryPayload.where = {
-        OR: [{ name: { contains: query } }, { email: { contains: query } }],
+        OR: [
+          { name: { contains: query, mode: 'insensitive' } },
+          { email: { contains: query, mode: 'insensitive' } },
+        ],
       }
     }
 

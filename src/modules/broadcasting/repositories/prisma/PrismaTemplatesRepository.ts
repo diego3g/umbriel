@@ -59,7 +59,7 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
 
     if (query) {
       queryPayload.where = {
-        title: { contains: query },
+        title: { contains: query, mode: 'insensitive' },
       }
     }
 

@@ -40,7 +40,10 @@ export class InMemoryTemplatesRepository implements ITemplatesRepository {
     let tagList = this.items
 
     if (query) {
-      tagList = this.items.filter(tag => tag.title.value.includes(query))
+      tagList = this.items.filter(tag => {
+        const search = new RegExp(query, 'i')
+        return search.test(tag.title.value)
+      })
     }
 
     return {

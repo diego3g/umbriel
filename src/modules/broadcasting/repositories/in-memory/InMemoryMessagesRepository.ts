@@ -49,9 +49,10 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
     let messageList = this.items
 
     if (query) {
-      messageList = this.items.filter(message =>
-        message.subject.value.includes(query)
-      )
+      messageList = this.items.filter(message => {
+        const search = new RegExp(query, 'i')
+        return search.test(message.subject.value)
+      })
     }
 
     return {

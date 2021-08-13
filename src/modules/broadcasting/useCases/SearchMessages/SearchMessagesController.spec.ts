@@ -11,16 +11,7 @@ import { redisConnection } from '@infra/redis/connection'
 import { createAndAuthenticateUser } from '@test/factories/UserFactory'
 
 describe('Search Messages (e2e)', () => {
-  afterAll(async () => {
-    redisConnection.disconnect()
-    await prisma.$disconnect()
-  })
-
-  it('should be able to search messages', async () => {
-    const {
-      jwt: { token },
-    } = createAndAuthenticateUser()
-
+  beforeAll(async () => {
     const sender = await prisma.sender.create({
       data: {
         id: uuid(),
@@ -45,12 +36,47 @@ describe('Search Messages (e2e)', () => {
         },
       ],
     })
+  })
+  afterAll(async () => {
+    redisConnection.disconnect()
+    await prisma.$disconnect()
+  })
+
+  it('should be able to search messages', async () => {
+    const {
+      jwt: { token },
+    } = createAndAuthenticateUser()
 
     const response = await request(app)
       .get(`/messages/search`)
       .set('x-access-token', token)
       .query({
         query: 'message1',
+      })
+      .send()
+
+    expect(response.status).toBe(200)
+    expect(response.body.data.length).toBe(1)
+    expect(response.body.totalCount).toBe(1)
+    expect(response.body.data).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          subject: 'message1',
+          body: 'Message body longh enough',
+        }),
+      ])
+    )
+  })
+  it('should be able to search messages with case-insensitive', async () => {
+    const {
+      jwt: { token },
+    } = createAndAuthenticateUser()
+
+    const response = await request(app)
+      .get(`/messages/search`)
+      .set('x-access-token', token)
+      .query({
+        query: 'MeSsaGe1',
       })
       .send()
 
