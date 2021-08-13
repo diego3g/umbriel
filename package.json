@@ -7,6 +7,7 @@
     "dev:server": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/http/server.ts",
     "dev:worker": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/queue/worker.ts",
     "dev:kafka": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/kafka/app.ts",
+    "dev:webhook": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/sns-webhook/server.ts",
     "start": "node dist/infra/http/server.js",
     "lint": "eslint src --ext ts,tsx",
     "test": "jest",

@@ -1,7 +1,8 @@
 import express from 'express'
 
-import { adaptMiddleware } from '../adapters/ExpressMiddlewareAdapter'
-import { adaptRoute } from '../adapters/ExpressRouteAdapter'
+import { adaptMiddleware } from '@core/infra/adapters/ExpressMiddlewareAdapter'
+import { adaptRoute } from '@core/infra/adapters/ExpressRouteAdapter'
+
 import { makeCreateSenderController } from '../factories/controllers/CreateSenderControllerFactory'
 import { makeGetAllSendersController } from '../factories/controllers/GetAllSendersControllerFactory'
 import { makeRemoveSenderController } from '../factories/controllers/RemoveSenderControllerFactory'

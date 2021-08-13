@@ -5,9 +5,9 @@
 import request from 'supertest'
 import { v4 as uuid } from 'uuid'
 
-import { app } from '@infra/http/app'
 import { prisma } from '@infra/prisma/client'
 import { redisConnection } from '@infra/redis/connection'
+import { app } from '@infra/sns-webhook/app'
 
 import { validEventTypes } from '../../domain/event/type'
 
