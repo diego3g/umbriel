@@ -29,17 +29,10 @@ export class RegisterEvent {
     messageId,
     event,
   }: RegisterEventRequest): Promise<RegisterEventResponse> {
-    let recipient = await this.recipientsRepository.findByMessageAndContactId({
+    const recipient = Recipient.create({
       contactId,
       messageId,
     })
-
-    if (!recipient) {
-      recipient = Recipient.create({
-        contactId,
-        messageId,
-      })
-    }
 
     const eventTypeOrError = Type.create(event.type)
 
@@ -59,7 +52,7 @@ export class RegisterEvent {
 
     recipient.addEvent(incomingEventOrError.value)
 
-    await this.recipientsRepository.saveWithEvents(recipient)
+    await this.recipientsRepository.saveOrCreateWithEvents(recipient)
 
     if (event.meta?.bounceType?.toLowerCase() === 'permanent') {
       const contact = await this.contactsRepository.findById(contactId)

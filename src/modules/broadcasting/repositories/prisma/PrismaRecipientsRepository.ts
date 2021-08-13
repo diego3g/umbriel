@@ -29,7 +29,7 @@ export class PrismaRecipientsRepository implements IRecipientsRepository {
     return null
   }
 
-  async saveWithEvents(recipient: Recipient): Promise<void> {
+  async saveOrCreateWithEvents(recipient: Recipient): Promise<void> {
     const data = RecipientMapper.toPersistence(recipient)
 
     const eventsData = recipient.events.map(event => {

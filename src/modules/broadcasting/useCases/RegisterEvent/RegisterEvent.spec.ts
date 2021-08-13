@@ -40,7 +40,7 @@ describe('Send Message', () => {
       messageId: 'message-id',
     })
 
-    await recipientsRepository.saveWithEvents(recipient)
+    await recipientsRepository.saveOrCreateWithEvents(recipient)
 
     const response = await registerEvent.execute({
       contactId: 'contact-id',
@@ -66,7 +66,7 @@ describe('Send Message', () => {
       messageId: 'message-id',
     })
 
-    await recipientsRepository.saveWithEvents(recipient)
+    await recipientsRepository.saveOrCreateWithEvents(recipient)
 
     const response = await registerEvent.execute({
       contactId: contact.id,

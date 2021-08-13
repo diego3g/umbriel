@@ -17,7 +17,7 @@ export class InMemoryRecipientsRepository implements IRecipientsRepository {
     )
   }
 
-  async saveWithEvents(recipient: Recipient): Promise<void> {
+  async saveOrCreateWithEvents(recipient: Recipient): Promise<void> {
     const recipientIndex = this.items.findIndex(
       findRecipient => findRecipient.id === recipient.id
     )
