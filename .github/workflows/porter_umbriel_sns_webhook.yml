@@ -1,0 +1,30 @@
+"on":
+  push:
+    branches:
+    - master
+name: Deploy to Porter
+jobs:
+  porter-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2.3.4
+    - name: Download Porter
+      id: download_porter
+      run: |
+        name=$(curl -s https://api.github.com/repos/porter-dev/porter/releases/latest | grep "browser_download_url.*/porter_.*_Linux_x86_64\.zip" | cut -d ":" -f 2,3 | tr -d \")
+        name=$(basename $name)
+        curl -L https://github.com/porter-dev/porter/releases/latest/download/$name --output $name
+        unzip -a $name
+        rm $name
+        chmod +x ./porter
+        sudo mv ./porter /usr/local/bin/porter
+    - name: Update Porter App
+      id: update_porter
+      timeout-minutes: 20
+      run: porter update --app umbriel-sns-webhook
+      env:
+        PORTER_CLUSTER: "353"
+        PORTER_HOST: https://dashboard.getporter.dev
+        PORTER_PROJECT: "661"
+        PORTER_TOKEN: ${{ secrets.PORTER_TOKEN_661 }}
