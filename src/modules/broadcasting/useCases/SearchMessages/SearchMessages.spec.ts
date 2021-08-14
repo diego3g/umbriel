@@ -3,21 +3,25 @@ import { Message } from '@modules/broadcasting/domain/message/message'
 import { Subject } from '@modules/broadcasting/domain/message/subject'
 import { InMemoryMessagesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { InMemoryTemplatesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryTemplatesRepository'
 import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
 
 import { SearchMessages } from './SearchMessages'
 
 let sendersRepository: InMemorySendersRepository
 let messageTagsRepository: InMemoryMessageTagsRepository
+let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
 let searchMessages: SearchMessages
 
 describe('Search Messages', () => {
   beforeEach(async () => {
     sendersRepository = new InMemorySendersRepository()
+    templatesRepository = new InMemoryTemplatesRepository()
     messageTagsRepository = new InMemoryMessageTagsRepository()
     messagesRepository = new InMemoryMessagesRepository(
       messageTagsRepository,
+      templatesRepository,
       sendersRepository
     )
     searchMessages = new SearchMessages(messagesRepository)

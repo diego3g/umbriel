@@ -48,6 +48,7 @@ describe('Send Message', () => {
     messageTagsRepository = new InMemoryMessageTagsRepository()
     messagesRepository = new InMemoryMessagesRepository(
       messageTagsRepository,
+      templatesRepository,
       sendersRepository
     )
     templatesRepository = new InMemoryTemplatesRepository()

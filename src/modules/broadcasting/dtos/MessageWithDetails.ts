@@ -7,6 +7,10 @@ export type MessageWithDetails = {
     name: string
     email: string
   }
+  template: {
+    title: string
+    content: string
+  }
   tags: Array<{
     id: string
     title: string

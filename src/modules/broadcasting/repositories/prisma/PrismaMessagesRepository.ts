@@ -43,6 +43,7 @@ export class PrismaMessagesRepository implements IMessagesRepository {
             tag: true,
           },
         },
+        template: true,
         sender: true,
       },
     })

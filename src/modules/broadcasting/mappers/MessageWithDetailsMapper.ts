@@ -1,4 +1,4 @@
-import { Message, MessageTag, Sender, Tag } from '@prisma/client'
+import { Message, MessageTag, Sender, Template, Tag } from '@prisma/client'
 
 import { MessageWithDetails } from '../dtos/MessageWithDetails'
 
@@ -7,6 +7,7 @@ type PersistenceRaw = Message & {
     tag: Tag
   })[]
   sender: Sender
+  template: Template
 }
 
 export class MessageWithDetailsMapper {
@@ -20,6 +21,12 @@ export class MessageWithDetailsMapper {
         name: raw.sender.name,
         email: raw.sender.email,
       },
+      template: raw.template
+        ? {
+            title: raw.template.title,
+            content: raw.template.content,
+          }
+        : null,
       tags: raw.tags.map(messageTag => {
         return {
           id: messageTag.tag.id,

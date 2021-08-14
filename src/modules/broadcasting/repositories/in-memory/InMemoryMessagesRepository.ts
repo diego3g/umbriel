@@ -10,12 +10,14 @@ import {
   MessagesSearchResult,
 } from '../IMessagesRepository'
 import { InMemoryMessageTagsRepository } from './InMemoryMessageTagsRepository'
+import { InMemoryTemplatesRepository } from './InMemoryTemplatesRepository'
 
 export class InMemoryMessagesRepository implements IMessagesRepository {
   public items: Message[] = []
 
   constructor(
     private messageTagsRepository: InMemoryMessageTagsRepository,
+    private templatesRepository: InMemoryTemplatesRepository,
     private sendersRepository: InMemorySendersRepository
   ) {}
 
@@ -27,6 +29,7 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
     const message = this.items.find(message => message.id === id)
 
     const sender = await this.sendersRepository.findById(message.senderId)
+    const template = await this.templatesRepository.findById(message.templateId)
 
     return {
       id: message.id,
@@ -37,6 +40,12 @@ export class InMemoryMessagesRepository implements IMessagesRepository {
         name: sender.name.value,
         email: sender.email.value,
       },
+      template: template
+        ? {
+            title: template.title.value,
+            content: template.content.value,
+          }
+        : null,
       tags: [],
     }
   }

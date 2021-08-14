@@ -19,7 +19,11 @@ export class SESProvider implements IMailProvider {
     const sendMailConfig = {
       Source: `${message.from.name} <${message.from.email}>`,
       Destination: {
-        ToAddresses: [`${message.to.name} <${message.to.email}>`],
+        ToAddresses: [
+          message.to.name
+            ? `${message.to.name} <${message.to.email}>`
+            : message.to.email,
+        ],
       },
       Message: {
         Subject: {
@@ -38,10 +42,11 @@ export class SESProvider implements IMailProvider {
           },
         },
       },
-      ConfigurationSetName: 'Umbriel',
     } as SendEmailRequest
 
     if (meta) {
+      sendMailConfig.ConfigurationSetName = 'Umbriel'
+
       sendMailConfig.Tags = Object.keys(meta).map(key => {
         return {
           Name: key,

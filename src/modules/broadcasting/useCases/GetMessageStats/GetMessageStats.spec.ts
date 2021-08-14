@@ -6,11 +6,13 @@ import { Subject } from '@modules/broadcasting/domain/message/subject'
 import { Recipient } from '@modules/broadcasting/domain/recipient/recipient'
 import { InMemoryMessagesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { InMemoryTemplatesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryTemplatesRepository'
 import { InMemorySendersRepository } from '@modules/senders/repositories/in-memory/InMemorySendersRepository'
 
 import { GetMessageStats } from './GetMessageStats'
 
 let messageTagsRepository: InMemoryMessageTagsRepository
+let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
 let sendersRepository: InMemorySendersRepository
 let getMessageStats: GetMessageStats
@@ -18,9 +20,11 @@ let getMessageStats: GetMessageStats
 describe('Get Message Stats', () => {
   beforeEach(() => {
     sendersRepository = new InMemorySendersRepository()
+    templatesRepository = new InMemoryTemplatesRepository()
     messageTagsRepository = new InMemoryMessageTagsRepository()
     messagesRepository = new InMemoryMessagesRepository(
       messageTagsRepository,
+      templatesRepository,
       sendersRepository
     )
     getMessageStats = new GetMessageStats(messagesRepository)

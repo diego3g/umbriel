@@ -2,6 +2,7 @@ import express from 'express'
 
 import { adaptMiddleware } from '@core/infra/adapters/ExpressMiddlewareAdapter'
 import { adaptRoute } from '@core/infra/adapters/ExpressRouteAdapter'
+
 import { makeCreateTagController } from '../factories/controllers/CreateTagControllerFactory'
 import { makeGetAllTagsController } from '../factories/controllers/GetAllTagsControllerFactory'
 import { makeSearchTagsController } from '../factories/controllers/SearchTagsControllerFactory'
