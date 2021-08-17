@@ -90,11 +90,7 @@ export class SendMessage {
       }
     })
 
-    await Promise.all(
-      queueJobs.map(job => {
-        return this.mailQueueProvider.addJob(job)
-      })
-    )
+    await this.mailQueueProvider.addManyJobs(queueJobs)
 
     await this.messagesRepository.save(message)
 
