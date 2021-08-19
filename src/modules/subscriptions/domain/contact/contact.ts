@@ -14,6 +14,7 @@ interface IContactProps {
   subscriptions?: Subscriptions
   isUnsubscribed?: boolean
   isBlocked?: boolean
+  isBounced?: boolean
   integrationId?: string
   createdAt?: Date
 }
@@ -39,6 +40,10 @@ export class Contact extends Entity<IContactProps> {
     return this.props.isBlocked
   }
 
+  get isBounced() {
+    return this.props.isBounced
+  }
+
   get integrationId() {
     return this.props.integrationId
   }
@@ -48,7 +53,7 @@ export class Contact extends Entity<IContactProps> {
   }
 
   get shouldReceiveMailing() {
-    return !this.isUnsubscribed && !this.isBlocked
+    return !this.isUnsubscribed && !this.isBlocked && !this.isBounced
   }
 
   set name(name: Name) {
@@ -79,6 +84,10 @@ export class Contact extends Entity<IContactProps> {
     this.props.isUnsubscribed = true
   }
 
+  public bounce() {
+    this.props.isBounced = true
+  }
+
   public subscribeToTag(subscription: Subscription) {
     this.subscriptions.add(subscription)
   }
@@ -97,6 +106,7 @@ export class Contact extends Entity<IContactProps> {
         subscriptions: props.subscriptions ?? Subscriptions.create([]),
         isUnsubscribed: props.isUnsubscribed ?? false,
         isBlocked: props.isBlocked ?? false,
+        isBounced: props.isBounced ?? false,
         createdAt: props.createdAt ?? new Date(),
       },
       id

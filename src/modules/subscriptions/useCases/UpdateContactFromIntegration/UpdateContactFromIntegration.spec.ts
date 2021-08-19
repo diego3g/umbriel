@@ -43,7 +43,7 @@ describe('Update Contact', () => {
     )
   })
 
-  it('should not be able to update a non existing contact', async () => {
+  it('should create the contact if it does not exist', async () => {
     const response = await updateContactFromIntegration.execute({
       contactIntegrationId: 'non-existing-contact',
       data: {
@@ -52,6 +52,13 @@ describe('Update Contact', () => {
       },
     })
 
-    expect(response.isLeft()).toBeTruthy()
+    expect(response.isRight()).toBeTruthy()
+    expect(contactsRepository.items[0].integrationId).toEqual(
+      'non-existing-contact'
+    )
+    expect(contactsRepository.items[0].name.value).toEqual('John Doe 2')
+    expect(contactsRepository.items[0].email.value).toEqual(
+      'johndoe2@example.com'
+    )
   })
 })

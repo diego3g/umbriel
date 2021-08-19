@@ -1,5 +1,5 @@
 export interface MailAddress {
-  name: string
+  name?: string
   email: string
 }
 

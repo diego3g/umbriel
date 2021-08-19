@@ -6,7 +6,10 @@ export type ContactWithDetails = {
   is_blocked: boolean
   subscriptions: Array<{
     id: string
-    tag: string
+    tag: {
+      id: string
+      title: string
+    }
   }>
   messages: Array<{
     id: string

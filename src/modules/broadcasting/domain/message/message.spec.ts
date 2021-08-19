@@ -27,7 +27,7 @@ describe('Message model', () => {
     const newMessageBody = Body.create('New message body long enough')
       .value as Body
 
-    message.deliver([], newMessageBody)
+    message.deliver(0, newMessageBody)
 
     expect(message.sentAt).toBeTruthy()
     expect(message.body.value).toBe('New message body long enough')

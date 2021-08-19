@@ -40,6 +40,13 @@ describe('Search Contacts', () => {
     expect(response.totalCount).toEqual(1)
     expect(response.data[0].name.value).toEqual('John Doe5')
   })
+  it('should be able to search through contacts with case-insensitive', async () => {
+    const response = await searchContacts.execute({ query: 'DOE5' })
+
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].name.value).toEqual('John Doe5')
+  })
 
   it('should be able to paginate through contacts', async () => {
     let response = await searchContacts.execute({ perPage: 10 })

@@ -23,6 +23,7 @@ export class MessageMapper {
         body: bodyOrError.value,
         templateId: raw.template_id,
         senderId: raw.sender_id,
+        recipientsCount: raw.recipients_count,
         sentAt: raw.sent_at,
       },
       raw.id
@@ -41,6 +42,7 @@ export class MessageMapper {
       subject: message.subject.value,
       body: message.body.value,
       template_id: message.templateId,
+      recipients_count: message.recipientsCount,
       sender_id: message.senderId,
       sent_at: message.sentAt,
     }

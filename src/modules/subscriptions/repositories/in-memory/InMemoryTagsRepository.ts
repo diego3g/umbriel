@@ -12,6 +12,10 @@ export class InMemoryTagsRepository implements ITagsRepository {
     return this.items.some(tag => tag.title.value === title)
   }
 
+  async findAll(): Promise<Tag[]> {
+    return this.items
+  }
+
   async findById(id: string): Promise<Tag> {
     return this.items.find(tag => tag.id === id)
   }
@@ -50,7 +54,10 @@ export class InMemoryTagsRepository implements ITagsRepository {
     let tagList = this.items
 
     if (query) {
-      tagList = this.items.filter(tag => tag.title.value.includes(query))
+      tagList = this.items.filter(tag => {
+        const search = new RegExp(query, 'i')
+        return search.test(tag.title.value)
+      })
     }
 
     return {

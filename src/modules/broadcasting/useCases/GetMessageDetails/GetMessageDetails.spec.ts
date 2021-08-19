@@ -3,6 +3,7 @@ import { Message } from '@modules/broadcasting/domain/message/message'
 import { Subject } from '@modules/broadcasting/domain/message/subject'
 import { InMemoryMessagesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessagesRepository'
 import { InMemoryMessageTagsRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryMessageTagsRepository'
+import { InMemoryTemplatesRepository } from '@modules/broadcasting/repositories/in-memory/InMemoryTemplatesRepository'
 import { Email } from '@modules/senders/domain/sender/email'
 import { Name } from '@modules/senders/domain/sender/name'
 import { Sender } from '@modules/senders/domain/sender/sender'
@@ -13,14 +14,17 @@ import { GetMessageDetails } from './GetMessageDetails'
 let getMessageDetails: GetMessageDetails
 let messageTagsRepository: InMemoryMessageTagsRepository
 let sendersRepository: InMemorySendersRepository
+let templatesRepository: InMemoryTemplatesRepository
 let messagesRepository: InMemoryMessagesRepository
 
 describe('Get Contact Details', () => {
   beforeEach(() => {
     messageTagsRepository = new InMemoryMessageTagsRepository()
     sendersRepository = new InMemorySendersRepository()
+    templatesRepository = new InMemoryTemplatesRepository()
     messagesRepository = new InMemoryMessagesRepository(
       messageTagsRepository,
+      templatesRepository,
       sendersRepository
     )
     getMessageDetails = new GetMessageDetails(messagesRepository)

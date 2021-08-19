@@ -37,7 +37,7 @@ export class BullProvider implements IMailQueueProvider {
   process(processFunction: Processor<IDeliverMessageJob>): void {
     new Worker('mail-queue', processFunction, {
       connection: redisConnection,
-      concurrency: 400,
+      concurrency: 100,
       limiter: {
         max: 400,
         duration: 1000,

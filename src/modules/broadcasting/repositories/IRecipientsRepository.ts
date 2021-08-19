@@ -9,5 +9,5 @@ export interface IRecipientsRepository {
   findByMessageAndContactId(
     params: FindByMessageAndContactIdParams
   ): Promise<Recipient>
-  saveWithEvents(recipient: Recipient): Promise<void>
+  saveOrCreateWithEvents(recipient: Recipient): Promise<void>
 }

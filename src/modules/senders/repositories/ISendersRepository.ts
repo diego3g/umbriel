@@ -12,6 +12,7 @@ export type SendersSearchResult = {
 }
 
 export interface ISendersRepository {
+  findAll(): Promise<Sender[]>
   findById(id: string): Promise<Sender>
   findDefaultSender(): Promise<Sender>
   search(params: SendersSearchParams): Promise<SendersSearchResult>

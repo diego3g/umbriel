@@ -1,7 +1,8 @@
 import express from 'express'
 
-import { adaptMiddleware } from '../adapters/ExpressMiddlewareAdapter'
-import { adaptRoute } from '../adapters/ExpressRouteAdapter'
+import { adaptMiddleware } from '@core/infra/adapters/ExpressMiddlewareAdapter'
+import { adaptRoute } from '@core/infra/adapters/ExpressRouteAdapter'
+
 import { makeRegisterUserController } from '../factories/controllers/RegisterUserControllerFactory'
 import { makeEnsureAuthenticatedMiddleware } from '../factories/middlewares/EnsureAuthenticatedMiddlewareFactory'
 

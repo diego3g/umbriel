@@ -9,6 +9,12 @@ import {
 } from '../ITemplatesRepository'
 
 export class PrismaTemplatesRepository implements ITemplatesRepository {
+  async findAll(): Promise<Template[]> {
+    const templates = await prisma.template.findMany()
+
+    return templates.map(template => TemplateMapper.toDomain(template))
+  }
+
   async findById(id: string): Promise<Template> {
     const template = await prisma.template.findUnique({ where: { id } })
 
@@ -53,12 +59,15 @@ export class PrismaTemplatesRepository implements ITemplatesRepository {
 
     if (query) {
       queryPayload.where = {
-        title: { contains: query },
+        title: { contains: query, mode: 'insensitive' },
       }
     }
 
     const templates = await prisma.template.findMany({
       ...queryPayload,
+      orderBy: {
+        title: 'asc',
+      },
     })
 
     const estimatedCount = await prisma.template.aggregate({

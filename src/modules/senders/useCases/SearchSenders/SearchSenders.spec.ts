@@ -37,6 +37,13 @@ describe('Search Senders', () => {
     expect(response.totalCount).toEqual(1)
     expect(response.data[0].name.value).toEqual('John Doe5')
   })
+  it('should be able to search through senders with case-insensitive', async () => {
+    const response = await searchSenders.execute({ query: 'DOE5' })
+
+    expect(response.data.length).toEqual(1)
+    expect(response.totalCount).toEqual(1)
+    expect(response.data[0].name.value).toEqual('John Doe5')
+  })
 
   it('should be able to paginate through senders', async () => {
     let response = await searchSenders.execute({ perPage: 10 })

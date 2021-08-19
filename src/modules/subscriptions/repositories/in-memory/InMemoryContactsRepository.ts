@@ -62,7 +62,8 @@ export class InMemoryContactsRepository implements IContactsRepository {
           tagIds.includes(subscription.tagId)
         ) &&
         contact.isUnsubscribed === false &&
-        contact.isBlocked === false
+        contact.isBlocked === false &&
+        contact.isBounced === false
       )
     })
   }
@@ -75,11 +76,12 @@ export class InMemoryContactsRepository implements IContactsRepository {
     let contactList = this.items
 
     if (query) {
-      contactList = this.items.filter(
-        contact =>
-          contact.name.value.includes(query) ||
-          contact.email.value.includes(query)
-      )
+      contactList = this.items.filter(contact => {
+        const search = new RegExp(query, 'i')
+        return (
+          search.test(contact.name.value) || search.test(contact.email.value)
+        )
+      })
     }
 
     return {

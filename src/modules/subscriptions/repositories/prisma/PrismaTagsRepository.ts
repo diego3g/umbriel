@@ -16,6 +16,16 @@ export class PrismaTagsRepository implements ITagsRepository {
     return !!tag
   }
 
+  async findAll(): Promise<Tag[]> {
+    const tags = await prisma.tag.findMany({
+      orderBy: {
+        title: 'asc',
+      },
+    })
+
+    return tags.map(tag => TagMapper.toDomain(tag))
+  }
+
   async findById(id: string): Promise<Tag> {
     const tag = await prisma.tag.findUnique({ where: { id } })
 
@@ -104,12 +114,15 @@ export class PrismaTagsRepository implements ITagsRepository {
 
     if (query) {
       queryPayload.where = {
-        title: { contains: query },
+        title: { contains: query, mode: 'insensitive' },
       }
     }
 
     const tags = await prisma.tag.findMany({
       ...queryPayload,
+      orderBy: {
+        title: 'asc',
+      },
       include: {
         _count: {
           select: {
