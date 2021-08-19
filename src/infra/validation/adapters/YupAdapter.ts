@@ -17,23 +17,23 @@ export const adaptYupValidation = (validator: Validator): Validator => {
 
       switch (type) {
         case 'required':
-          error.message = `Missing value for field \"${path}\"`
+          error.message = `Missing value for field "${path}"`
           break
 
         case 'typeError':
-          error.message = `Invalid value for field \"${path}\"`
+          error.message = `Invalid value for field "${path}"`
           break
 
         case 'min':
-          error.message = `Expected at least of ${params.min} characters for field \"${path}\"`
+          error.message = `Expected at least of ${params.min} characters for field "${path}"`
           break
 
         case 'max':
-          error.message = `Expected a maximum of ${params.max} characters for field \"${path}\"`
+          error.message = `Expected a maximum of ${params.max} characters for field "${path}"`
           break
 
         case 'email':
-          error.message = `Value for field \"${path}\" is not a valid email format`
+          error.message = `Value for field "${path}" is not a valid email format`
           break
 
         case 'invalid_password_comparison':
