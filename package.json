@@ -29,7 +29,7 @@
     "@types/html-to-text": "8.0.1",
     "@types/inline-css": "3.0.1",
     "@types/jest": "27.0.1",
-    "@types/jsonwebtoken": "8.5.4",
+    "@types/jsonwebtoken": "8.5.5",
     "@types/nodemailer": "6.4.4",
     "@types/request": "2.48.7",
     "@types/sns-validator": "0.3.0",
