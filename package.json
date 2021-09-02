@@ -24,7 +24,7 @@
     "@babel/preset-typescript": "7.15.0",
     "@types/bcryptjs": "2.4.2",
     "@types/cors": "2.8.12",
-    "@types/dotenv-flow": "3.1.1",
+    "@types/dotenv-flow": "3.2.0",
     "@types/express": "4.17.13",
     "@types/html-to-text": "8.0.1",
     "@types/inline-css": "3.0.1",
