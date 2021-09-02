@@ -1856,10 +1856,10 @@
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
-"@types/dotenv-flow@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@types/dotenv-flow/-/dotenv-flow-3.1.1.tgz#8d005a89a3c586b49da5d5edbd3b38f95fe6b536"
-  integrity sha512-khxgP+KkHPL72SP0Wqn1gB6EHj6yk79OBGJEKW64XL13RbyDGTkRbbA47VICOLRrvgKOpZeun2uMsgO7pAsExQ==
+"@types/dotenv-flow@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@types/dotenv-flow/-/dotenv-flow-3.2.0.tgz#3a632bcb72d5a6fa770da644a1f63d69a6c7075e"
+  integrity sha512-A79hbPwocbYkcTwGcDOFbKDuqyVo5mLAz/6Iq465YZ7R7Go5bT1PIM8I2jlPQkaD9u9fbotGVLkUPhX+9XUHfw==
 
 "@types/express-serve-static-core@^4.17.18":
   version "4.17.18"
