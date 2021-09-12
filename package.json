@@ -50,7 +50,7 @@
     "pg": "8.7.1",
     "plop": "2.7.4",
     "prettier": "2.3.2",
-    "prisma": "2.30.0",
+    "prisma": "3.0.2",
     "supertest": "6.1.6",
     "ts-jest": "27.0.5",
     "ts-node-dev": "1.1.8",
@@ -58,7 +58,7 @@
     "typescript": "4.4.2"
   },
   "dependencies": {
-    "@prisma/client": "2.30.0",
+    "@prisma/client": "3.0.2",
     "aws-sdk": "2.978.0",
     "bcryptjs": "2.4.3",
     "bullmq": "1.40.4",
