@@ -11,7 +11,7 @@ import { Validator } from '@core/infra/Validator'
 import { AccountAlreadyExistsError } from './errors/AccountAlreadyExistsError'
 import { RegisterUser } from './RegisterUser'
 
-type RegisterUserControllerRequest = {
+export type RegisterUserControllerRequest = {
   name: string
   email: string
   password: string
