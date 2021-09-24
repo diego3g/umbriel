@@ -2053,10 +2053,10 @@
     "@types/mime" "*"
     "@types/node" "*"
 
-"@types/sns-validator@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@types/sns-validator/-/sns-validator-0.3.0.tgz#0e9e2c1936751d8a2ce65b3e8c92232ec90d4f5b"
-  integrity sha512-vFyj79Ab4Lb/hIkc0UnYhnoTSHK+DxWPvbw/eHla4e1Sx+/2SjM3GNFuIxnsfp2Ir+9fbUsE4cu314++DxdQhA==
+"@types/sns-validator@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@types/sns-validator/-/sns-validator-0.3.1.tgz#76d13a495cdfcd565d2df98c4a0bf065aca2d741"
+  integrity sha512-td9FL/N5jpS1P7y41Bmj/jN0F295DAQ4If4OgIxtl/eoob+i6hciBueYD8EUSAwMpWf42JeNsGO2FglrjMC0Mg==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.0"
