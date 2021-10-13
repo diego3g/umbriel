@@ -68,7 +68,7 @@
     "express": "4.17.1",
     "html-to-text": "8.0.0",
     "inline-css": "^3.0.0",
-    "ioredis": "4.27.9",
+    "ioredis": "4.28.0",
     "jsonwebtoken": "8.5.1",
     "kafkajs": "^1.15.0",
     "nodemailer": "6.7.0",
