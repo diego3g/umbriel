@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "npm-run-all -p dev:*",
     "dev:server": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/http/server.ts",
     "dev:worker": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/queue/worker.ts",
     "dev:kafka": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear -r tsconfig-paths/register src/infra/kafka/app.ts",
@@ -55,6 +56,7 @@
     "ts-jest": "27.0.7",
     "ts-node-dev": "1.1.8",
     "tsconfig-paths": "3.11.0",
+    "npm-run-all": "^4.1.5",
     "typescript": "4.4.3"
   },
   "dependencies": {
