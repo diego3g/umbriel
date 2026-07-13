@@ -4,7 +4,7 @@ services:
   # Application
 
   postgres:
-    image: 'bitnami/postgresql'
+    image: 'soldevelo/postgresql'
     restart: always
     ports:
       - '5432:5432'
@@ -18,7 +18,7 @@ services:
       - app-net
 
   redis:
-    image: 'bitnami/redis'
+    image: 'soldevelo/redis'
     ports:
       - '6379:6379'
     environment:
@@ -27,18 +27,18 @@ services:
       - app-net
 
   zookeeper:
-    image: 'bitnami/zookeeper:3'
+    image: 'soldevelo/zookeeper:3.9'
     ports:
       - '2181:2181'
     volumes:
       - 'zookeeper_data:/bitnami'
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - app-net
 
   kafka:
-    image: 'bitnami/kafka:3'
+    image: 'soldevelo/kafka:3.9'
     ports:
       - '9092:9092'
     volumes:
