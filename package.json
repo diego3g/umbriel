@@ -58,7 +58,7 @@
     "typescript": "4.4.3"
   },
   "dependencies": {
-    "@prisma/client": "3.0.2",
+    "@prisma/client": "3.15.2",
     "aws-sdk": "2.978.0",
     "bcryptjs": "2.4.3",
     "bullmq": "1.40.4",
